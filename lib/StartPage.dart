@@ -69,7 +69,7 @@ class _StartScreenState extends State<StartScreen> {
                             onPressed: () {},
                             child: const Padding(
                               padding: EdgeInsets.all(10.0),
-                              child: Text('Wyświetl menu'),
+                              child: Text('Wyświetl menu', style: TextStyle(fontWeight: FontWeight.w600)),
                             ),
                           ),
                           const SizedBox(height: 30),
@@ -78,7 +78,7 @@ class _StartScreenState extends State<StartScreen> {
                             onPressed: () {},
                             child: const Padding(
                               padding: EdgeInsets.all(10.0),
-                              child: Text('Zaloguj się'),
+                              child: Text('Zaloguj się', style: TextStyle(fontWeight: FontWeight.w600)),
                             ),
                           ),
                           const SizedBox(height: 30),
@@ -87,14 +87,22 @@ class _StartScreenState extends State<StartScreen> {
                             onPressed: () {},
                             child: const Padding(
                               padding: EdgeInsets.all(10.0),
-                              child: Text('Zarejestruj się'),
+                              child: Text('Zarejestruj się', style: TextStyle(fontWeight: FontWeight.w600)),
+                            ),
+                          ),
+                          const SizedBox(height: 30),
+                          ElevatedButton(
+                            style: style,
+                            onPressed: () {},
+                            child: const Padding(
+                              padding: EdgeInsets.all(10.0),
+                              child: Text('O nas', style: TextStyle(fontWeight: FontWeight.w600)),
                             ),
                           ),
                         ],
                       ),
                     ),
                   ),
-
                 ],
               ),
             ),
