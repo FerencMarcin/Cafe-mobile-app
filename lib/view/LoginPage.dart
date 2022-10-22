@@ -22,8 +22,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: const Text('Logowanie'),
+      ),
       body: Center(
-        child: Stack(),
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('Anuluj'),
+        ),
       ),
     );
   }

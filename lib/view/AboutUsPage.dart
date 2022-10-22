@@ -1,4 +1,3 @@
-import 'package:cafe_mobile_app/theme/colors.dart';
 import 'package:flutter/material.dart';
 
 class AboutUsScreen extends StatefulWidget {

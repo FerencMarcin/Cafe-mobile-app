@@ -1,13 +1,14 @@
+import 'package:cafe_mobile_app/theme/colors.dart';
 import 'package:flutter/material.dart';
 
-class MenuScreen extends StatefulWidget {
-  const MenuScreen({super.key});
+class RegistrationScreen extends StatefulWidget {
+  const RegistrationScreen({super.key});
 
   @override
-  State<MenuScreen> createState() => _MenuScreenState();
+  State<RegistrationScreen> createState() => _RegistrationScreenState();
 }
 
-class _MenuScreenState extends State<MenuScreen> {
+class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
 
@@ -20,14 +21,14 @@ class _MenuScreenState extends State<MenuScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Menu kawiarni'),
+        title: const Text('Rejestracja'),
       ),
       body: Center(
         child: ElevatedButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          child: const Text('Wróć'),
+          child: const Text('Anuluj'),
         ),
       ),
     );

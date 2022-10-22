@@ -1,4 +1,8 @@
 import 'package:cafe_mobile_app/theme/colors.dart';
+import 'package:cafe_mobile_app/view/AboutUsPage.dart';
+import 'package:cafe_mobile_app/view/LoginPage.dart';
+import 'package:cafe_mobile_app/view/MenuPage.dart';
+import 'package:cafe_mobile_app/view/RegisterPage.dart';
 import 'package:flutter/material.dart';
 
 class StartScreen extends StatefulWidget {
@@ -66,7 +70,12 @@ class _StartScreenState extends State<StartScreen> {
                         children: <Widget>[
                           ElevatedButton(
                             style: style,
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const MenuScreen())
+                              );
+                            },
                             child: const Padding(
                               padding: EdgeInsets.all(10.0),
                               child: Text('Wyświetl menu', style: TextStyle(fontWeight: FontWeight.w600)),
@@ -75,7 +84,12 @@ class _StartScreenState extends State<StartScreen> {
                           const SizedBox(height: 30),
                           ElevatedButton(
                             style: style,
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const LoginScreen(title: "test"))
+                              );
+                            },
                             child: const Padding(
                               padding: EdgeInsets.all(10.0),
                               child: Text('Zaloguj się', style: TextStyle(fontWeight: FontWeight.w600)),
@@ -84,7 +98,12 @@ class _StartScreenState extends State<StartScreen> {
                           const SizedBox(height: 30),
                           ElevatedButton(
                             style: style,
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const RegistrationScreen())
+                              );
+                            },
                             child: const Padding(
                               padding: EdgeInsets.all(10.0),
                               child: Text('Zarejestruj się', style: TextStyle(fontWeight: FontWeight.w600)),
@@ -93,7 +112,12 @@ class _StartScreenState extends State<StartScreen> {
                           const SizedBox(height: 30),
                           ElevatedButton(
                             style: style,
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const AboutUsScreen())
+                              );
+                            },
                             child: const Padding(
                               padding: EdgeInsets.all(10.0),
                               child: Text('O nas', style: TextStyle(fontWeight: FontWeight.w600)),
