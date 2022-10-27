@@ -1,4 +1,6 @@
 import 'package:cafe_mobile_app/theme/colors.dart';
+import 'package:cafe_mobile_app/view/LoginPage.dart';
+import 'package:cafe_mobile_app/view/RegisterPage.dart';
 import 'package:flutter/material.dart';
 import 'StartPage.dart';
 
@@ -16,9 +18,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: title,
       theme: ThemeData(
-        primarySwatch: AppColors.myfav,
+        primarySwatch: AppColors.darkGoldenrodMap,
       ),
       home: StartScreen(title: title),
+      //home: LoginScreen(title: title),
+      //home: RegistrationScreen(),
     );
   }
 }
