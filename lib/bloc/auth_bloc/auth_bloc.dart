@@ -8,7 +8,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   //    : assert(userRepository != null);
 
   // @override
-  // AuthenticationState get initialState => AuthenticationUninitialized();
+  // AuthenticationState get initialState => AuthenticationUninitialized(); moved to constructor
 
   @override
   Stream<AuthenticationState> mapEventToState(
