@@ -1,20 +1,27 @@
+import 'package:cafe_mobile_app/repository/repository.dart';
 import 'package:cafe_mobile_app/theme/colors.dart';
 import 'package:cafe_mobile_app/view/AboutUsPage.dart';
 import 'package:cafe_mobile_app/view/LoginPage.dart';
 import 'package:cafe_mobile_app/view/MenuPage.dart';
 import 'package:cafe_mobile_app/view/RegisterPage.dart';
+import 'package:cafe_mobile_app/view/authentication/LoginPage.dart';
 import 'package:flutter/material.dart';
 
 class StartScreen extends StatefulWidget {
-  const StartScreen({super.key, required this.title});
+  const StartScreen({super.key, required this.title, required this.userRepository});
 
   final String title;
+  final UserRepository userRepository;
 
   @override
-  State<StartScreen> createState() => _StartScreenState();
+  State<StartScreen> createState() => _StartScreenState(userRepository: userRepository);
 }
 
 class _StartScreenState extends State<StartScreen> {
+  final UserRepository userRepository;
+
+  _StartScreenState({Key? key, required this.userRepository});
+
   @override
   Widget build(BuildContext context) {
     final ButtonStyle style = ElevatedButton.styleFrom(
@@ -87,7 +94,7 @@ class _StartScreenState extends State<StartScreen> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const LoginScreen(title: "test"))
+                                MaterialPageRoute(builder: (context) => LoginPage(userRepository: userRepository))
                               );
                             },
                             child: const Padding(
