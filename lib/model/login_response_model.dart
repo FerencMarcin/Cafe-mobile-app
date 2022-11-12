@@ -7,7 +7,7 @@ class LoginResponseModel {
     this.token
   });
 
-  LoginResponseModel.convertResponse(Map<String, dynamic> responseData) {
+  LoginResponseModel.fromJson(Map<String, dynamic> responseData) {
     roleId = responseData['token'];
     token = responseData['token'];
   }
