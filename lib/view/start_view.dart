@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'home_view.dart';
+import 'auth_view.dart';
 
 class StartView extends StatelessWidget {
   const StartView({Key? key}) : super(key: key);
@@ -12,7 +13,12 @@ class StartView extends StatelessWidget {
     AuthService _authManager = Get.find();
 
     return Obx(() {
-      return _authManager.isLogged.value ? HomeView() : LoginView();
+      if (_authManager.isLogged.value) {
+        return HomeView();
+      } else {
+        return AuthView();
+      }
+      return _authManager.isLogged.value ? AuthView() : HomeView();
     });
   }
 }
