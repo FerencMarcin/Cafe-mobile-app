@@ -36,7 +36,7 @@ class LoginViewModel extends GetxController {
         );
       } else {
         //LoginResponseModel loggedInUser = LoginResponseModel(roleId: responseData['roleId'], token: responseData['token']);
-        _authService.login(responseData['token']);
+        _authService.login(responseData['accessToken']);
       }
     } else {
       Get.defaultDialog(
