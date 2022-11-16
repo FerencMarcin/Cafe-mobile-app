@@ -48,9 +48,10 @@ class NavigationDrawer extends StatelessWidget {
   Widget navItems(BuildContext context) => Wrap(
     runSpacing: 10,
     children: [
-      const ListTile(
-        leading: Icon(Icons.home_outlined),
-        title: Text('Strona główna'),
+      ListTile(
+        leading: const Icon(Icons.home_outlined),
+        title: const Text('Strona główna'),
+        onTap: () => Get.offAllNamed('/home'),
       ),
       const ListTile(
         leading: Icon(Icons.info_outline_rounded),
