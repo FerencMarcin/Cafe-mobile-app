@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:cafe_mobile_app/model/login_request_model.dart';
 import 'package:cafe_mobile_app/service/auth_service.dart';
@@ -24,7 +23,6 @@ class RegistrationViewModel extends GetxController {
 
   Future<void> userRegistration(String email, String password, String firstName, String lastName, String number, String sex) async {
     final response = await _registrationService.fetchUserRegistration(email, password, firstName, lastName, number, sex);
-    log('res:  $response'); //TODO delete this line
 
     if (response != null) {
       final responseData = jsonDecode(response);
@@ -46,7 +44,6 @@ class RegistrationViewModel extends GetxController {
               final loginResponse = await _loginService.fetchUserLogin(email, password);
               if (loginResponse != null) {
                 final loginResponseData = jsonDecode(loginResponse);
-                log('login after register res: $loginResponseData');
                 if(loginResponseData['error'] != null) {
                   Get.defaultDialog(
                       title: 'Błąd logowania, spróbuj ponownie',
