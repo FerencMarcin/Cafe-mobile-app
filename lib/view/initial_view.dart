@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:cafe_mobile_app/service/auth_service.dart';
+import 'package:cafe_mobile_app/view/utils/error_view.dart';
+import 'package:cafe_mobile_app/view/utils/loading_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'start_view.dart';
+import 'startViewManager.dart';
 
 class WelcomeView extends StatelessWidget {
   WelcomeView({Key? key}) : super(key: key);
@@ -21,10 +25,10 @@ class WelcomeView extends StatelessWidget {
       future: init(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return loading_view();
+          return LoadingView();
         } else {
           if (snapshot.hasError) {
-            return error_view(snapshot);
+            return ErrorView(snapshot: snapshot);
           } else {
             return StartView();
           }
@@ -33,29 +37,11 @@ class WelcomeView extends StatelessWidget {
     );
   }
 
+  //TODO zobaczyć czy działa i usunąć
   Scaffold error_view(AsyncSnapshot<Object?> snapshot) {
     return Scaffold(
       body: Center(
-        //TODO create better error view
         child: Text('Błąd: ${snapshot.error}'),
-      ),
-    );
-  }
-
-  Scaffold loading_view() {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: CircularProgressIndicator(),
-            ),
-            Text('Ładowanie...'),
-          ],
-        ),
       ),
     );
   }
