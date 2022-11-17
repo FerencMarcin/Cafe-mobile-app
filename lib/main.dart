@@ -1,8 +1,9 @@
 import 'package:cafe_mobile_app/theme/colors.dart';
 import 'package:cafe_mobile_app/view/home_view.dart';
+import 'package:cafe_mobile_app/view/products_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'view/welcome_view.dart';
+import 'view/initial_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
       home: WelcomeView(),
       getPages: [
         GetPage(name: '/home', page: () => HomeView()),
-
+        GetPage(name: '/menu', page: () => ProductsView())
       ],
     );
   }

@@ -8,6 +8,16 @@ class NavigationDrawer extends StatelessWidget {
   NavigationDrawer({Key? key}) : super(key: key);
   final AuthService _authManager = Get.find();
 
+  final TextStyle selectedRouteStyle = const TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w900,
+    color: AppColors.darkGoldenrod
+  );
+
+  final TextStyle unselectedRouteStyle = const TextStyle(
+      fontSize: 16,
+  );
+
   @override
   Widget build(BuildContext context) => Drawer(
     backgroundColor: AppColors.floralWhite,
@@ -49,32 +59,54 @@ class NavigationDrawer extends StatelessWidget {
     runSpacing: 10,
     children: [
       ListTile(
-        leading: const Icon(Icons.home_outlined),
-        title: const Text('Strona główna'),
-        onTap: () => Get.offAllNamed('/home'),
+        leading:
+          (Get.currentRoute == '/home') ?
+          Icon(Icons.home_outlined, color: AppColors.darkGoldenrodMap[600], size: 35,)
+          : const Icon(Icons.home_outlined, size: 32),
+        title:
+          (Get.currentRoute == '/home') ?
+          Text('Strona główna', style: selectedRouteStyle)
+          : Text('Strona główna', style: unselectedRouteStyle),
+        onTap: () => {if (Get.currentRoute != '/home') Get.offAllNamed('/home')}
       ),
-      const ListTile(
+      ListTile(
         leading: Icon(Icons.info_outline_rounded),
-        title: Text('O nas'),
+        title:
+          (Get.currentRoute == '/aboutus') ?
+          Text('O nas', style: selectedRouteStyle)
+          : Text('O nas', style: unselectedRouteStyle),
       ),
-      const ListTile(
+      ListTile(
         leading: Icon(Icons.menu_book_outlined),
-        title: Text('Menu'),
+        title:
+          (Get.currentRoute == '/menu') ?
+          Text('Menu', style: selectedRouteStyle)
+          : Text('Menu', style: unselectedRouteStyle),
+        onTap: () => Get.offAllNamed('/menu'),
       ),
-      const ListTile(
+      ListTile(
         leading: Icon(Icons.local_offer_outlined),
-        title: Text('Oferty specjalne'),
+        title:
+          (Get.currentRoute == '/specialoffers') ?
+          Text('Oferty specjalne', style: selectedRouteStyle)
+          : Text('Oferty specjalne', style: unselectedRouteStyle),
       ),
       const Divider(
         color: Colors.black54,
       ),
-      const ListTile(
+      ListTile(
         leading: Icon(Icons.list_alt_outlined),
-        title: Text('Moje zamówienia'),
+        title:
+          (Get.currentRoute == '/myorders') ?
+          Text('Moje zamówienia', style: selectedRouteStyle)
+          : Text('Moje zamówienia', style: unselectedRouteStyle),
       ),
-      const ListTile(
+      ListTile(
         leading: Icon(Icons.qr_code_2_outlined),
-        title: Text('Talony'),
+        title:
+          (Get.currentRoute == '/codes') ?
+          Text('Talony', style: selectedRouteStyle)
+          : Text('Talony', style: unselectedRouteStyle),
       ),
       const Padding(
           padding: EdgeInsets.only(bottom: 50),
@@ -82,13 +114,16 @@ class NavigationDrawer extends StatelessWidget {
             color: Colors.black54,
           )
       ),
-      const ListTile(
-        leading: Icon(Icons.person_outline_rounded),
-        title: Text('Moje konto'),
+      ListTile(
+        leading: const Icon(Icons.person_outline_rounded),
+        title:
+          (Get.currentRoute == '/profile') ?
+          Text('Moje konto', style: selectedRouteStyle)
+          : Text('Moje konto', style: unselectedRouteStyle),
       ),
       ListTile(
-        leading: const Icon(Icons.logout_outlined),
-        title: const Text('Wyloguj się'),
+        leading: const Icon(Icons.logout_outlined, size: 32),
+        title: Text('Wyloguj się', style: unselectedRouteStyle),
         onTap: () => _authManager.logout(),
       ),
     ],
