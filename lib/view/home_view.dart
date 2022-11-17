@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../theme/colors.dart';
+import 'appBar/appBar_view.dart';
 import 'navigation/navigationDrawer_view.dart';
 
 class HomeView extends StatefulWidget {
@@ -18,16 +19,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Menu głowne'),
-        actions: [
-          IconButton(
-            onPressed: (){
-              _authManager.logout();
-            },
-            icon: Icon(Icons.logout_outlined))
-        ],
-      ),
+      appBar: AppBarView(appBarTitle: 'Strona główna'),
       drawer: NavigationDrawer(),
       body: Center(
         child: Text('Ekran głowny')
