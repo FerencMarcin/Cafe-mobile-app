@@ -67,7 +67,11 @@ class NavigationDrawer extends StatelessWidget {
           (Get.currentRoute == '/home') ?
           Text('Strona główna', style: selectedRouteStyle)
           : Text('Strona główna', style: unselectedRouteStyle),
-        onTap: () => {if (Get.currentRoute != '/home') Get.offAllNamed('/home')}
+        onTap: () => {
+          if (Get.currentRoute != '/home') {
+            Navigator.pushNamed(context, '/home')
+          }
+        }
       ),
       ListTile(
         leading: Icon(Icons.info_outline_rounded),
@@ -82,7 +86,7 @@ class NavigationDrawer extends StatelessWidget {
           (Get.currentRoute == '/menu') ?
           Text('Menu', style: selectedRouteStyle)
           : Text('Menu', style: unselectedRouteStyle),
-        onTap: () => Get.offAllNamed('/menu'),
+        onTap: () => Navigator.pushNamed(context, '/menu'),
       ),
       ListTile(
         leading: Icon(Icons.local_offer_outlined),

@@ -21,10 +21,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: AppColors.darkGoldenrodMap,
       ),
       home: WelcomeView(),
-      getPages: [
-        GetPage(name: '/home', page: () => HomeView()),
-        GetPage(name: '/menu', page: () => ProductsView())
-      ],
+      routes: {
+        '/home':(context) => HomeView(),
+        '/menu':(context) => ProductsView()
+      },
     );
   }
 }
