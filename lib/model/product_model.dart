@@ -6,10 +6,10 @@ class ProductModel {
   String? allergen;
   String? createdAt;
   String? updatedAt;
-  int? categoryId;
-  int? statusId;
+  int? CategoryId;
+  int? ProductStatusId;
 
   ProductModel(this.id, this.name, this.size, this.price, this.allergen,
-      this.createdAt, this.updatedAt, this.categoryId, this.statusId);
+      this.createdAt, this.updatedAt, this.CategoryId, this.ProductStatusId);
 
 }
