@@ -10,9 +10,18 @@ import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:http/http.dart' as http;
 
 
-class ProductsService extends GetConnect {
+class ProductsService extends GetxController {
   final String getActiveProductsUrl = 'http://10.0.2.2:3001/products/status/1';
   final String getCategoriesUrl = 'http://10.0.2.2:3001/categories/';
+  late Future<List<CategoryModel>> categories;
+  late Future<List<ProductModel>> activeProducts;
+
+  @override
+  void onInit() {
+    super.onInit();
+    categories = getCategories();
+    activeProducts = getProducts();
+  }
 
   Future<String?> getActiveProducts() async {
     var urlProducts = Uri.parse(getActiveProductsUrl);
@@ -72,8 +81,8 @@ class ProductsService extends GetConnect {
           newProduct['allergen'],
           newProduct['createdAt'],
           newProduct['updatedAt'],
-          newProduct['categoryId'],
-          newProduct['statusId']),
+          newProduct['CategoryId'],
+          newProduct['ProductStatusId']),
       products.add(product),
       log(newProduct.toString())
     });
