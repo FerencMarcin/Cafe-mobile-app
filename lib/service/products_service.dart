@@ -68,14 +68,14 @@ class ProductsService extends GetConnect {
           newProduct['id'],
           newProduct['name'],
           newProduct['size'],
-          newProduct['price'],
+          newProduct['price'].toDouble(),
           newProduct['allergen'],
           newProduct['createdAt'],
           newProduct['updatedAt'],
           newProduct['categoryId'],
           newProduct['statusId']),
       products.add(product),
-      log(product.toString())
+      log(newProduct.toString())
     });
 
     return products;
