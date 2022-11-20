@@ -23,6 +23,24 @@ class _ProductsViewState extends State<ProductsView> {
 
   int _productCategoryId = 0;
 
+  BoxDecoration menuItemDecoration = BoxDecoration(
+    color: AppColors.darkGoldenrodMap[50],
+    border: Border.all(color: AppColors.burlyWood, width: 2),
+    borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(5),
+        topRight: Radius.circular(30),
+        bottomLeft: Radius.circular(30),
+        bottomRight: Radius.circular(5)
+    ),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.grey.withOpacity(0.5),
+        spreadRadius: 2,
+        blurRadius: 8,
+        offset: const Offset(1, 3),
+      ),
+    ],
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +76,7 @@ class _ProductsViewState extends State<ProductsView> {
                       _productCategoryId = categories.first.id!;
                     }
                     return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(150, 5),
@@ -74,7 +92,6 @@ class _ProductsViewState extends State<ProductsView> {
                         onPressed: () {
                           setState(() {
                             _productCategoryId = category.id!;
-                            log('set selected id $_productCategoryId ..........................................................');
                           });
 
                         },
@@ -104,38 +121,64 @@ class _ProductsViewState extends State<ProductsView> {
                     if (_productCategoryId == 0 ) {
                       return Text('Menu jest obecnie niedostępne');
                     }
-                    return ListView.builder(
+                    bool anyItemsInCategory = false;
 
+                    return ListView.builder(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         itemCount: products.length,
                         itemBuilder: (context, index) {
-                          log('jestem w budowaniu menu');
-                          log('selected id ${_productCategoryId}');
-                          log('product cat id: ${products[index].CategoryId}');
                           if(products[index].CategoryId == _productCategoryId) {
+                            anyItemsInCategory = true;
                             ProductModel product = products[index];
                             return Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    minimumSize: const Size(150, 5),
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(40)),
-                                    )
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              child: Container(
+                                height: 80,
+                                decoration: menuItemDecoration,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(product.name!, style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500 ,color: AppColors.darkGoldenrodMap[900])),
+                                          const Spacer(),
+                                          Text('${product.price} zł', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400 ,color: AppColors.darkGoldenrodMap[900]),)
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 8),
+                                        child: Text('Pojemność: ${product.size}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300 ,color: AppColors.darkGoldenrodMap[800]),),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                                child: Text(
-                                    product.name!,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold, fontSize: 16)
-                                ),
-                                onPressed: () {  },
                               ),
                             );
                           } else {
-                            return SizedBox();
-                          }
+                            if (!anyItemsInCategory && index == products.length-1) {
+                              return Padding(
+                                padding: const EdgeInsets.all(40),
+                                child: Container(
 
+                                  height: 100,
+                                  decoration: menuItemDecoration,
+                                  child: Padding(
+
+                                    padding: const EdgeInsets.all(20),
+                                    child:
+                                      Text(
+                                        'Obecnie nie mamy w ofercie produktów z tej kategorii',
+                                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600 ,color: AppColors.darkGoldenrodMap[900]),
+                                        textAlign: TextAlign.center,
+                                      )
+                                  ),
+                                ),
+                              );
+                            } else { return const SizedBox(); }
+                          }
                         });
                   })
           )
