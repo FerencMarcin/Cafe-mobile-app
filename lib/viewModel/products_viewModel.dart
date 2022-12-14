@@ -1,75 +1,44 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:cafe_mobile_app/model/category_model.dart';
 import 'package:cafe_mobile_app/model/product_model.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../service/products_service.dart';
+import 'package:http/http.dart' as http;
 
 class ProductsViewModel extends GetxController {
-  late final ProductsService _productsService;
-  List<CategoryModel> _activeCategories = <CategoryModel>[];
-  List<ProductModel> _activeProducts = <ProductModel>[];
 
-  @override
-  void onInit() {
-    super.onInit();
-    _productsService = Get.put(ProductsService());
-  }
-
-  Future<Widget> getCategories(BuildContext context) async {
-
-      return FutureBuilder(
-        future: _productsService.getCategories(),
-        builder: (context, snapshot) {
-          if(snapshot.connectionState != ConnectionState.done) {
-            log('loading mess');
-            //TODO show loading view
-          }
-          if(snapshot.hasError) {
-            log('error mes');
-            //TODO show erro view
-          }
-          List<CategoryModel> categories = snapshot.data ?? [];
-          return ListView.builder(
-            itemCount: categories.length,
-            itemBuilder: (context, index) {
-              CategoryModel category = categories[index];
-              return ListTile(
-                title: Text(category.name!),
-              );
-            }
-          );
-        }
-      );
-
-  }
-
-  Future<List<CategoryModel>> getCategor() async {
-    List<CategoryModel> categories = <CategoryModel>[];
-    final response = await _productsService.getCategories();
-    /*
-    if (response != null) {
-      Map<String, dynamic> myMap = json.decode(response);
-      myMap.forEach((key, value) {
-        print('$key : $value');
+  Future<List<CategoryModel>> getCategories() async {
+    const String getCategoriesUrl = 'http://10.0.2.2:3001/categories/';
+    var urlCategories = Uri.parse(getCategoriesUrl);
+    http.Response response = await http.get(urlCategories);
+    if (response.statusCode == 200) {
+      var parsedCategoryList = json.decode(response.body);
+      List<CategoryModel> categories = <CategoryModel>[];
+      parsedCategoryList.forEach((category) {
+        categories.add(CategoryModel.fromJSON(category));
       });
-      log(myMap.toString());
-
+      return categories;
     } else {
-      Get.defaultDialog(
-          middleText: 'Niepoprawne dane',
-          textConfirm: 'Wróć',
-          onConfirm: () {
-            Get.back();
-          }
-      );
+      throw Exception('Nie udało się załadować menu');
     }
+  }
 
-     */
-    return categories;
+
+  Future<List<ProductModel>> getProductsByCategory(selectedCategory) async {
+    String getProductsByCategoryUrl = 'http://10.0.2.2:3001/products/category/';
+    var urlProducts = Uri.parse('$getProductsByCategoryUrl$selectedCategory');
+    http.Response response = await http.get(urlProducts);
+    if (response.statusCode == 200) {
+      var parsedProductList = json.decode(response.body);
+      List<ProductModel> products = <ProductModel>[];
+      parsedProductList.forEach((product) {
+        ProductModel parsedProduct = ProductModel.fromJSON(product);
+        if(parsedProduct.ProductStatusId == 1) {
+          products.add(ProductModel.fromJSON(product));
+        }
+      });
+      return products;
+    } else {
+      throw Exception('Nie udało się załadować menu dla tej kategorii');
+    }
   }
 }
