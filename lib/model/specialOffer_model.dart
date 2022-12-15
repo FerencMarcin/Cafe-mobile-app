@@ -3,10 +3,9 @@ class SpecialOfferModel {
   double? value;
   String? startDate;
   String? endDate;
-  int? ProductId;
 
   SpecialOfferModel({
-    this.id, this.value, this.startDate, this.endDate, this.ProductId
+    this.id, this.value, this.startDate, this.endDate
   });
 
   factory SpecialOfferModel.fromJSON(Map<String, dynamic> json) {
@@ -15,7 +14,6 @@ class SpecialOfferModel {
       value: json['value'].toDouble(),
       startDate: json['start_date'],
       endDate: json['end_date'],
-      ProductId: json['ProductId'],
     );
   }
 
