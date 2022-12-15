@@ -8,6 +8,7 @@ class ProductModel {
   String? updatedAt;
   int? CategoryId;
   int? ProductStatusId;
+  double specialPrice = 0;
   //
   // ProductModel(this.id, this.name, this.size, this.price, this.allergen,
   //     this.createdAt, this.updatedAt, this.CategoryId, this.ProductStatusId);
