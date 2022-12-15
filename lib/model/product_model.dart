@@ -1,3 +1,5 @@
+import 'package:cafe_mobile_app/model/specialOffer_model.dart';
+
 class ProductModel {
   int? id;
   String? name;
@@ -8,7 +10,8 @@ class ProductModel {
   String? updatedAt;
   int? CategoryId;
   int? ProductStatusId;
-  double specialPrice = 0;
+  SpecialOfferModel? specialOffer;
+  //double specialPrice = 0.0;
   //
   // ProductModel(this.id, this.name, this.size, this.price, this.allergen,
   //     this.createdAt, this.updatedAt, this.CategoryId, this.ProductStatusId);
