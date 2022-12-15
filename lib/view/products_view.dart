@@ -137,22 +137,48 @@ class _ProductsViewState extends State<ProductsView> {
                     children: [
                       Text(values[index].name, style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500 ,color: AppColors.darkGoldenrodMap[900])),
                       const Spacer(),
-                      Text('${values[index].price} zł', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400 ,color: AppColors.darkGoldenrodMap[900]),)
+                      Text('${values[index].price} zł', style: priceText)
                     ],
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
-                    child: Text('Pojemność: ${values[index].size}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300 ,color: AppColors.darkGoldenrodMap[800]),),
+                    child: Row(
+                      children: [
+                        Text('Pojemność: ${values[index].size}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300 ,color: AppColors.darkGoldenrodMap[800]),),
+                        Spacer(),
+                        values[index].specialOffer == null ?
+                          const Text("")
+                          : Text('${values[index].price - (values[index].price * 0.01 * values[index].specialOffer.value)} zł', style: specialOfferText,),
+                      ],
+                    )
                   )
                 ],
               ),
-            ) : Text("aaaa"),
+            ) : const Text("Menu obecnie nie jest dostępne"),
           ),
         )
-            : CircularProgressIndicator();
+            : const CircularProgressIndicator();
       }
     );
   }
+
+  TextStyle priceText = TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w400,
+      color: AppColors.darkGoldenrodMap[900],
+  );
+
+  TextStyle crossedPriceText = TextStyle(
+      fontSize: 19,
+      fontWeight: FontWeight.w600 ,
+      color: AppColors.projectRed
+  );
+
+  TextStyle specialOfferText = const TextStyle(
+      fontSize: 19,
+      fontWeight: FontWeight.w600 ,
+      color: AppColors.projectRed
+  );
 
   BoxDecoration menuItemDecoration = BoxDecoration(
     color: AppColors.darkGoldenrodMap[50],
