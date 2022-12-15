@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 class ProductsViewModel extends GetxController {
 
   Future<List<CategoryModel>> getCategories() async {
-    const String getCategoriesUrl = 'http://10.0.2.2:3001/categories/';
+    const String getCategoriesUrl = 'http://10.0.2.2:3001/categories/notempty';
     var urlCategories = Uri.parse(getCategoriesUrl);
     http.Response response = await http.get(urlCategories);
     if (response.statusCode == 200) {
