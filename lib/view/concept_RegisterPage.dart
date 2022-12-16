@@ -1,5 +1,5 @@
 import 'package:cafe_mobile_app/theme/colors.dart';
-import 'package:cafe_mobile_app/view/LoginPage.dart';
+import 'package:cafe_mobile_app/view/concept_LoginPage.dart';
 import 'package:flutter/material.dart';
 
 const List<String> sexList = <String>["Mężczyzna", "Kobieta"];

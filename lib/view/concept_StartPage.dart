@@ -1,8 +1,6 @@
 import 'package:cafe_mobile_app/theme/colors.dart';
-import 'package:cafe_mobile_app/view/AboutUsPage.dart';
-import 'package:cafe_mobile_app/view/LoginPage.dart';
-import 'package:cafe_mobile_app/view/MenuPage.dart';
-import 'package:cafe_mobile_app/view/RegisterPage.dart';
+import 'package:cafe_mobile_app/view/concept_LoginPage.dart';
+import 'package:cafe_mobile_app/view/concept_RegisterPage.dart';
 import 'package:flutter/material.dart';
 
 class StartScreen extends StatefulWidget {
@@ -73,7 +71,7 @@ class _StartScreenState extends State<StartScreen> {
                             onPressed: () {
                               Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => const MenuScreen())
+                                  MaterialPageRoute(builder: (context) => const LoginScreen(title: "test"))
                               );
                             },
                             child: const Padding(
@@ -115,7 +113,7 @@ class _StartScreenState extends State<StartScreen> {
                             onPressed: () {
                               Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => const AboutUsScreen())
+                                  MaterialPageRoute(builder: (context) => const RegistrationScreen())
                               );
                             },
                             child: const Padding(

@@ -1,12 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:cafe_mobile_app/model/login_request_model.dart';
 import 'package:cafe_mobile_app/service/auth_service.dart';
 import 'package:cafe_mobile_app/service/login_service.dart';
 import 'package:get/get.dart';
-
-import '../model/login_response_model.dart';
 
 class LoginViewModel extends GetxController {
   late final LoginService _loginService;

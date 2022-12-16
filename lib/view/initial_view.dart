@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cafe_mobile_app/service/auth_service.dart';
 import 'package:cafe_mobile_app/view/utils/error_view.dart';
 import 'package:cafe_mobile_app/view/utils/loading_view.dart';
@@ -8,8 +6,8 @@ import 'package:get/get.dart';
 
 import 'startViewManager.dart';
 
-class WelcomeView extends StatelessWidget {
-  WelcomeView({Key? key}) : super(key: key);
+class InitialView extends StatelessWidget {
+  InitialView({Key? key}) : super(key: key);
   final AuthService _authManager = Get.put(AuthService());
 
   Future<void> init() async {

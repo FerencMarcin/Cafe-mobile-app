@@ -1,5 +1,5 @@
 import 'package:cafe_mobile_app/theme/colors.dart';
-import 'package:cafe_mobile_app/view/home_view.dart';
+import 'package:cafe_mobile_app/view/homePage_view.dart';
 import 'package:cafe_mobile_app/view/products_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,9 +20,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: AppColors.darkGoldenrodMap,
       ),
-      home: WelcomeView(),
+      home: InitialView(),
       routes: {
-        '/home':(context) => HomeView(),
+        '/home':(context) => HomePageView(),
         '/menu':(context) => ProductsView()
       },
     );

@@ -1,12 +1,6 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:cafe_mobile_app/model/login_request_model.dart';
-import 'package:cafe_mobile_app/model/login_response_model.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:http/http.dart' as http;
-
 
 class LoginService extends GetConnect {
   final String loginUrl = 'http://10.0.2.2:3001/users/login';

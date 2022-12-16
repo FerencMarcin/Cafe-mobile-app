@@ -2,18 +2,17 @@ import 'package:cafe_mobile_app/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../theme/colors.dart';
 import 'appBar/appBar_view.dart';
 import 'navigation/navigationDrawer_view.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class HomePageView extends StatefulWidget {
+  const HomePageView({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<HomePageView> createState() => _HomePageViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomePageViewState extends State<HomePageView> {
   AuthService _authManager = Get.find();
 
   @override

@@ -1,5 +1,5 @@
 import 'package:cafe_mobile_app/theme/colors.dart';
-import 'package:cafe_mobile_app/view/RegisterPage.dart';
+import 'package:cafe_mobile_app/view/concept_RegisterPage.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {

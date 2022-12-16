@@ -2,7 +2,7 @@ import 'package:cafe_mobile_app/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'home_view.dart';
+import 'homePage_view.dart';
 import 'auth_view.dart';
 
 class StartView extends StatelessWidget {
@@ -14,11 +14,11 @@ class StartView extends StatelessWidget {
 
     return Obx(() {
       if (_authManager.isLogged.value) {
-        return HomeView();
+        return HomePageView();
       } else {
         return AuthView();
       }
-      return _authManager.isLogged.value ? AuthView() : HomeView();
+      return _authManager.isLogged.value ? AuthView() : HomePageView();
     });
   }
 }
