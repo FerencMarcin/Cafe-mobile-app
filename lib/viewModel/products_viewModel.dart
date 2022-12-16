@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:cafe_mobile_app/model/category_model.dart';
 import 'package:cafe_mobile_app/model/product_model.dart';
 import 'package:cafe_mobile_app/model/specialOffer_model.dart';
@@ -24,26 +23,6 @@ class ProductsViewModel extends GetxController {
     }
   }
 
-  // Future<List<ProductModel>> getProductsByCategory(selectedCategory) async {
-  //   String getProductsByCategoryUrl = 'http://10.0.2.2:3001/products/category/';
-  //   String getSpecialOfferUrl = 'http://10.0.2.2:3001/specialoffers/product/';
-  //   var urlProducts = Uri.parse('$getProductsByCategoryUrl$selectedCategory');
-  //   http.Response response = await http.get(urlProducts);
-  //   if (response.statusCode == 200) {
-  //     var parsedProductList = json.decode(response.body);
-  //     List<ProductModel> products = <ProductModel>[];
-  //     parsedProductList.forEach((product) {
-  //       ProductModel parsedProduct = ProductModel.fromJSON(product);
-  //       if(parsedProduct.ProductStatusId == 1) {
-  //         products.add(ProductModel.fromJSON(product));
-  //       }
-  //     });
-  //     return products;
-  //   } else {
-  //     throw Exception('Nie udało się załadować menu dla tej kategorii');
-  //   }
-  // }
-//TODO remove log and print form code
   Future<List<ProductModel>> getProductsByCategory(selectedCategory) async {
       String getProductsByCategoryUrl = 'http://10.0.2.2:3001/products/specialoffers';
       var urlProducts = Uri.parse(getProductsByCategoryUrl);
@@ -53,28 +32,21 @@ class ProductsViewModel extends GetxController {
         List<ProductModel> products = <ProductModel>[];
         parsedProductList.forEach((product) {
           if(product['CategoryId'] == selectedCategory) {
-            List<SpecialOfferModel> specialOffers = <SpecialOfferModel>[];
             ProductModel parsedProduct = ProductModel.fromJSON(product);
             product['SpecialOffers'].forEach((offer) {
               SpecialOfferModel parsedOffer = SpecialOfferModel.fromJSON(offer);
-              log("````````````````" + parsedOffer.toString());
               var parsedStartDate = DateTime.parse(parsedOffer.startDate!);
               var parsedEndDate = DateTime.parse(parsedOffer.endDate!);
               DateTime now = DateTime.now();
               if((now.compareTo(parsedEndDate) < 0) && (now.compareTo(parsedStartDate) > 0)){
-                print("aktualna promocja");
                 parsedProduct.specialOffer = parsedOffer;
               }
-
             });
-            //if(parsedProduct.)
-            log(parsedProduct.specialOffer.toString() + " &&&&&&&&&&&&&&&&&&&&&& ");
             if (parsedProduct.ProductStatusId == 1) {
               products.add(parsedProduct);
             }
           }
         });
-        log("return!!!!!!!!!!!!!!!!!!!!!");
         return products;
       } else {
         throw Exception('Nie udało się załadować menu dla tej kategorii');
