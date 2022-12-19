@@ -2,6 +2,7 @@ import 'package:cafe_mobile_app/theme/colors.dart';
 import 'package:cafe_mobile_app/view/auth_view.dart';
 import 'package:cafe_mobile_app/view/homePage_view.dart';
 import 'package:cafe_mobile_app/view/products_view.dart';
+import 'package:cafe_mobile_app/view/startViewManager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'view/initial_view.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
       ),
       home: InitialView(),
       routes: {
+        '/start':(context) => StartView(),
         '/login':(context) => AuthView(),
         '/home':(context) => HomePageView(),
         '/menu':(context) => ProductsView()
