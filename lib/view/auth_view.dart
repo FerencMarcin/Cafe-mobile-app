@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../theme/colors.dart';
+import 'appBar/appBar_view.dart';
 
 enum AuthMode {login, register}
 const List<String> sexList = <String>["Mężczyzna", "Kobieta"];
@@ -31,6 +32,7 @@ class _AuthViewState extends State<AuthView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBarView(appBarTitle: _formType == AuthMode.login ? 'Logowanie' : 'Rejestracja'),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
         child: _formType == AuthMode.login ? loginForm() : registrationForm(),
