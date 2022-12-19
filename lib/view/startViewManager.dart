@@ -1,4 +1,5 @@
 import 'package:cafe_mobile_app/service/auth_service.dart';
+import 'package:cafe_mobile_app/view/welcome_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,7 +17,8 @@ class StartView extends StatelessWidget {
       if (_authManager.isLogged.value) {
         return HomePageView();
       } else {
-        return AuthView();
+        //return AuthView();
+        return WelcomeView();
       }
       return _authManager.isLogged.value ? AuthView() : HomePageView();
     });
