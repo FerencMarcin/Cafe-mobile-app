@@ -5,6 +5,8 @@ import 'package:cafe_mobile_app/service/login_service.dart';
 import 'package:cafe_mobile_app/service/registration_service.dart';
 import 'package:get/get.dart';
 
+import '../view/startViewManager.dart';
+
 class RegistrationViewModel extends GetxController {
   late final RegistrationService _registrationService;
   late final LoginService _loginService;
@@ -52,6 +54,7 @@ class RegistrationViewModel extends GetxController {
                   );
                 } else {
                   _authService.login(loginResponseData['accessToken']);
+                  Get.to(const StartView());
                 }
               } else {
                 Get.defaultDialog(

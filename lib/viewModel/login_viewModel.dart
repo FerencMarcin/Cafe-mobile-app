@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:cafe_mobile_app/service/auth_service.dart';
 import 'package:cafe_mobile_app/service/login_service.dart';
+import 'package:cafe_mobile_app/view/startViewManager.dart';
 import 'package:get/get.dart';
 
 class LoginViewModel extends GetxController {
@@ -34,6 +35,7 @@ class LoginViewModel extends GetxController {
       } else {
         //LoginResponseModel loggedInUser = LoginResponseModel(roleId: responseData['roleId'], token: responseData['token']);
         _authService.login(responseData['accessToken']);
+        Get.to(const StartView());
       }
     } else {
       Get.defaultDialog(
