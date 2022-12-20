@@ -1,8 +1,7 @@
 import 'package:cafe_mobile_app/model/login_request_model.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-class LoginService extends GetConnect {
+class LoginService {
   final String loginUrl = 'http://10.0.2.2:3001/users/login';
 
   Future<http.Response> fetchUserLogin(String email, String password) async {
