@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cafe_mobile_app/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,7 +23,10 @@ class _HomePageViewState extends State<HomePageView> {
       appBar: AppBarView(appBarTitle: 'Strona główna'),
       drawer: NavigationDrawer(),
       body: Center(
-        child: Text('Ekran głowny')
+        child: ElevatedButton(onPressed: () {
+          //TODO refactor
+          log("clicked");
+        }, child: Text("ekran głowny"),)
       ),
     );
   }
