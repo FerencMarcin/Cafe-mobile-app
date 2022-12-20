@@ -19,6 +19,12 @@ mixin StorageService {
     return value;
   }
 
+  Future<String?> getRefreshToken() async {
+    final value = await secureStorage.read(key: 'RefreshToken');
+    log('token form storage: $value');
+    return value;
+  }
+
   Future<bool> isAccessToken() async {
     var value = await secureStorage.read(key: 'AccessToken');
     return !(value == null); // MF: refactor
