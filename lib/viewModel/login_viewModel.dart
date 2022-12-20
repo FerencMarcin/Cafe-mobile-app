@@ -19,10 +19,11 @@ class LoginViewModel extends GetxController {
 
   Future<void> userLogin(String email, String password) async {
     final response = await _loginService.fetchUserLogin(email, password);
-    log('res:  $response');
+    //Todo delete
+    log('res:  ${response.body}');
 
     if (response != null) {
-      final responseData = jsonDecode(response);
+      final responseData = jsonDecode(response.body);
       if(responseData['error'] != null) {
         Get.defaultDialog(
             title: 'Błąd logowania',
@@ -34,8 +35,10 @@ class LoginViewModel extends GetxController {
         );
       } else {
         //LoginResponseModel loggedInUser = LoginResponseModel(roleId: responseData['roleId'], token: responseData['token']);
+
+        _authService.saveRefreshToken(response);
         _authService.login(responseData['accessToken']);
-        Get.to(const StartView());
+        Get.to(() => const StartView());
       }
     } else {
       Get.defaultDialog(

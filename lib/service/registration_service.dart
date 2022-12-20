@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 class RegistrationService extends GetConnect {
   final String loginUrl = 'http://10.0.2.2:3001/users/register';
 
-  Future<String?> fetchUserRegistration(String email, String password, String firstName, String lastName, String phoneNumber, String sex) async {
+  Future<http.Response> fetchUserRegistration(String email, String password, String firstName, String lastName, String phoneNumber, String sex) async {
     RegistrationRequestModel newUser = RegistrationRequestModel(
       email: email,
       password: password,
@@ -22,7 +22,7 @@ class RegistrationService extends GetConnect {
     var url = Uri.parse(loginUrl);
 
     http.Response res = await http.post(url, body: newUser.makeRegistrationRequest());
-    return res.body;
+    return res;
     /*
     if(res.statusCode == HttpStatus.ok) {
       log('dobrze');

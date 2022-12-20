@@ -5,12 +5,12 @@ import 'package:http/http.dart' as http;
 class LoginService extends GetConnect {
   final String loginUrl = 'http://10.0.2.2:3001/users/login';
 
-  Future<String?> fetchUserLogin(String email, String password) async {
+  Future<http.Response> fetchUserLogin(String email, String password) async {
     LoginRequestModel user = LoginRequestModel(email: email, password: password);
     var url = Uri.parse(loginUrl);
 
     http.Response res = await http.post(url, body: user.makeLoginRequest());
-    return res.body;
+    return res;
     /*
     if(res.statusCode == HttpStatus.ok) {
       log('dobrze');
