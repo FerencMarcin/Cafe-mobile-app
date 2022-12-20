@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:cafe_mobile_app/service/auth_service.dart';
 import 'package:cafe_mobile_app/service/login_service.dart';
@@ -24,7 +25,7 @@ class RegistrationViewModel extends GetxController {
     final response = await _registrationService.fetchUserRegistration(email, password, firstName, lastName, number, sex);
 
     if (response != null) {
-      final responseData = jsonDecode(response);
+      final responseData = jsonDecode(response.body);
       if(responseData != "A new user account has been created.") {
         Get.defaultDialog(
             title: 'Błąd rejestracji',
@@ -42,7 +43,7 @@ class RegistrationViewModel extends GetxController {
             onConfirm: () async {
               final loginResponse = await _loginService.fetchUserLogin(email, password);
               if (loginResponse != null) {
-                final loginResponseData = jsonDecode(loginResponse);
+                final loginResponseData = jsonDecode(loginResponse.body);
                 if(loginResponseData['error'] != null) {
                   Get.defaultDialog(
                       title: 'Błąd logowania, spróbuj ponownie',
@@ -53,8 +54,11 @@ class RegistrationViewModel extends GetxController {
                       }
                   );
                 } else {
+                  var cookies = loginResponse.headers['set-cookie'];
+                  log(cookies!);
+                  _authService.saveRefreshToken(loginResponse);
                   _authService.login(loginResponseData['accessToken']);
-                  Get.to(const StartView());
+                  Get.to(() => const StartView());
                 }
               } else {
                 Get.defaultDialog(
@@ -65,7 +69,7 @@ class RegistrationViewModel extends GetxController {
                     }
                 );
               }
-              Get.back();
+              //Get.back();
             }
         );
 
