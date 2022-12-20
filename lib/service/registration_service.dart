@@ -7,7 +7,7 @@ import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:http/http.dart' as http;
 
 
-class RegistrationService extends GetConnect {
+class RegistrationService{
   final String loginUrl = 'http://10.0.2.2:3001/users/register';
 
   Future<http.Response> fetchUserRegistration(String email, String password, String firstName, String lastName, String phoneNumber, String sex) async {
