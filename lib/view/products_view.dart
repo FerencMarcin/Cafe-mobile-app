@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'appBar/appBar_view.dart';
-
+import 'components/sectionTitle.dart';
 class ProductsView extends StatefulWidget {
   const ProductsView({Key? key}) : super(key: key);
 
@@ -204,11 +204,4 @@ class _ProductsViewState extends State<ProductsView> {
       ),
     ],
   );
-
-  Padding sectionTitle(String title) {
-    return Padding(
-        padding: const EdgeInsets.all(15),
-        child: Text(title, style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800, color: AppColors.darkGoldenrodMap[900]))
-    );
-  }
 }
