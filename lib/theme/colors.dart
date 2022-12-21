@@ -7,6 +7,7 @@ class AppColors {
   static const burlyWood = Color(0xffdcc080);
   static const aztecGold = Color(0xffcaa347);
   static const darkGoldenrod = Color(0xffb8860e);
+  static const darkCoffe = Color(0xff5C4307);
 
   static const projectRed = Color(0xffeb3b5a);
   static const projectGreen = Color(0xff20bf6b);
@@ -15,7 +16,7 @@ class AppColors {
   static const projectDarkBlue = Color(0xff2d98da);
 
   static const MaterialColor darkGoldenrodMap = MaterialColor(
-      0xffb8860e,
+      0xff5C4307,
       <int, Color>{
       50: Color(0xffF5EEDD),
       100: Color(0xffEBDCBA),
