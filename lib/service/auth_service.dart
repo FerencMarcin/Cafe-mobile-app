@@ -27,6 +27,7 @@ class AuthService extends GetxController with StorageService {
       final cookiesList = cookies!.split(';');
       for (var element in cookiesList) {
         if(element.contains('jwt=')){
+          //TODO delete
           log("refresh " + element);
           addRefreshToken(element);
         }
