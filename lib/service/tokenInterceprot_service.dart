@@ -9,10 +9,8 @@ class DioClient {
   ..options = BaseOptions(
       contentType: 'application/json'
   )
-  ..interceptors.add(Logging(),)
-  ..interceptors.add(LogInterceptor(),);
-
-
+  ..interceptors.add(Logging(),);
+  //..interceptors.add(LogInterceptor(),);
 
 }
 
