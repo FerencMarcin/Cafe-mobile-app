@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:cafe_mobile_app/service/auth_service.dart';
-import 'package:cafe_mobile_app/service/tokenInterceprot_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -29,16 +28,16 @@ class _HomePageViewState extends State<HomePageView> {
         child: ElevatedButton(
           onPressed: () async {
             String? token = await _authManager.getAccessToken();
-            // if(token != null){
-            //   log("tokennn: " + token);
-            //   Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
-            //   //decodedToken.forEach((key, value) {log("key val: "+ key.toString() + " - " + value.toString());});
-            //   log("email: " + decodedToken['user']['email'].toString());
-            //   String userEmail = decodedToken['user']['email'];
-            //
-            //   final result = await _test.dioC.get('http://10.0.2.2:3001/users/email/' + userEmail);
-            //   log("res: " + result.toString());
-            // }
+
+            if(token != null){
+              //log("tokennn: " + token);
+              Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+              //decodedToken.forEach((key, value) {log("key val: "+ key.toString() + " - " + value.toString());});
+              //log("email: " + decodedToken['user']['email'].toString());
+              String userEmail = decodedToken['user']['email'];
+              _authManager.fetchUserInfo(token);
+
+            }
 
           //TODO refactor
           log("clicked");
