@@ -1,8 +1,12 @@
 import 'package:cafe_mobile_app/theme/colors.dart';
+import 'package:cafe_mobile_app/view/aboutUs_view.dart';
 import 'package:cafe_mobile_app/view/auth_view.dart';
 import 'package:cafe_mobile_app/view/homePage_view.dart';
 import 'package:cafe_mobile_app/view/products_view.dart';
 import 'package:cafe_mobile_app/view/startViewManager.dart';
+import 'package:cafe_mobile_app/view/userProfile_view.dart';
+import 'package:cafe_mobile_app/view/vouchers_view.dart';
+import 'package:cafe_mobile_app/view/userVouchers_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'view/initial_view.dart';
@@ -27,7 +31,11 @@ class MyApp extends StatelessWidget {
         '/start':(context) => StartView(),
         '/login':(context) => AuthView(),
         '/home':(context) => HomePageView(),
-        '/menu':(context) => ProductsView()
+        '/menu':(context) => ProductsView(),
+        '/vouchers':(context) => VouchersView(),
+        '/userVouchers':(context) => UserVouchersView(),
+        '/userProfile':(context) => UserProfileView(),
+        '/aboutUs':(context) => AboutUsView()
       },
     );
   }
