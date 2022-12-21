@@ -25,7 +25,7 @@ class _ProductsViewState extends State<ProductsView> {
         children: [
           sectionTitle('Kategorie'),
           SizedBox(
-            height: 50,
+            height: 60,
             child: FutureBuilder(
               future: _productsViewModel.getCategories(),
               initialData: const [],
@@ -64,9 +64,8 @@ class _ProductsViewState extends State<ProductsView> {
                   return const CircularProgressIndicator();
                 }
               },
-            ) : Text(
-              'Wybierz kategorię',
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600 ,color: AppColors.darkGoldenrodMap[900]),
+            ) : Text('Wybierz kategorię',
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600 ,color: AppColors.darkGoldenrodMap[700]),
               textAlign: TextAlign.center,
             ),
           )
@@ -83,25 +82,8 @@ class _ProductsViewState extends State<ProductsView> {
       itemCount: values == null ? 0 : values.length,
       itemBuilder: (BuildContext context, int index) {
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                minimumSize: const Size(150.0, 5.0),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(40)),
-                )
-            ),
-            child: Text(
-                values[index].name,
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: 16)
-            ),
-            onPressed: () {
-              setState(() {
-                _selectedCategory = values[index].id;
-              });
-            },
-          ),
+          padding: const EdgeInsets.fromLTRB(10.0, 2.0, 10.0, 12.0),
+          child: categoryButton(values[index].name, values[index].id),
         );
       }
     );
@@ -130,13 +112,7 @@ class _ProductsViewState extends State<ProductsView> {
                       const Spacer(),
                       values[index].specialOffer == null ?
                         Text('${values[index].price} zł', style: priceText)
-                          : Text(' ${values[index].price} zł', style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.darkGoldenrodMap[500],
-                          decoration: TextDecoration.lineThrough,
-                          decorationColor: AppColors.darkGoldenrodMap[900],
-                      ))
+                        : Text(' ${values[index].price} zł', style: crossedPriceText)
                     ],
                   ),
                   Padding(
@@ -170,14 +146,47 @@ class _ProductsViewState extends State<ProductsView> {
       color: AppColors.darkGoldenrodMap[900],
   );
 
+  TextStyle crossedPriceText = TextStyle(
+    fontSize: 17,
+    fontWeight: FontWeight.w400,
+    color: AppColors.darkGoldenrodMap[500],
+    decoration: TextDecoration.lineThrough,
+    decorationColor: AppColors.darkGoldenrodMap[900],
+  );
+
   TextStyle specialOfferText = const TextStyle(
       fontSize: 19,
       fontWeight: FontWeight.w600 ,
       color: AppColors.projectRed
   );
 
+  ElevatedButton categoryButton(String buttonLabel, int selectedCategory) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.darkGoldenrodMap[100],
+          minimumSize: const Size(150.0, 5.0),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(40.0)),
+          ),
+          elevation: 6.0,
+          shadowColor: AppColors.darkGoldenrodMap[100]
+      ),
+      child: Text(
+          buttonLabel,
+          style: const TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 16.0)
+      ),
+      onPressed: () {
+        setState(() {
+          _selectedCategory = selectedCategory;
+        });
+      },
+    );
+  }
+
+
   BoxDecoration menuItemDecoration = BoxDecoration(
-    color: AppColors.darkGoldenrodMap[50],
+
     border: Border.all(color: AppColors.burlyWood, width: 2),
     borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(5),
@@ -185,6 +194,7 @@ class _ProductsViewState extends State<ProductsView> {
         bottomLeft: Radius.circular(30),
         bottomRight: Radius.circular(5)
     ),
+    color: AppColors.floralWhite,
     boxShadow: [
       BoxShadow(
         color: Colors.grey.withOpacity(0.5),
@@ -198,7 +208,7 @@ class _ProductsViewState extends State<ProductsView> {
   Padding sectionTitle(String title) {
     return Padding(
         padding: const EdgeInsets.all(15),
-        child: Text(title, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w800, color: AppColors.darkGoldenrod))
+        child: Text(title, style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800, color: AppColors.darkGoldenrodMap[900]))
     );
   }
 }
