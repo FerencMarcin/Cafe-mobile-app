@@ -2,6 +2,7 @@ import 'package:cafe_mobile_app/theme/colors.dart';
 import 'package:cafe_mobile_app/view/aboutUs_view.dart';
 import 'package:cafe_mobile_app/view/auth_view.dart';
 import 'package:cafe_mobile_app/view/homePage_view.dart';
+import 'package:cafe_mobile_app/view/newReservation_view.dart';
 import 'package:cafe_mobile_app/view/products_view.dart';
 import 'package:cafe_mobile_app/view/startViewManager.dart';
 import 'package:cafe_mobile_app/view/userOrders_view.dart';
@@ -38,7 +39,8 @@ class MyApp extends StatelessWidget {
         '/userVouchers':(context) => UserVouchersView(),
         '/userProfile':(context) => UserProfileView(),
         '/aboutUs':(context) => AboutUsView(),
-        '/userOrders':(context) => UserOrdersView()
+        '/userOrders':(context) => UserOrdersView(),
+        '/newReservation':(context) => NewReservationView()
       },
     );
   }
