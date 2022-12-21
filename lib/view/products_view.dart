@@ -41,7 +41,6 @@ class _ProductsViewState extends State<ProductsView> {
                   //TODO LOADING VIEW
                   return const CircularProgressIndicator();
                 }
-
               },
             )
           ),
@@ -64,8 +63,6 @@ class _ProductsViewState extends State<ProductsView> {
                   //TODO LOADING VIEW
                   return const CircularProgressIndicator();
                 }
-
-
               },
             ) : Text(
               'Wybierz kategorię',
