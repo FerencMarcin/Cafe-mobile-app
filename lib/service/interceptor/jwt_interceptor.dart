@@ -7,9 +7,11 @@ class JwtInterceptor extends Interceptor with StorageService{
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     var accessToken = await getAccessToken();
-    options.headers['Authorization'] = 'Bearer $accessToken';
-    log("token : Bearer $accessToken");
-    log('REQUEST[${options.method}] => PATH: ${options.path}');
+    if(accessToken != null) {
+      options.headers['Authorization'] = 'Bearer $accessToken';
+      log("token : Bearer $accessToken");
+      log('REQUEST[${options.method}] => PATH: ${options.path}');
+    }
     return super.onRequest(options, handler);
   }
 
@@ -26,7 +28,7 @@ class JwtInterceptor extends Interceptor with StorageService{
     if((err.response?.statusCode == 401)){
       log("trzeba nowy token");
     } else if ((err.response?.statusCode == 403)){
-      log("Błędny token");
+      log("Błędny token - przeterminowany");
     }
   }
 }
