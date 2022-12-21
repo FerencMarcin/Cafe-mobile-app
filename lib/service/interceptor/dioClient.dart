@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 
 
 class DioClient {
-  final dioC = Dio()
+  final dioClient = Dio()
     ..options = BaseOptions(
         contentType: 'application/json'
     )
