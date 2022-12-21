@@ -16,7 +16,7 @@ class AppColors {
   static const projectDarkBlue = Color(0xff2d98da);
 
   static const MaterialColor darkGoldenrodMap = MaterialColor(
-      0xff5C4307,
+    0xffedddb8,
       <int, Color>{
       50: Color(0xffF5EEDD),
       100: Color(0xffEBDCBA),
