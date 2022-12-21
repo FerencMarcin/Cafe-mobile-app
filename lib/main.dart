@@ -4,6 +4,7 @@ import 'package:cafe_mobile_app/view/auth_view.dart';
 import 'package:cafe_mobile_app/view/homePage_view.dart';
 import 'package:cafe_mobile_app/view/products_view.dart';
 import 'package:cafe_mobile_app/view/startViewManager.dart';
+import 'package:cafe_mobile_app/view/userOrders_view.dart';
 import 'package:cafe_mobile_app/view/userProfile_view.dart';
 import 'package:cafe_mobile_app/view/vouchers_view.dart';
 import 'package:cafe_mobile_app/view/userVouchers_view.dart';
@@ -35,7 +36,8 @@ class MyApp extends StatelessWidget {
         '/vouchers':(context) => VouchersView(),
         '/userVouchers':(context) => UserVouchersView(),
         '/userProfile':(context) => UserProfileView(),
-        '/aboutUs':(context) => AboutUsView()
+        '/aboutUs':(context) => AboutUsView(),
+        '/userOrders':(context) => UserOrdersView()
       },
     );
   }
