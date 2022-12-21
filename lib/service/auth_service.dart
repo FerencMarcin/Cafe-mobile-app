@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cafe_mobile_app/service/storage_service.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'interceptor/dioClient.dart';
 
@@ -10,11 +12,12 @@ class AuthService extends GetxController with StorageService {
   final isLogged = false.obs;
   DioClient _dioClient = Get.put(DioClient());
 
+
   void login(String? token) async {
     if(token != null) {
       isLogged.value = true;
       await setAccessToken(token!);
-      await saveUserInfo(token);
+      await fetchUserInfo(token);
     }
   }
 
@@ -24,6 +27,8 @@ class AuthService extends GetxController with StorageService {
 
   void logout() async {
     isLogged.value = false;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
     removeTokens();
   }
 
@@ -53,12 +58,31 @@ class AuthService extends GetxController with StorageService {
     }
   }
 
-  Future<void> saveUserInfo(String token) async {
+  Future<void> fetchUserInfo(String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
-    //decodedToken.forEach((key, value) {log("key val: "+ key.toString() + " - " + value.toString());});
-    log("email: " + decodedToken['user']['email'].toString());
     String userEmail = decodedToken['user']['email'];
-    final result = await _dioClient.dioClient.get('http://10.0.2.2:3001/users/email/' + userEmail);
-    log("res: " + result.toString());
+    final response = await _dioClient.dioClient.get('http://10.0.2.2:3001/users/email/' + userEmail);
+    //log("data : " + response.toString());
+
+    prefs.setString('userFirstname', response.data['firstname']);
+    prefs.setString('userLastname', response.data['lastname']);
+    prefs.setInt('userId', response.data['id']);
+    prefs.setInt('userPoints', response.data['points']);
+    //Todo refactor
+    // String? stringValue = prefs.getString('userFirstname');
+    // log('firstname $stringValue');
   }
+
+  Future<void> fetchUserPoints(String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+    String userEmail = decodedToken['user']['email'];
+    final response = await _dioClient.dioClient.get('http://10.0.2.2:3001/users/email/' + userEmail);
+
+    prefs.setInt('userPoints', response.data['points']);
+  }
+
 }
