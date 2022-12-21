@@ -99,6 +99,22 @@ class NavigationDrawer extends StatelessWidget {
       sideMenuItem('/vouchers', 'Talony', const Icon(Icons.local_offer_outlined), context),
       const Divider(color: Colors.black54),
       sideMenuItem('/userOrders', 'Moje zamówienia', const Icon(Icons.list_alt_outlined), context),
+      ListTile(
+        leading: const Icon(Icons.table_restaurant_outlined),
+        title: DropdownButton(
+          icon: const Icon(Icons.keyboard_arrow_down),
+          elevation: 1,
+          value: 'Moje rezerwacje',
+          items: const [
+            DropdownMenuItem(value: 'Moje rezerwacje', child: Text('Moje rezerwacje')),
+            DropdownMenuItem(value: 'Nowa rezerwacja', child: Text('Nowa rezerwacja'))
+          ],
+          onChanged: (value) {
+            value == 'Moje rezerwacje' ? Navigator.pushNamed(context, '/userReservations')
+                : Navigator.pushNamed(context, '/newReservation');
+          },
+        ),
+      ),
       sideMenuItem('/userVouchers', 'Moje talony', const Icon(Icons.qr_code_2_outlined), context),
       const Divider(color: Colors.black54),
       sideMenuItem('/userProfile', 'Moje konto', const Icon(Icons.person_outline_rounded), context),

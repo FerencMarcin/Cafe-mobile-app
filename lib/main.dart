@@ -7,6 +7,7 @@ import 'package:cafe_mobile_app/view/products_view.dart';
 import 'package:cafe_mobile_app/view/startViewManager.dart';
 import 'package:cafe_mobile_app/view/userOrders_view.dart';
 import 'package:cafe_mobile_app/view/userProfile_view.dart';
+import 'package:cafe_mobile_app/view/userReservations_view.dart';
 import 'package:cafe_mobile_app/view/vouchers_view.dart';
 import 'package:cafe_mobile_app/view/userVouchers_view.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         '/userProfile':(context) => UserProfileView(),
         '/aboutUs':(context) => AboutUsView(),
         '/userOrders':(context) => UserOrdersView(),
+        '/userReservations':(context) => UserReservationsView(),
         '/newReservation':(context) => NewReservationView()
       },
     );
