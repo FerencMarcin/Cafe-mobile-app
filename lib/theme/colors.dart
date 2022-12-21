@@ -30,4 +30,16 @@ class AppColors {
       900: Color(0xff5C4307),
       },
   );
+  static const MaterialColor floralWhiteMap = MaterialColor(
+    0xffFFFAF1,
+    <int, Color>{
+      50: Color(0xffffffff),
+      100: Color(0xffFFFEFD),
+      200: Color(0xffFFFDFA),
+      300: Color(0xffFFFDF8),
+      400: Color(0xffFFFCF6),
+      500: Color(0xffFFFBF3),
+      600: Color(0xffFFFAF1)
+    },
+  );
 }
