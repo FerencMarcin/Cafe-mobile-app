@@ -34,5 +34,4 @@ class ProductModel {
         ProductStatusId: json['ProductStatusId'],
     );
   }
-
 }
