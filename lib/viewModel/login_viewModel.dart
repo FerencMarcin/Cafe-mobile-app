@@ -53,7 +53,7 @@ class LoginViewModel extends GetxController {
 
   void userLogout() async {
     _authService.logout();
-    Get.offAndToNamed('/');
+    Get.offAndToNamed('/start');
   }
 
 }
