@@ -35,7 +35,7 @@ class NavigationDrawer extends StatelessWidget {
   );
 
   Widget navHeader(BuildContext context) => Container(
-    color: AppColors.darkGoldenrodMap[700],
+    color: AppColors.darkGoldenrodMap[300],
       padding: EdgeInsets.only(
         top: MediaQuery.of(context).padding.top
       ),
@@ -53,7 +53,7 @@ class NavigationDrawer extends StatelessWidget {
                   if (snapshot.hasData) {
                     return Text(
                       snapshot.data==null ? 'brak danych' : snapshot.data!,
-                      style: const TextStyle(fontSize: 20.0, color: AppColors.floralWhite),
+                      style: TextStyle(fontSize: 20.0, color: AppColors.floralWhiteMap[100]),
                     );
                   } else {
                     return const Text('Ładowanie...',
