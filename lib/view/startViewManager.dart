@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'homePage_view.dart';
-import 'auth_view.dart';
+import 'login_view.dart';
 
 class StartView extends StatelessWidget {
   const StartView({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class StartView extends StatelessWidget {
         //return AuthView();
         return WelcomeView();
       }
-      return _authManager.isLogged.value ? AuthView() : HomePageView();
+      return _authManager.isLogged.value ? LoginView() : HomePageView();
     });
   }
 }
