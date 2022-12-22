@@ -13,16 +13,6 @@ class WelcomeView extends StatefulWidget {
 class _WelcomeViewState extends State<WelcomeView> {
   @override
   Widget build(BuildContext context) {
-    final ButtonStyle style = OutlinedButton.styleFrom(
-      textStyle: const TextStyle(fontSize: 20.0),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-      minimumSize: const Size(300.0, 50.0),
-      side: const BorderSide(width: 2.0, color: AppColors.aztecGold),
-      backgroundColor: AppColors.darkGoldenrodMap[50],
-      elevation: 10.0,
-      shadowColor: AppColors.darkGoldenrodMap[100]
-    );
-
     return Scaffold(
       body: Container(
         color: AppColors.floralWhite,
@@ -33,31 +23,21 @@ class _WelcomeViewState extends State<WelcomeView> {
               child: Stack(
                 children: [
                   ClipPath(
-                    clipper:imageBorderClip(), //set our custom wave clipper
+                    clipper:ImageBorderClip(), //set our custom wave clipper
                     child:Container(
                       color: AppColors.aztecGold,
                       height:560.0,
                     ),
                   ),
-                  // Opacity(
-                  //   opacity: 0.8,
-                  //   child: ClipPath(
-                  //     clipper:imageBorderClip(), //set our custom wave clipper
-                  //     child:Container(
-                  //       color: AppColors.aztecGold,
-                  //       height:560,
-                  //     ),
-                  //   ),
-                  // ),
                   ClipPath(
-                    clipper: imageBorderClip(),
+                    clipper: ImageBorderClip(),
                     child: Container(
                       height: 540.0,
                       decoration: BoxDecoration(
                         shape: BoxShape.rectangle,
                         image: DecorationImage(
                             image: const AssetImage("images/initPageImage.jpg"),
-                            colorFilter: ColorFilter.mode(AppColors.burlyWood.withOpacity(0.8), BlendMode.modulate),
+                            colorFilter: ColorFilter.mode(AppColors.floralWhite.withOpacity(0.5), BlendMode.modulate),
                             fit: BoxFit.cover
                         ),
                       ),
@@ -71,48 +51,56 @@ class _WelcomeViewState extends State<WelcomeView> {
                 children: [
                   Text(
                     "Witaj w Twojej kawiarni",
-                    style: TextStyle(
-                      shadows: [
-                        Shadow(
-                          blurRadius: 10.0,
-                          // color of the shadow
-                          color: AppColors.darkGoldenrodMap[50]!,
-                          offset: const Offset(5.0, 5.0),
-                        ),
-                      ],
-                      fontSize: 30.0,
-                      height: 2.0,
-                      fontWeight: FontWeight.w600,
-                      fontStyle: FontStyle.italic,
-                      color: AppColors.darkGoldenrodMap[900]
-                    ),
+                    style: titleTextStyle,
                   ),
-                  const SizedBox(height: 30.0),
-                  OutlinedButton(
-                    style: style,
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/login');
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Text('Ekran główny', style: TextStyle(fontWeight: FontWeight.w500)),
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 30.0),
+                    child: homePageMenuButton(outlineButtonStyle, '/login', 'Ekran główny'),
                   ),
-                  const SizedBox(height: 30.0),
-                  OutlinedButton(
-                    style: style,
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/login');
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Text('Zaloguj się', style: TextStyle(fontWeight: FontWeight.w500)),
-                    ),
-                  ),
+                  homePageMenuButton(outlineButtonStyle, '/login', 'Zaloguj się'),
                 ],
               )
             )
           ],
+        ),
+      ),
+    );
+  }
+
+  final ButtonStyle outlineButtonStyle = OutlinedButton.styleFrom(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      minimumSize: const Size(300.0, 50.0),
+      side: const BorderSide(width: 2.0, color: AppColors.aztecGold),
+      backgroundColor: AppColors.darkGoldenrodMap[50],
+      elevation: 10.0,
+      shadowColor: AppColors.darkGoldenrodMap[100]
+  );
+
+  final TextStyle titleTextStyle = TextStyle(
+    shadows: [
+      Shadow(
+        blurRadius: 10.0,
+        color: AppColors.darkGoldenrodMap[50]!,
+        offset: const Offset(5.0, 5.0),
+      ),
+    ],
+    fontSize: 30.0,
+    height: 2.0,
+    fontWeight: FontWeight.w600,
+    fontStyle: FontStyle.italic,
+    color: AppColors.darkGoldenrodMap[900]
+  );
+
+  OutlinedButton homePageMenuButton(ButtonStyle style, String path, String label) {
+    return OutlinedButton(
+      style: style,
+      onPressed: () {Navigator.pushNamed(context, path);},
+      child: Padding(padding: EdgeInsets.all(10.0),
+        child: Text(label,
+          style: TextStyle(
+              fontSize: 22.0,
+              fontWeight: FontWeight.w500,
+              color: AppColors.darkGoldenrodMap[800])
         ),
       ),
     );
