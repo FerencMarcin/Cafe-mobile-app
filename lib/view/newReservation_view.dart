@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cafe_mobile_app/viewModel/reservations_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,9 +18,11 @@ class NewReservationView extends StatefulWidget {
 class _NewReservationViewState extends State<NewReservationView> {
   DateTime nowDate = DateTime.now();
   TimeOfDay nowTime = TimeOfDay.now();
+  String _selectedDate = "";
 
   @override
   Widget build(BuildContext context) {
+    final ReservationsViewModel _reservationsViewModel = Get.put(ReservationsViewModel());
     if(nowTime.hour > 19) {
       nowTime = TimeOfDay(hour: 8, minute: 0);
       nowDate = DateTime(nowDate.year, nowDate.month, nowDate.day+1);
@@ -148,6 +151,11 @@ class _NewReservationViewState extends State<NewReservationView> {
                                 style: pickerButtonStyle,
                                 onPressed: () {
                                   log('pokaż stoliki clicked');
+                                  setState(() {
+                                    _selectedDate = '${nowDate.year}-${nowDate.month}-${nowDate.day}';
+                                  });
+
+                                  log(_selectedDate);
                                 },
                                 child: Text('Pokaż dostępne stoliki', style: subsectionText)
                               ),
@@ -159,21 +167,99 @@ class _NewReservationViewState extends State<NewReservationView> {
                   ),
                   const Divider(),
                   sectionTitle('Dostępne stoliki'),
-                  Container(
-                    height: 500.0,
-                    child: Text('Wybierz datę rezerwacji',
-                      style: subsectionText,
-                      textAlign: TextAlign.center,
-                    )
-                  )
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Container(
+                      decoration: _selectedDate != "" ? formContainerDecoration : null,
+                      height: 300.0,
+                      child: _selectedDate != "" ? FutureBuilder(
+                        future: _reservationsViewModel.getReservations(),
+                        initialData: const [],
+                        builder: (context, snapshot) {
+                          log('buillder');
+                          if (snapshot.hasError) {
+                            log(snapshot.error.toString());
+                            log('error mes');
+                            //TODO show erro view
+                          }
+                          if (snapshot.connectionState == ConnectionState.done) {
+                            return createTablesGrid(context, snapshot);
+                          } else {
+                            log('waiting');
+                            //TODO LOADING VIEW
+                            return const CircularProgressIndicator();
+                          }
+                        },
+                        )
+                        : Text('Wybierz datę rezerwacji',
+                          style: subsectionText,
+                          textAlign: TextAlign.center,
+                        )
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
         )
-
     );
   }
+
+  Widget createTablesGrid(BuildContext context, AsyncSnapshot<List> snapshot) {
+    var values = snapshot.data;
+    return values == null ? const Text("Lista stolików obecnie nie jest dostępne")
+        :GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 5.0,
+          mainAxisSpacing: 5.0),
+        itemCount: values.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Container(
+              decoration: formContainerDecoration,
+                child: Column(
+                  children: [
+                    values[index].TableStatusId == 2 ? Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Icon(Icons.table_restaurant_outlined, size: 55.0, color: AppColors.darkGoldenrodMap[100]),
+                        Text("Niedostępny", style: tableLabelText)
+                      ],
+                    ) :
+                    Icon(Icons.table_restaurant_outlined, size: 55.0, color: AppColors.darkGoldenrodMap[800]),
+                    Text('Nr: ${values[index].number}',
+                        style: values[index].TableStatusId == 2
+                            ? unavailableTableLabelText
+                            : tableLabelText),
+                    Text('Miejsca: ${values[index].numberOfSeats}',
+                        style: values[index].TableStatusId == 2
+                            ? unavailableTableLabelText
+                            : tableSublabelText)
+                  ],
+                ),
+            ),
+          );
+        }
+    );
+  }
+
+  TextStyle tableSublabelText = TextStyle(
+      fontSize: 15.0,
+      color: AppColors.darkGoldenrodMap[800]
+  );
+
+  TextStyle tableLabelText = TextStyle(
+      fontSize: 17.0,
+      fontWeight: FontWeight.w600,
+      color: AppColors.darkGoldenrodMap[900]
+  );
+
+  TextStyle unavailableTableLabelText = TextStyle(
+      fontSize: 16.0,
+      color: AppColors.darkGoldenrodMap[100]
+  );
 
   TextStyle formLabelText = TextStyle(
       fontSize: 20,
