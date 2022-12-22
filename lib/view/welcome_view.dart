@@ -26,7 +26,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                     clipper:ImageBorderClip(), //set our custom wave clipper
                     child:Container(
                       color: AppColors.burlyWood,
-                      height:560.0,
+                      height: 560.0,
                     ),
                   ),
                   ClipPath(
@@ -95,7 +95,7 @@ class _WelcomeViewState extends State<WelcomeView> {
     return OutlinedButton(
       style: style,
       onPressed: () {Navigator.pushNamed(context, path);},
-      child: Padding(padding: EdgeInsets.all(10.0),
+      child: Padding(padding: const EdgeInsets.all(10.0),
         child: Text(label,
           style: TextStyle(
               fontSize: 22.0,
