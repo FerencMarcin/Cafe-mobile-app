@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,6 +20,12 @@ class _NewReservationViewState extends State<NewReservationView> {
 
   @override
   Widget build(BuildContext context) {
+    if(nowTime.hour > 19) {
+      nowTime = TimeOfDay(hour: 8, minute: 0);
+      nowDate = DateTime(nowDate.year, nowDate.month, nowDate.day+1);
+    } else if (nowTime.hour < 8) {
+      nowTime = TimeOfDay(hour: 8, minute: 0);
+    }
     final hours = nowTime.hour.toString().padLeft(2, '0');
     final minutes = nowTime.minute.toString().padLeft(2, '0');
 
@@ -45,7 +53,7 @@ class _NewReservationViewState extends State<NewReservationView> {
                             Row(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 0.0),
+                                  padding: const EdgeInsets.only(left: 20.0),
                                   child: Text('${nowDate.year}-${nowDate.month}-${nowDate.day}',
                                       style: subsectionText),
                                 ),
@@ -55,13 +63,35 @@ class _NewReservationViewState extends State<NewReservationView> {
                                   onPressed: () async {
                                     DateTime? newDate = await showDatePicker(context: context,
                                       initialDate: nowDate,
-                                      firstDate: nowDate,
+                                      firstDate: DateTime.now(),
                                       lastDate: DateTime(nowDate.year, nowDate.month+1, nowDate.day),
                                       builder: (context, child) {
                                         return datePickerTheme(context, child);
                                       }
                                     );
                                     if(newDate == null) return;
+                                    String? errorMessage;
+                                    if((newDate == nowDate) && (nowTime.hour > 20)){
+                                      errorMessage = 'Lokal jest już zamknięty';
+                                    }
+                                    if(errorMessage != null){
+                                      Get.dialog(
+                                          AlertDialog(
+                                            title: Text('Błędna data'),
+                                            content: Text(errorMessage),
+                                            actions: <Widget>[
+                                              ElevatedButton(
+                                                child: Text("Wróć"),
+                                                onPressed: () {
+                                                  Get.back();
+                                                  return;
+                                                },
+                                              )
+                                            ],
+                                          )
+
+                                      );
+                                    }
                                     setState(() => nowDate = newDate);
                                 },
                                   child: Text('Wybierz date', style: subsectionText))
@@ -71,7 +101,7 @@ class _NewReservationViewState extends State<NewReservationView> {
                             Row(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 0.0),
+                                  padding: const EdgeInsets.only(left: 20.0),
                                   child: Text('$hours:$minutes',
                                       style: subsectionText),
                                 ),
@@ -82,30 +112,47 @@ class _NewReservationViewState extends State<NewReservationView> {
                                       TimeOfDay? newTime = await showTimePicker(context: context,
                                           initialTime: nowTime,
                                           builder: (context, child) {
-                                            MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
-                                            return Theme(
-                                                data: Theme.of(context).copyWith(
-                                                    colorScheme: ColorScheme.light(
-                                                      primary: AppColors.darkGoldenrodMap[600]!,
-                                                      onPrimary: AppColors.floralWhite,
-                                                      onSurface: AppColors.darkGoldenrodMap[900]!,
-                                                    ),
-                                                    textButtonTheme: TextButtonThemeData(
-                                                        style: TextButton.styleFrom(
-                                                            foregroundColor: AppColors.darkGoldenrodMap[900]
-                                                        )
-                                                    )
-                                                ),
-                                                child: child!
-                                            );
+                                            return timePickerTheme(context, child);
                                           }
                                       );
                                       if(newTime == null) return;
+                                      String? errorMessage;
+                                      if((newTime.hour < 8) || (newTime.hour >= 20)){
+                                        errorMessage = 'Lokal jest otwart między godziną 8 a 20. Rezerwacje na bieżący dzień składać można do godziny 19:00';
+                                      }
+                                      if(errorMessage != null){
+                                        Get.dialog(
+                                            AlertDialog(
+                                              title: Text('Błędna data'),
+                                              content: Text(errorMessage),
+                                              actions: <Widget>[
+                                                ElevatedButton(
+                                                  child: Text("Wróć"),
+                                                  onPressed: () {
+                                                    Get.back();
+                                                    return;
+                                                  },
+                                                )
+                                              ],
+                                            )
+                                        );
+                                      }
                                       setState(() => nowTime = newTime);
                                     },
                                     child: Text('Wybierz godzinę', style: subsectionText))
                               ],
                             ),
+                            Divider(),
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: OutlinedButton(
+                                style: pickerButtonStyle,
+                                onPressed: () {
+                                  log('pokaż stoliki clicked');
+                                },
+                                child: Text('Pokaż dostępne stoliki', style: subsectionText)
+                              ),
+                            )
                           ],
                         ),
                       ),
@@ -191,9 +238,9 @@ class _NewReservationViewState extends State<NewReservationView> {
     return Theme(
         data: Theme.of(context).copyWith(
             colorScheme: ColorScheme.light(
-              primary: AppColors.dutchWhite,
-              onPrimary: AppColors.darkGoldenrodMap[900]!,
-              onSurface: AppColors.darkGoldenrodMap[800]!,
+              primary: AppColors.darkGoldenrodMap[600]!,
+              onPrimary: AppColors.floralWhite,
+              onSurface: AppColors.darkGoldenrodMap[900]!,
             ),
             textButtonTheme: TextButtonThemeData(
                 style: TextButton.styleFrom(
