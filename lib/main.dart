@@ -5,6 +5,7 @@ import 'package:cafe_mobile_app/view/homePage_view.dart';
 import 'package:cafe_mobile_app/view/newReservation_view.dart';
 import 'package:cafe_mobile_app/view/products_view.dart';
 import 'package:cafe_mobile_app/view/startViewManager.dart';
+import 'package:cafe_mobile_app/view/unauthenticatedUser_view.dart';
 import 'package:cafe_mobile_app/view/userOrders_view.dart';
 import 'package:cafe_mobile_app/view/userProfile_view.dart';
 import 'package:cafe_mobile_app/view/userReservations_view.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
       home: InitialView(),
       routes: {
         '/start':(context) => StartView(),
+        '/unauthenticated':(context) => UnauthenticatedUserView(),
         '/login':(context) => AuthView(),
         '/home':(context) => HomePageView(),
         '/menu':(context) => ProductsView(),

@@ -25,7 +25,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                   ClipPath(
                     clipper:ImageBorderClip(), //set our custom wave clipper
                     child:Container(
-                      color: AppColors.aztecGold,
+                      color: AppColors.burlyWood,
                       height:560.0,
                     ),
                   ),
@@ -55,7 +55,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 30.0),
-                    child: homePageMenuButton(outlineButtonStyle, '/login', 'Ekran główny'),
+                    child: homePageMenuButton(outlineButtonStyle, '/unauthenticated', 'Ekran główny'),
                   ),
                   homePageMenuButton(outlineButtonStyle, '/login', 'Zaloguj się'),
                 ],
