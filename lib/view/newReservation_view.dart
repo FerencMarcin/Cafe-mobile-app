@@ -43,7 +43,6 @@ class _NewReservationViewState extends State<NewReservationView> {
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: Container(
                       decoration: formContainerDecoration,
-                      height: 280.0,
                       width: double.infinity,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
