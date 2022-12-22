@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class imageBorderClip extends CustomClipper<Path> {
+class ImageBorderClip extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     var path = Path();
