@@ -12,9 +12,6 @@ class UnauthenticatedUserView extends StatefulWidget {
 }
 
 class _UnauthenticatedUserViewState extends State<UnauthenticatedUserView> {
-  int _current = 0;
-  final CarouselController _controller = CarouselController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
