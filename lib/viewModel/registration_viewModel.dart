@@ -3,27 +3,39 @@ import 'dart:developer';
 
 import 'package:cafe_mobile_app/service/auth_service.dart';
 import 'package:cafe_mobile_app/service/login_service.dart';
-import 'package:cafe_mobile_app/service/registration_service.dart';
+//import 'package:cafe_mobile_app/service/registration_service.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
+import '../model/registration_request_model.dart';
 import '../view/startViewManager.dart';
 
 class RegistrationViewModel extends GetxController {
-  late final RegistrationService _registrationService;
+  //late final RegistrationService _registrationService;
   late final LoginService _loginService;
   late final AuthService _authService;
 
   @override
   void onInit() {
     super.onInit();
-    _registrationService = Get.put(RegistrationService());
+    //_registrationService = Get.put(RegistrationService());
     _loginService = Get.put(LoginService());
     _authService = Get.find();
   }
+  final String registerUrl = 'http://10.0.2.2:3001/users/register';
 
   Future<void> userRegistration(String email, String password, String firstName, String lastName, String number, String sex) async {
-    final response = await _registrationService.fetchUserRegistration(email, password, firstName, lastName, number, sex);
-
+    RegistrationRequestModel newUser = RegistrationRequestModel(
+        email: email,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+        number: number,
+        sex: sex
+    );
+    var url = Uri.parse(registerUrl);
+    final http.Response response = await http.post(url, body: newUser.makeRegistrationRequest());
+    //final response = await _registrationService.fetchUserRegistration(email, password, firstName, lastName, number, sex);
     if (response != null) {
       final responseData = jsonDecode(response.body);
       if(responseData != "A new user account has been created.") {
@@ -69,10 +81,8 @@ class RegistrationViewModel extends GetxController {
                     }
                 );
               }
-              //Get.back();
             }
         );
-
       }
     } else {
       Get.defaultDialog(
