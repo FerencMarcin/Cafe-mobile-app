@@ -1,9 +1,10 @@
 import 'package:cafe_mobile_app/theme/colors.dart';
 import 'package:cafe_mobile_app/view/aboutUs_view.dart';
-import 'package:cafe_mobile_app/view/auth_view.dart';
+import 'package:cafe_mobile_app/view/login_view.dart';
 import 'package:cafe_mobile_app/view/homePage_view.dart';
 import 'package:cafe_mobile_app/view/newReservation_view.dart';
 import 'package:cafe_mobile_app/view/products_view.dart';
+import 'package:cafe_mobile_app/view/registration_view.dart';
 import 'package:cafe_mobile_app/view/startViewManager.dart';
 import 'package:cafe_mobile_app/view/unauthenticatedUser_view.dart';
 import 'package:cafe_mobile_app/view/userOrders_view.dart';
@@ -44,7 +45,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/start':(context) => StartView(),
         '/unauthenticated':(context) => UnauthenticatedUserView(),
-        '/login':(context) => AuthView(),
+        '/login':(context) => LoginView(),
+        '/register':(context) => RegistrationView(),
         '/home':(context) => HomePageView(),
         '/menu':(context) => ProductsView(),
         '/vouchers':(context) => VouchersView(),
