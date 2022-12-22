@@ -12,11 +12,12 @@ class AppBarView extends StatelessWidget with PreferredSizeWidget{
   Widget build(BuildContext context) => AppBar(
     title: Text(appBarTitle),
     actions: [
-      IconButton(
+      Get.previousRoute != '/unauthenticated' ? IconButton(
           onPressed: (){
             _loginViewModel.userLogout();
           },
-          icon: Icon(Icons.logout_outlined))
+          icon: const Icon(Icons.logout_outlined)
+      ) : const SizedBox(width: 10)
     ],
   );
 
