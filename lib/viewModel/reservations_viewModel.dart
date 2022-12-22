@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../model/table_model.dart';
 import '../service/interceptor/dioClient.dart';
 
@@ -31,15 +30,28 @@ class ReservationsViewModel {
     }
   }
 
-  Future<String> createReservations(String selectedDate, int tableNumber) async {
-    log(selectedDate);
-    log(tableNumber.toString());
-    return "aaa";
-    // if (reservations.statusCode == 200 && tables.statusCode == 200) {
-    //
-    //   return "Dodano rezerwację";
-    // } else {
-    //   throw Exception('Nie udało się załadować rezerwacji');
-    // }
+  Future<String> createReservations(String selectedDate, String selectedTime, int tableNumber) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? userId = prefs.getInt('userId');
+    if (userId != null) {
+      var data = {
+        "date":  "$selectedDate $selectedTime",
+        "TableId": tableNumber,
+        "ClientId": userId,
+        "ReservationStatusId": 1
+      };
+      final response = await _dioClient.dioClient.post(
+          'http://10.0.2.2:3001/reservations/', data: data,
+      );
+      if(response.statusCode == 404) {
+        return response.data['message'];
+      } else if (response.statusCode == 200){
+        return "Dodano nową rezerwację";
+      } else {
+        return "Wystąpił błąd";
+      }
+    } else {
+       return "Błąd podczas dodawania rezerwacji";
+    }
   }
 }
