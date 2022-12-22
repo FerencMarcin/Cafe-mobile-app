@@ -1,14 +1,13 @@
+import 'package:cafe_mobile_app/model/table_model.dart';
+
 class ReservationModel {
   int? id;
   String? date;
   int? ClientId;
   int? TableId;
   int? ReservationStatusId;
-  //double specialPrice = 0.0;
-  //
-  // ProductModel(this.id, this.name, this.size, this.price, this.allergen,
-  //     this.createdAt, this.updatedAt, this.CategoryId, this.ProductStatusId);
-  //
+  TableModel? Table;
+
   ReservationModel({
     this.id, this.date, this.ClientId, this.TableId, this.ReservationStatusId
   });
