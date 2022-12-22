@@ -173,7 +173,7 @@ class _NewReservationViewState extends State<NewReservationView> {
                       decoration: _selectedDate != "" ? formContainerDecoration : null,
                       height: 300.0,
                       child: _selectedDate != "" ? FutureBuilder(
-                        future: _reservationsViewModel.getReservations(),
+                        future: _reservationsViewModel.getReservations(_selectedDate),
                         initialData: const [],
                         builder: (context, snapshot) {
                           log('buillder');
