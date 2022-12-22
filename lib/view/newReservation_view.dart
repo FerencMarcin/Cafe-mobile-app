@@ -91,7 +91,6 @@ class _NewReservationViewState extends State<NewReservationView> {
                                               )
                                             ],
                                           )
-
                                       );
                                     }
                                     setState(() => nowDate = newDate);
@@ -206,6 +205,7 @@ class _NewReservationViewState extends State<NewReservationView> {
   }
 
   Widget createTablesGrid(BuildContext context, AsyncSnapshot<List> snapshot) {
+
     var values = snapshot.data;
     return values == null ? const Text("Lista stolików obecnie nie jest dostępne")
         :GridView.builder(
@@ -217,33 +217,132 @@ class _NewReservationViewState extends State<NewReservationView> {
         itemBuilder: (BuildContext context, int index) {
           return Padding(
             padding: const EdgeInsets.all(4.0),
-            child: Container(
-              decoration: formContainerDecoration,
-                child: Column(
-                  children: [
-                    values[index].TableStatusId == 2 ? Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Icon(Icons.table_restaurant_outlined, size: 55.0, color: AppColors.darkGoldenrodMap[100]),
-                        Text("Niedostępny", style: tableLabelText)
-                      ],
-                    ) :
-                    Icon(Icons.table_restaurant_outlined, size: 55.0, color: AppColors.darkGoldenrodMap[800]),
-                    Text('Nr: ${values[index].number}',
-                        style: values[index].TableStatusId == 2
-                            ? unavailableTableLabelText
-                            : tableLabelText),
-                    Text('Miejsca: ${values[index].numberOfSeats}',
-                        style: values[index].TableStatusId == 2
-                            ? unavailableTableLabelText
-                            : tableSublabelText)
-                  ],
-                ),
+            child: GestureDetector(
+              onTap: values[index].TableStatusId == 1
+                ? () => Get.dialog(confirmReservation(_selectedDate, values[index].number))
+                : null,
+              child: Container(
+                decoration: formContainerDecoration,
+                  child: Column(
+                    children: [
+                      values[index].TableStatusId == 2
+                        ? Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Icon(Icons.table_restaurant_outlined, size: 55.0,
+                                color: AppColors.darkGoldenrodMap[100]),
+                            Text("Niedostępny", style: tableLabelText)
+                          ],)
+                        : Icon(Icons.table_restaurant_outlined, size: 55.0,
+                          color: AppColors.darkGoldenrodMap[800]),
+                      Text('Nr: ${values[index].number}',
+                          style: values[index].TableStatusId == 2
+                              ? unavailableTableLabelText
+                              : tableLabelText),
+                      Text('Miejsca: ${values[index].numberOfSeats}',
+                          style: values[index].TableStatusId == 2
+                              ? unavailableTableLabelText
+                              : tableSublabelText)
+                    ],
+                  ),
+              ),
             ),
           );
         }
     );
   }
+
+  StatefulBuilder confirmReservation(String selectedDateTime, int tableNumber) {
+    String content = " text";
+    bool confirmButton = true;
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return AlertDialog(
+          title: Text("Tytul"),
+          content: Text(content),
+          actions: confirmButton ? <Widget>[
+            ElevatedButton(
+              child: Text('Anuluj'),
+              onPressed: () { Navigator.pop((context));},
+            ),
+            ElevatedButton(
+              child: Text('Potwierdz'),
+              onPressed: () async {
+                final ReservationsViewModel _reservationsViewModel = Get.find();
+                String response = await _reservationsViewModel.createReservations(_selectedDate, tableNumber);
+                if(response != null) {
+                  setState(() {
+                    content = response;
+                    confirmButton = false;
+                  });
+                }
+              },
+            )
+          ] : <Widget> [
+            ElevatedButton(
+              child: Text('Zamknij'),
+              onPressed: () {
+                Navigator.pop((context));
+                Navigator.pushReplacementNamed(context, '/home');
+                setState(() {
+                  _selectedDate = '${2022}-${12}-${24}';
+                });
+              },
+            ),
+          ],
+        );
+      }
+    );
+  }
+
+  AlertDialog confirmReservationDialog(String selectedDateTime, int tableNumber) {
+    return AlertDialog(
+      title: Text('Błędna data'),
+      content: Text("content"),
+      actions: <Widget>[
+        ElevatedButton(
+          child: Text("Wróć"),
+          onPressed: () {
+            Get.back();
+            return;
+          },
+        ),
+        ElevatedButton(
+          child: Text("Potwierdź"),
+          onPressed: () {
+            final ReservationsViewModel _reservationsViewModel = Get.find();
+            Future<String> response = _reservationsViewModel.createReservations(_selectedDate, tableNumber);
+
+
+            // FutureBuilder(
+            //   future: _reservationsViewModel.createReservations(_selectedDate, tableNumber),
+            //   initialData: const [],
+            //   builder: (context, snapshot) {
+            //     log('buillderalert');
+            //     if (snapshot.hasError) {
+            //       log(snapshot.error.toString());
+            //       log('error mes');
+            //       //TODO show erro view
+            //     }
+            //     if (snapshot.connectionState == ConnectionState.done) {
+            //       return Text("aaaaaaaaa2234");
+            //     } else {
+            //       log('waiting');
+            //       //TODO LOADING VIEW
+            //       return const CircularProgressIndicator();
+            //     }
+            //   },
+            // );
+            //Get.back();
+            return;
+          },
+        )
+
+      ],
+    );
+  }
+
+
 
   TextStyle tableSublabelText = TextStyle(
       fontSize: 15.0,
