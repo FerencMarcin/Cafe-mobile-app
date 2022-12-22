@@ -11,6 +11,7 @@ import 'package:cafe_mobile_app/view/userReservations_view.dart';
 import 'package:cafe_mobile_app/view/vouchers_view.dart';
 import 'package:cafe_mobile_app/view/userVouchers_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'view/initial_view.dart';
 
@@ -30,6 +31,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: AppColors.darkGoldenrodMap,
       ),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('pl', ''), // English, no country code
+      ],
       home: InitialView(),
       routes: {
         '/start':(context) => StartView(),
