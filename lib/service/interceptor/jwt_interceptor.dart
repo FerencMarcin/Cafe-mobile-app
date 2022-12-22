@@ -9,6 +9,8 @@ class JwtInterceptor extends Interceptor with StorageService{
     var accessToken = await getAccessToken();
     if(accessToken != null) {
       options.headers['Authorization'] = 'Bearer $accessToken';
+      options.followRedirects = false;
+      options.validateStatus = (status) {return status! < 500;};
       log("token : Bearer $accessToken");
       log('REQUEST[${options.method}] => PATH: ${options.path}');
     }
@@ -29,6 +31,9 @@ class JwtInterceptor extends Interceptor with StorageService{
       log("trzeba nowy token");
     } else if ((err.response?.statusCode == 403)){
       log("Błędny token - przeterminowany");
+    } else {
+      log("inny blad");
+      return super.onError(err, handler);
     }
   }
 }
