@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../model/table_model.dart';
@@ -27,5 +29,17 @@ class ReservationsViewModel {
     } else {
       throw Exception('Nie udało się załadować rezerwacji');
     }
+  }
+
+  Future<String> createReservations(String selectedDate, int tableNumber) async {
+    log(selectedDate);
+    log(tableNumber.toString());
+    return "aaa";
+    // if (reservations.statusCode == 200 && tables.statusCode == 200) {
+    //
+    //   return "Dodano rezerwację";
+    // } else {
+    //   throw Exception('Nie udało się załadować rezerwacji');
+    // }
   }
 }
