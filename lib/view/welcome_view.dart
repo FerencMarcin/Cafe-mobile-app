@@ -33,11 +33,11 @@ class _WelcomeViewState extends State<WelcomeView> {
                     clipper: ImageBorderClip(),
                     child: Container(
                       height: 540.0,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.rectangle,
                         image: DecorationImage(
-                            image: const AssetImage("images/initPageImage.jpg"),
-                            colorFilter: ColorFilter.mode(AppColors.test, BlendMode.modulate),
+                            image: AssetImage("images/initPageImage.jpg"),
+                            colorFilter: ColorFilter.mode(AppColors.photoFilter, BlendMode.modulate),
                             fit: BoxFit.cover
                         ),
                       ),
