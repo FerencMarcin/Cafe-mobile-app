@@ -37,7 +37,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                         shape: BoxShape.rectangle,
                         image: DecorationImage(
                             image: const AssetImage("images/initPageImage.jpg"),
-                            colorFilter: ColorFilter.mode(AppColors.floralWhite.withOpacity(0.5), BlendMode.modulate),
+                            colorFilter: ColorFilter.mode(AppColors.test, BlendMode.modulate),
                             fit: BoxFit.cover
                         ),
                       ),
