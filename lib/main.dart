@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         '/start':(context) => StartView(),
         '/unauthenticated':(context) => UnauthenticatedUserView(),
         '/login':(context) => LoginView(),
-        '/register':(context) => RegistrationView(),
+        '/registration':(context) => RegistrationView(),
         '/home':(context) => HomePageView(),
         '/menu':(context) => ProductsView(),
         '/vouchers':(context) => VouchersView(),
