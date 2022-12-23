@@ -1,17 +1,17 @@
 class RegistrationRequestModel {
   String? email;
   String? password;
-  String? number;
-  String? firstName;
-  String? lastName;
+  String? phoneNumber;
+  String? firstname;
+  String? lastname;
   String? sex;
 
   RegistrationRequestModel({
     this.email,
     this.password,
-    this.number,
-    this.firstName,
-    this.lastName,
+    this.phoneNumber,
+    this.firstname,
+    this.lastname,
     this.sex
   });
 
@@ -19,9 +19,9 @@ class RegistrationRequestModel {
     final Map<String, dynamic> requestData = <String, dynamic>{};
     requestData['email'] = email;
     requestData['password'] = password;
-    requestData['firstname'] = firstName;
-    requestData['lastname'] = lastName;
-    requestData['phoneNumber'] = number;
+    requestData['firstname'] = firstname;
+    requestData['lastname'] = lastname;
+    requestData['phoneNumber'] = phoneNumber;
     requestData['sex'] = sex;
     return requestData;
   }

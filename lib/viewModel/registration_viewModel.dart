@@ -28,9 +28,9 @@ class RegistrationViewModel extends GetxController {
     RegistrationRequestModel newUser = RegistrationRequestModel(
         email: email,
         password: password,
-        firstName: firstName,
-        lastName: lastName,
-        number: number,
+        firstname: firstName,
+        lastname: lastName,
+        phoneNumber: number,
         sex: sex
     );
     var url = Uri.parse(registerUrl);
@@ -38,7 +38,7 @@ class RegistrationViewModel extends GetxController {
     //final response = await _registrationService.fetchUserRegistration(email, password, firstName, lastName, number, sex);
     if (response != null) {
       final responseData = jsonDecode(response.body);
-      if(responseData != "A new user account has been created.") {
+      if(response.statusCode != 200) {
         Get.defaultDialog(
             title: 'Błąd rejestracji',
             middleText: responseData['error'],
