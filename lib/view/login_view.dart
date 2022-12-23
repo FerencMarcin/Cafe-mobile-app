@@ -23,7 +23,6 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarView(appBarTitle: 'Logowanie'),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10),
         child: Form(
@@ -48,22 +47,41 @@ class _LoginViewState extends State<LoginView> {
                       : null;
                 },
               ),
-              ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      await _loginViewModel.userLogin(
-                          emailController.text.trim(),
-                          passController.text
-                      );
-                    }
-                  },
-                  child: Text('Zaloguj')
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                      onPressed: ()  {
+                        Navigator.pop(context);
+                      },
+                      child: Text('Anuluj')
+                  ),
+                  SizedBox(width: 20.0),
+                  ElevatedButton(
+                      onPressed: () async {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          await _loginViewModel.userLogin(
+                              emailController.text.trim(),
+                              passController.text
+                          );
+                        }
+                      },
+                      child: Text('Zaloguj')
+                  ),
+                ],
               ),
-              TextButton(
-                  onPressed: () async {
-                    Navigator.pushNamed(context, '/registration');
-                  },
-                  child: Text('Zarejestruj się')
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text("Nie masz jeszcze konta?"),
+                  TextButton(
+                      onPressed: () async {
+                        Navigator.pushNamed(context, '/registration');
+                      },
+                      child: Text('Zarejestruj się')
+                  )
+                ],
               )
             ],
           ),

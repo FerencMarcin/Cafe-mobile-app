@@ -28,7 +28,6 @@ class _RegistrationViewState extends State<RegistrationView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarView(appBarTitle: 'Rejestracja'),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Form(
@@ -112,20 +111,33 @@ class _RegistrationViewState extends State<RegistrationView> {
                   );
                 }).toList(),
               ),
-              ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      await _registrationViewModel.userRegistration(
-                          emailController.text.trim(),
-                          passController.text,
-                          firstNameController.text,
-                          lastNameController.text,
-                          numberController.text,
-                          selectedSex);
-                    }
-                  },
-                  child: const Text('Zarejestruj')
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                      onPressed: ()  {
+                        Navigator.pop(context);
+                      },
+                      child: Text('Anuluj')
+                  ),
+                  const SizedBox(width: 20.0),
+                  ElevatedButton(
+                      onPressed: () async {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          await _registrationViewModel.userRegistration(
+                              emailController.text.trim(),
+                              passController.text,
+                              firstNameController.text,
+                              lastNameController.text,
+                              numberController.text,
+                              selectedSex);
+                        }
+                      },
+                      child: const Text('Zarejestruj')
+                  )
+                ],
               ),
+
               TextButton(
                   onPressed: () async {
                     if(Get.previousRoute == '/login') {
