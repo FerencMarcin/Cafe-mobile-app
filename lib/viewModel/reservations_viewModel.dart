@@ -86,4 +86,21 @@ class ReservationsViewModel {
        return "Błąd podczas dodawania rezerwacji";
     }
   }
+
+  Future<String> cancelReservations(int reservationId) async {
+    final reservation = await _dioClient.dioClient.get('http://10.0.2.2:3001/reservations/$reservationId');
+    if(reservation.statusCode == 200) {
+      reservation.data['ReservationStatusId'] = 2;
+      final cancelation = await _dioClient.dioClient.put(
+          'http://10.0.2.2:3001/reservations/$reservationId',
+          data: reservation.data
+      );
+      if(cancelation.statusCode == 200) {
+        return("Anulowano rezerwację");
+      }
+      return "Błąd podczas anulowania rezerwacji";
+    } else {
+      return "Błąd podczas anulowania rezerwacji";
+    }
+  }
 }
