@@ -22,7 +22,8 @@ class ImageBorderClip extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-    throw UnimplementedError();
+    //throw UnimplementedError();
+    return true;
   }
 
 }
