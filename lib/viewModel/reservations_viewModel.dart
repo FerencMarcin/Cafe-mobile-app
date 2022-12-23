@@ -1,3 +1,4 @@
+import 'package:cafe_mobile_app/model/reservation_model.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,6 +29,37 @@ class ReservationsViewModel {
     } else {
       throw Exception('Nie udało się załadować rezerwacji');
     }
+  }
+
+  Future<List<ReservationModel>> getUserReservations(String sortType, bool onlyActive) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? userId = prefs.getInt('userId');
+    if(userId != null) {
+      final reservations = await _dioClient.dioClient.get('http://10.0.2.2:3001/reservations/client/$userId');
+      List<ReservationModel> reservationsList = <ReservationModel>[];
+      if(reservations.statusCode == 200) {
+        reservations.data.forEach((reservation) {
+          var reservationDateTime = DateTime.parse(reservation['date']);
+          final format = DateFormat('yyyy-MM-dd hh:mm');
+          final localeDateString = format.format(reservationDateTime.toLocal());
+          reservation['date'] = localeDateString;
+          if(onlyActive && (reservation['ReservationStatusId'] == 1)) {
+            reservationsList.add(ReservationModel.fromJSON(reservation));
+          } else if (!onlyActive) {
+            reservationsList.add(ReservationModel.fromJSON(reservation));
+          }
+        });
+      }
+      if (sortType == "date_desc") {
+        reservationsList.sort((a,b) => b.date!.compareTo(a.date!));
+      } else {
+        reservationsList.sort((a,b) => a.date!.compareTo(b.date!));
+      }
+      return reservationsList;
+    } else {
+      throw Exception('Błąd podczas pobierania rezerwacji');
+    }
+
   }
 
   Future<String> createReservations(String selectedDate, String selectedTime, int tableNumber) async {
