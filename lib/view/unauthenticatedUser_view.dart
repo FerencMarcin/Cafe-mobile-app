@@ -40,7 +40,7 @@ class _UnauthenticatedUserViewState extends State<UnauthenticatedUserView> {
                           shape: BoxShape.rectangle,
                           image: DecorationImage(
                               image: const AssetImage("images/unauthHeader.jpg"),
-                              colorFilter: ColorFilter.mode(AppColors.floralWhite.withOpacity(0.6), BlendMode.modulate),
+                              colorFilter: ColorFilter.mode(AppColors.photoFilter, BlendMode.modulate),
                               fit: BoxFit.cover
                           ),
                         ),
