@@ -5,6 +5,7 @@ import 'package:cafe_mobile_app/service/auth_service.dart';
 import 'package:cafe_mobile_app/service/login_service.dart';
 import 'package:cafe_mobile_app/view/startViewManager.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 class LoginViewModel extends GetxController {
   late final LoginService _loginService;
@@ -48,6 +49,34 @@ class LoginViewModel extends GetxController {
           Get.back();
         }
       );
+    }
+  }
+
+  Future<dynamic> resetPassword(String email) async {
+    final String resetPasswordUrl = 'http://10.0.2.2:3001/auth/requestpasswordreset';
+    var url = Uri.parse(resetPasswordUrl);
+    final http.Response response = await http.post(url, body: {"email": email});
+    log(response.body.toString());
+    final responseData = jsonDecode(response.body);
+    return responseData;
+  }
+
+  Future<String> changePassword(String resetCode, String email, String password) async {
+    final String resetPasswordUrl = 'http://10.0.2.2:3001/auth//resetpassword';
+    var url = Uri.parse(resetPasswordUrl);
+    final http.Response response = await http.post(url,
+      body: {
+        "password": password,
+        "email": email,
+        "resetCode": resetCode
+      }
+    );
+    log(response.body.toString());
+    final responseData = jsonDecode(response.body);
+    if (responseData['error'] == null ) {
+      return responseData['message'];
+    } else {
+      return responseData['error'];
     }
   }
 

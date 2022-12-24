@@ -6,6 +6,7 @@ import 'package:cafe_mobile_app/view/newReservation_view.dart';
 import 'package:cafe_mobile_app/view/orderDetails_view.dart';
 import 'package:cafe_mobile_app/view/products_view.dart';
 import 'package:cafe_mobile_app/view/registration_view.dart';
+import 'package:cafe_mobile_app/view/resetPassword_view.dart';
 import 'package:cafe_mobile_app/view/startViewManager.dart';
 import 'package:cafe_mobile_app/view/unauthenticatedUser_view.dart';
 import 'package:cafe_mobile_app/view/userOrders_view.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
         '/unauthenticated':(context) => UnauthenticatedUserView(),
         '/login':(context) => LoginView(),
         '/registration':(context) => RegistrationView(),
+        '/resetPassword':(context) => ResetPasswordView(),
         '/home':(context) => HomePageView(),
         '/menu':(context) => ProductsView(),
         '/vouchers':(context) => VouchersView(),

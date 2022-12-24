@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cafe_mobile_app/model/orderDetail_model.dart';
 import 'package:cafe_mobile_app/model/orderHeader_model.dart';
 import 'package:get/get.dart';
@@ -49,11 +47,6 @@ class OrdersViewModel {
     List<OrderDetailModel> ordersList = <OrderDetailModel>[];
     if(orderDetails.statusCode == 200) {
       orderDetails.data.forEach((orderDetail) {
-        log(orderDetail.toString());
-        // var orderDateTime = DateTime.parse(order['updatedAt']);
-        // final format = DateFormat('yyyy-MM-dd hh:mm');
-        // final localeDateString = format.format(orderDateTime.toLocal());
-        // order['updatedAt'] = localeDateString;
         ordersList.add(OrderDetailModel.fromJSON(orderDetail));
       });
     }

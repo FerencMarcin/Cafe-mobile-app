@@ -2,8 +2,6 @@ import 'package:cafe_mobile_app/viewModel/login_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'appBar/appBar_view.dart';
-
 const List<String> sexList = <String>["Mężczyzna", "Kobieta"];
 
 class LoginView extends StatefulWidget {
@@ -69,6 +67,13 @@ class _LoginViewState extends State<LoginView> {
                       child: Text('Zaloguj')
                   ),
                 ],
+              ),
+
+              TextButton(
+                  onPressed: () async {
+                    Navigator.pushNamed(context, '/resetPassword');
+                  },
+                  child: Text('Nie pamiętam hasła?')
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
