@@ -3,6 +3,7 @@ import 'package:cafe_mobile_app/view/aboutUs_view.dart';
 import 'package:cafe_mobile_app/view/login_view.dart';
 import 'package:cafe_mobile_app/view/homePage_view.dart';
 import 'package:cafe_mobile_app/view/newReservation_view.dart';
+import 'package:cafe_mobile_app/view/orderDetails_view.dart';
 import 'package:cafe_mobile_app/view/products_view.dart';
 import 'package:cafe_mobile_app/view/registration_view.dart';
 import 'package:cafe_mobile_app/view/startViewManager.dart';
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
         '/userProfile':(context) => UserProfileView(),
         '/aboutUs':(context) => AboutUsView(),
         '/userOrders':(context) => UserOrdersView(),
+        '/orderDetails':(context) => OrderDetailsView(),
         '/userReservations':(context) => UserReservationsView(),
         '/newReservation':(context) => NewReservationView()
       },
