@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cafe_mobile_app/viewModel/orders_viewModel.dart';
+import 'package:cafe_mobile_app/model/orderDetailsViewArguments_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -120,7 +121,11 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                         trailing: OutlinedButton(
                           style: detailsButtonStyle,
                           onPressed: () {
-                            Navigator.pushNamed(context, '/details');
+                            Navigator.pushNamed(
+                                context, '/orderDetails',
+                                arguments: OrderDetailsViewArgumentsModel(
+                                    values[index].id, values[index].value)
+                            );
                           },
                           child: Text("Szczegóły", style: TextStyle(color: AppColors.darkGoldenrodMap[800])),
                         )
