@@ -10,7 +10,7 @@ import 'interceptor/dioClient.dart';
 
 class AuthService extends GetxController with StorageService {
   final isLogged = false.obs;
-  DioClient _dioClient = Get.put(DioClient());
+  final DioClient _dioClient = Get.put(DioClient());
 
 
   void login(String? token) async {
