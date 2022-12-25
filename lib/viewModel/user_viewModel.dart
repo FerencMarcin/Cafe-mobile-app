@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cafe_mobile_app/service/auth_service.dart';
 import 'package:cafe_mobile_app/service/login_service.dart';
 import 'package:get/get.dart';
@@ -32,6 +34,19 @@ class UserViewModel extends GetxController {
     if(response.statusCode == 200) {
       prefs.setInt('userPoints', response.data['points']);
       return response.data['points'].toString();
+    } else if (response.statusCode == 403) {
+      throw 403;
+      log('error 403 wystapil');
+      Get.defaultDialog(
+              title: 'Sesja wygasła',
+              middleText: 'Musisz zalogować się ponownie',
+              textConfirm: 'Zaloguj',
+              onConfirm: () async {
+                Get.back();
+                //_authService.logout();
+                Get.toNamed('/start');
+              }
+          );
     }
     return "Wystąpił błąd";
   }

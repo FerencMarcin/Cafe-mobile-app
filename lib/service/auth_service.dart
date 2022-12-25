@@ -75,14 +75,14 @@ class AuthService extends GetxController with StorageService {
     // log('firstname $stringValue');
   }
 
-  Future<void> fetchUserPoints(String token) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
-    String userEmail = decodedToken['user']['email'];
-    final response = await _dioClient.dioClient.get('http://10.0.2.2:3001/users/email/' + userEmail);
-
-    prefs.setInt('userPoints', response.data['points']);
-  }
+  // Future<void> fetchUserPoints(String token) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //
+  //   Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+  //   String userEmail = decodedToken['user']['email'];
+  //   final response = await _dioClient.dioClient.get('http://10.0.2.2:3001/users/email/' + userEmail);
+  //
+  //   prefs.setInt('userPoints', response.data['points']);
+  // }
 
 }

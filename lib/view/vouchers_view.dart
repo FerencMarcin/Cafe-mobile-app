@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cafe_mobile_app/view/utils/logoutAlert_view.dart';
 import 'package:cafe_mobile_app/viewModel/user_viewModel.dart';
 import 'package:cafe_mobile_app/viewModel/voucher_viewModel.dart';
 import 'package:flutter/material.dart';
@@ -22,12 +23,13 @@ class _VouchersViewState extends State<VouchersView> {
   String sortType = 'asc';
   int? points;
   bool refresh = false;
+  bool isError = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarView(appBarTitle: 'Katalog talonów'),
-        body: Column(
+        body: isError ? LogoutAlertView() : Column(
           children: [
             Row(
               children: [
@@ -38,15 +40,18 @@ class _VouchersViewState extends State<VouchersView> {
                   initialData: 0,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
-                      log(snapshot.error.toString());
+                      if(snapshot.error == 403) {
+                        Navigator.pushNamed(context, '/start');
+                      }
+                      log(snapshot.error.toString() + 'blad wskazany w view');
                       log('error mes');
-                      return const Text('Wystąpił bład');
+                      return const Text('Wystąpił bład -view');
                       //TODO show erro view
                     }
                     if (snapshot.connectionState == ConnectionState.done) {
                       var value = snapshot.data;
                       if (value != null) {
-                        points = int.tryParse(value.toString())!;
+                        points = int.tryParse(value.toString());
                         points ??= 0;
                         return Text(points.toString(), style: pointsTextStyle);
                       }
