@@ -4,8 +4,9 @@ class VoucherModel {
   int? pointPrice;
   bool? isAvailable;
   int? ProductId;
-  String? productName;
+  String? couponName;
   double? productPrice;
+  double? newProductPrice;
 
   VoucherModel({
     this.id,
@@ -13,8 +14,9 @@ class VoucherModel {
     this.pointPrice,
     this.isAvailable,
     this.ProductId,
-    this.productName,
-    this.productPrice
+    this.couponName,
+    this.productPrice,
+    this.newProductPrice
   });
 
   factory VoucherModel.fromJSON(Map<String, dynamic> json) {
@@ -23,7 +25,10 @@ class VoucherModel {
         value: json['value'],
         pointPrice: json['pointPrice'],
         isAvailable: json['isAvailable'],
-        ProductId: json['ProductId']
+        ProductId: json['ProductId'],
+        couponName: json['Product']['name'] + ' - ' + json['Product']['size'],
+        productPrice: json['Product']['price'].toDouble(),
+        newProductPrice: json['Product']['price'].toDouble() * (100-json['value']) / 100
     );
   }
 }

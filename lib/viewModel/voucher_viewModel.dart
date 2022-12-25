@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../model/voucher_model.dart';
@@ -13,7 +10,7 @@ class VoucherViewModel {
     final vouchers = await _dioClient.dioClient.get('http://10.0.2.2:3001/coupons/status/available');
     List<VoucherModel> voucherList = <VoucherModel>[];
     if(vouchers.statusCode == 200) {
-      vouchers.data.forEach((voucher) {
+      vouchers.data.forEach((voucher) async {
         voucherList.add(VoucherModel.fromJSON(voucher));
       });
     }

@@ -21,41 +21,53 @@ class _VouchersViewState extends State<VouchersView> {
   final VoucherViewModel _voucherViewModel = Get.put(VoucherViewModel());
   String sortType = 'asc';
   int? points;
+  bool refresh = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarView(appBarTitle: 'Katalog talonów'),
         body: Column(
-          //crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Row(
               children: [
-                Spacer(),
+                const Spacer(),
                 sectionTitle('Twoje punkty: '),
                 FutureBuilder(
                   future: _userViewModel.getUserPoints(),
-                  initialData: const [],
+                  initialData: 0,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       log(snapshot.error.toString());
                       log('error mes');
-                      return Text('Wystąpił bład');
+                      return const Text('Wystąpił bład');
                       //TODO show erro view
                     }
                     if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.data != null) {
-                        points = int.tryParse(snapshot.data.toString());
-                        return Text(points.toString());
+                      var value = snapshot.data;
+                      if (value != null) {
+                        points = int.tryParse(value.toString())!;
+                        points ??= 0;
+                        return Text(points.toString(), style: pointsTextStyle);
                       }
-                      return Text('Wystąpił bład');
+                      return const Text('Wystąpił bład');
                     } else {
                       //TODO LOADING VIEW
                       return const CircularProgressIndicator();
                     }
                   },
                 ),
-                Spacer()
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.only(right: 5.0),
+                  child: IconButton(
+                      onPressed: (){
+                        setState(() {
+                          refresh = !refresh;
+                        });
+                      },
+                      icon: const Icon(Icons.refresh_outlined)),
+                )
               ],
             ),
             Padding(
@@ -88,11 +100,14 @@ class _VouchersViewState extends State<VouchersView> {
                     log('error mes');
                     //TODO show erro view
                   }
-                  if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.connectionState == ConnectionState.done && points != null) {
                     return createVouchersListView(context, snapshot);
                   } else {
                     //TODO LOADING VIEW
-                    return const CircularProgressIndicator();
+                    return const SizedBox(
+                        height: 100.0,
+                        child: CircularProgressIndicator()
+                    );
                   }
                 },
               ),
@@ -117,7 +132,7 @@ class _VouchersViewState extends State<VouchersView> {
                 padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                    borderRadius: const BorderRadius.all(Radius.circular(25.0)),
                     border: Border.all(color: AppColors.burlyWood)
                   ),
                   height: 120.0,
@@ -125,18 +140,43 @@ class _VouchersViewState extends State<VouchersView> {
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [Icon(Icons.shopping_cart_outlined, size: 30.0, color: AppColors.aztecGold)],
+                        Container(
+                          width: 60.0,
+                          decoration: const BoxDecoration(
+                            border: Border(
+                              right: BorderSide(color: AppColors.aztecGold)
+                            )
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.qr_code_2_outlined, size: 40.0, color: AppColors.aztecGold),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 15.0),
+                                child: Text('${values[index].value}%', style: voucherValueTextStyle),
+                              )
+                            ],
+                          ),
                         ),
-                        Spacer(),
-                        Column(
-                          children: [
-                            Text('Cena: ${values[index].pointPrice}'),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('${values[index].couponName}', style: voucherNameTextStyle),
+                              Text('Cena regularna ${values[index].productPrice}', style: voucherDescriptionTextStyle),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10.0),
+                                child: Text('Cena z kuponem:', style: voucherDescriptionTextStyle),
+                              ),
+                              values[index].newProductPrice == 0.0
+                                  ? Text('Gratis!', style: voucherNewPriceTextStyle)
+                                  : Text('${values[index].newProductPrice} zł', style: voucherNewPriceTextStyle)
+                            ],
+                          ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -144,14 +184,14 @@ class _VouchersViewState extends State<VouchersView> {
                             values[index].pointPrice > points
                               ? Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text('${values[index].pointPrice} punktów', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17.0, color: AppColors.projectRed)),
+                                child: Text('${values[index].pointPrice} pkt', style: voucherPointPriceUnavailable),
                               )
                               : Expanded(
                                 child: Column (
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: Text('${values[index].pointPrice} punktów', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17.0, color: AppColors.projectGreen)),
+                                      child: Text('${values[index].pointPrice} pkt', style: voucherPointPriceAvailable),
                                     ),
                                     OutlinedButton(
                                       style: detailsButtonStyle,
@@ -163,65 +203,58 @@ class _VouchersViewState extends State<VouchersView> {
                               )
                           ],
                         ),
-
                       ],
                     ),
                   ),
-                  // child: Column(
-                  //   children: [
-                  //     ListTile(
-                  //         leading: const Icon(Icons.shopping_cart_outlined,
-                  //             size: 30.0, color: AppColors.aztecGold),
-                  //
-                  //         title: Text('Data: ',
-                  //             style: TextStyle(fontWeight: FontWeight.bold,
-                  //                 color: AppColors.darkGoldenrodMap[900])),
-                  //         subtitle: Column(
-                  //           crossAxisAlignment: CrossAxisAlignment.start,
-                  //           children: [
-                  //             Text('Cena: ${values[index].pointPrice}'),
-                  //             Padding(
-                  //               padding: const EdgeInsets.symmetric(vertical: 3.0),
-                  //               child: Text('Wartość:zł',
-                  //                   style: TextStyle(color: AppColors.darkGoldenrodMap[900])),
-                  //             ),
-                  //             Text('Produktów: }',
-                  //                 style: TextStyle(color: AppColors.darkGoldenrodMap[900])),
-                  //             OutlinedButton(
-                  //               style: detailsButtonStyle,
-                  //               onPressed: () {},
-                  //               child: Text("Wybierz", style: TextStyle(color: AppColors.darkGoldenrodMap[800])),
-                  //             )
-                  //           ],
-                  //         ),
-                  //         trailing: values[index].pointPrice > points
-                  //             ? Text('${values[index].pointPrice} punktów', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17.0, color: AppColors.projectRed))
-                  //             : Expanded(
-                  //               child: Column (
-                  //                 children: [
-                  //                   Text('${values[index].pointPrice} punktów', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17.0, color: AppColors.projectGreen)),
-                  //                   OutlinedButton(
-                  //                     style: detailsButtonStyle,
-                  //                     onPressed: () {},
-                  //                     child: Text("Wybierz", style: TextStyle(color: AppColors.darkGoldenrodMap[800])),
-                  //                   )
-                  //                 ],
-                  //               ),
-                  //             )
-                  //         // OutlinedButton(
-                  //         //   style: detailsButtonStyle,
-                  //         //   onPressed: () {},
-                  //         //   child: Text("Szczegóły", style: TextStyle(color: AppColors.darkGoldenrodMap[800])),
-                  //         // )
-                  //     ),
-                  //     const Divider()
-                  //   ],
-                  // ),
                 )
             );
           }
         );
   }
+
+  final TextStyle voucherNameTextStyle = TextStyle(
+      fontWeight: FontWeight.w600,
+      fontSize: 16.0,
+      color: AppColors.darkGoldenrodMap[900]
+  );
+
+  final TextStyle voucherDescriptionTextStyle = TextStyle(
+      fontWeight: FontWeight.w500,
+      fontSize: 15.0,
+      color: AppColors.darkGoldenrodMap[800]
+  );
+
+  final TextStyle voucherNewPriceTextStyle = const TextStyle(
+      fontWeight: FontWeight.w800,
+      fontSize: 17.0,
+      color: AppColors.projectGreen
+  );
+
+  final TextStyle voucherPointPriceAvailable = const TextStyle(
+      fontWeight: FontWeight.w500,
+      fontSize: 17.0,
+      color: AppColors.projectGreen
+  );
+
+  final TextStyle voucherPointPriceUnavailable = const TextStyle(
+      fontWeight: FontWeight.w500,
+      fontSize: 17.0,
+      color: AppColors.projectRed
+  );
+
+  final TextStyle voucherValueTextStyle = const TextStyle(
+    fontWeight: FontWeight.w700,
+    fontSize: 20.0,
+    fontStyle: FontStyle.italic,
+    color: AppColors.projectGreen
+  );
+
+  final TextStyle pointsTextStyle = const TextStyle(
+      fontWeight: FontWeight.w700,
+      fontSize: 25.0,
+      fontStyle: FontStyle.italic,
+      color: AppColors.projectGreen
+  );
 
   final ButtonStyle detailsButtonStyle = OutlinedButton.styleFrom(
       textStyle: TextStyle(fontSize: 17.0, color: AppColors.darkGoldenrodMap[800]),
