@@ -1,9 +1,5 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:cafe_mobile_app/service/auth_service.dart';
 import 'package:cafe_mobile_app/service/login_service.dart';
-import 'package:cafe_mobile_app/view/startViewManager.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,8 +29,8 @@ class UserViewModel extends GetxController {
       return "Wystąpił błąd";
     }
     final response = await _dioClient.dioClient.get('http://10.0.2.2:3001/users/$userId');
-    //log("data : " + response.toString());
     if(response.statusCode == 200) {
+      prefs.setInt('userPoints', response.data['points']);
       return response.data['points'].toString();
     }
     return "Wystąpił błąd";
