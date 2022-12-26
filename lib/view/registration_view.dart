@@ -1,9 +1,8 @@
-import 'package:cafe_mobile_app/viewModel/registration_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../theme/colors.dart';
-import '../viewModel/login_viewModel.dart';
+import '../viewModel/auth_viewModel.dart';
 
 const List<String> sexList = <String>["Mężczyzna", "Kobieta"];
 
@@ -16,8 +15,7 @@ class RegistrationView extends StatefulWidget {
 
 class _RegistrationViewState extends State<RegistrationView> {
   final _formKey = GlobalKey<FormState>();
-  final RegistrationViewModel _registrationViewModel = Get.put(RegistrationViewModel());
-  final LoginViewModel _loginViewModel = Get.find();
+  final AuthViewModel _authViewModel = Get.find();
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
@@ -124,7 +122,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                       onPressed: () async {
                         if (_formKey.currentState?.validate() ?? false) {
                           try {
-                            final response = await _registrationViewModel
+                            final response = await _authViewModel
                                 .userRegistration(
                                 emailController.text.trim(),
                                 passController.text,
@@ -167,7 +165,7 @@ class _RegistrationViewState extends State<RegistrationView> {
         textConfirm: buttonLabel,
         onConfirm: () async {
           try {
-            await _loginViewModel.userLogin(
+            await _authViewModel.userLogin(
                 emailController.text.trim(),
                 passController.text
             );

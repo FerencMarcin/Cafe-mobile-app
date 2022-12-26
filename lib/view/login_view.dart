@@ -1,4 +1,4 @@
-import 'package:cafe_mobile_app/viewModel/login_viewModel.dart';
+import 'package:cafe_mobile_app/viewModel/auth_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,7 +13,7 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
-  final LoginViewModel _loginViewModel = Get.put(LoginViewModel());
+  final AuthViewModel _authViewModel = Get.put(AuthViewModel());
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
@@ -59,7 +59,7 @@ class _LoginViewState extends State<LoginView> {
                       onPressed: () async {
                         if (_formKey.currentState?.validate() ?? false) {
                           try {
-                            await _loginViewModel.userLogin(
+                            await _authViewModel.userLogin(
                                 emailController.text.trim(),
                                 passController.text
                             );

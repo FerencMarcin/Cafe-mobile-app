@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../viewModel/login_viewModel.dart';
+import '../viewModel/auth_viewModel.dart';
 import 'components/sectionTitle.dart';
 
 class ResetPasswordView extends StatefulWidget {
@@ -14,7 +14,7 @@ class ResetPasswordView extends StatefulWidget {
 class _ResetPasswordViewState extends State<ResetPasswordView> {
   final _formKey = GlobalKey<FormState>();
   final _newPassFormKey = GlobalKey<FormState>();
-  final LoginViewModel _loginViewModel = Get.find();
+  final AuthViewModel _authViewModel = Get.find();
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
@@ -62,7 +62,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                       onPressed: () async {
                         if (_formKey.currentState?.validate() ?? false) {
 
-                          final message = await _loginViewModel.resetPassword(emailController.text.trim());
+                          final message = await _authViewModel.resetPassword(emailController.text.trim());
                           Get.dialog(passwordResetStatusMessage(message));
                         }
                       },
@@ -126,7 +126,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                           child: const Text('Zmień hasło'),
                           onPressed: () async {
                             if (_newPassFormKey.currentState?.validate() ?? false) {
-                              String response = await _loginViewModel.changePassword(
+                              String response = await _authViewModel.changePassword(
                                   resetCodeController.text,
                                   emailController.text.trim(),
                                   newPassController.text

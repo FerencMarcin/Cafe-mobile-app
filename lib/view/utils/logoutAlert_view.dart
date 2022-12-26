@@ -3,14 +3,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../viewModel/login_viewModel.dart';
+import '../../viewModel/auth_viewModel.dart';
 
 class LogoutAlertView extends StatelessWidget {
   const LogoutAlertView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final LoginViewModel _loginViewModel = Get.find();
+    final AuthViewModel _authViewModel = Get.find();
 
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
@@ -22,7 +22,7 @@ class LogoutAlertView extends StatelessWidget {
             child: const Text('Zaloguj'),
             onPressed: () {
               Navigator.pop((context));
-              _loginViewModel.userLogout();
+              _authViewModel.userLogout();
             },
           )
         ]
