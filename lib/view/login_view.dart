@@ -22,7 +22,7 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Form(
           autovalidateMode: AutovalidateMode.always,
           key: _formKey,
@@ -48,23 +48,29 @@ class _LoginViewState extends State<LoginView> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
-                      onPressed: ()  {
-                        Navigator.pop(context);
-                      },
-                      child: Text('Anuluj')
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: ElevatedButton(
+                        onPressed: () {Navigator.pop(context);},
+                        child: const Text('Anuluj')
+                    ),
                   ),
-                  SizedBox(width: 20.0),
                   ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState?.validate() ?? false) {
-                          await _loginViewModel.userLogin(
-                              emailController.text.trim(),
-                              passController.text
-                          );
+                          try {
+                            await _loginViewModel.userLogin(
+                                emailController.text.trim(),
+                                passController.text
+                            );
+                            if (!mounted) return;
+                            Navigator.pushNamed(context, '/start');
+                          } catch (exception) {
+                            showErrorGetDialog('$exception');
+                          }
                         }
                       },
-                      child: Text('Zaloguj')
+                      child: const Text('Zaloguj')
                   ),
                 ],
               ),
@@ -73,18 +79,18 @@ class _LoginViewState extends State<LoginView> {
                   onPressed: () async {
                     Navigator.pushNamed(context, '/resetPassword');
                   },
-                  child: Text('Nie pamiętam hasła?')
+                  child: const Text('Nie pamiętam hasła?')
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("Nie masz jeszcze konta?"),
+                  const Text("Nie masz jeszcze konta?"),
                   TextButton(
                       onPressed: () async {
                         Navigator.pushNamed(context, '/registration');
                       },
-                      child: Text('Zarejestruj się')
+                      child: const Text('Zarejestruj się')
                   )
                 ],
               )
@@ -92,6 +98,17 @@ class _LoginViewState extends State<LoginView> {
           ),
         ),
       ),
+    );
+  }
+
+  void showErrorGetDialog(String content) {
+    Get.defaultDialog(
+        title: 'Wystąpił błąd',
+        middleText: content,
+        textConfirm: 'Wróć',
+        onConfirm: () {
+          Get.back();
+        }
     );
   }
 }

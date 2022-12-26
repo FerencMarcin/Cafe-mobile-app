@@ -165,10 +165,17 @@ class _RegistrationViewState extends State<RegistrationView> {
         title: title,
         middleText: content,
         textConfirm: buttonLabel,
-        onConfirm: () {
-          _loginViewModel.userLogin(
-            emailController.text.trim(),
-            passController.text,);
+        onConfirm: () async {
+          try {
+            await _loginViewModel.userLogin(
+                emailController.text.trim(),
+                passController.text
+            );
+            if (!mounted) return;
+            Navigator.pushNamed(context, '/start');
+          } catch (exception) {
+            showErrorGetDialog('$exception');
+          }
         }
     );
   }
