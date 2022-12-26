@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cafe_mobile_app/viewModel/registration_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -118,10 +116,8 @@ class _RegistrationViewState extends State<RegistrationView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                      onPressed: ()  {
-                        Navigator.pop(context);
-                      },
-                      child: Text('Anuluj')
+                      onPressed: () { Navigator.pop(context); },
+                      child: const Text('Anuluj')
                   ),
                   const SizedBox(width: 20.0),
                   ElevatedButton(
@@ -136,27 +132,9 @@ class _RegistrationViewState extends State<RegistrationView> {
                                 lastNameController.text,
                                 numberController.text,
                                 selectedSex);
-                            Get.defaultDialog(
-                                title: 'Utworzono nowe konto',
-                                middleText: response,
-                                textConfirm: 'Przejdź do aplikacji',
-                                onConfirm: () {
-                                  _loginViewModel.userLogin(
-                                    emailController.text.trim(),
-                                    passController.text,);
-                                }
-                            );
+                            showSuccessGetDialog('Utworzono nowe konto', response, 'Przejdź do aplikacji');
                           } catch (exception) {
-                            Get.defaultDialog(
-                                title: 'Wystąpił błąd',
-                                middleText: '$exception',
-                                textConfirm: 'Wróć',
-                                onConfirm: () {
-                                  Get.back();
-                                }
-                            );
-                            log(exception.toString() + ' exception');
-
+                            showErrorGetDialog('$exception');
                           }
                         }
                       },
@@ -179,6 +157,30 @@ class _RegistrationViewState extends State<RegistrationView> {
           ),
         ),
       ),
+    );
+  }
+
+  void showSuccessGetDialog(String title, String content, String buttonLabel) {
+    Get.defaultDialog(
+        title: title,
+        middleText: content,
+        textConfirm: buttonLabel,
+        onConfirm: () {
+          _loginViewModel.userLogin(
+            emailController.text.trim(),
+            passController.text,);
+        }
+    );
+  }
+
+  void showErrorGetDialog(String content) {
+    Get.defaultDialog(
+        title: 'Wystąpił błąd',
+        middleText: content,
+        textConfirm: 'Wróć',
+        onConfirm: () {
+          Get.back();
+        }
     );
   }
 }
