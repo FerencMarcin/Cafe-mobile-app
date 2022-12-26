@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import 'package:cafe_mobile_app/viewModel/registration_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../theme/colors.dart';
-import 'appBar/appBar_view.dart';
+import '../viewModel/login_viewModel.dart';
 
 const List<String> sexList = <String>["Mężczyzna", "Kobieta"];
 
@@ -17,6 +19,7 @@ class RegistrationView extends StatefulWidget {
 class _RegistrationViewState extends State<RegistrationView> {
   final _formKey = GlobalKey<FormState>();
   final RegistrationViewModel _registrationViewModel = Get.put(RegistrationViewModel());
+  final LoginViewModel _loginViewModel = Get.find();
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
@@ -124,13 +127,37 @@ class _RegistrationViewState extends State<RegistrationView> {
                   ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState?.validate() ?? false) {
-                          await _registrationViewModel.userRegistration(
-                              emailController.text.trim(),
-                              passController.text,
-                              firstNameController.text,
-                              lastNameController.text,
-                              numberController.text,
-                              selectedSex);
+                          try {
+                            final response = await _registrationViewModel
+                                .userRegistration(
+                                emailController.text.trim(),
+                                passController.text,
+                                firstNameController.text,
+                                lastNameController.text,
+                                numberController.text,
+                                selectedSex);
+                            Get.defaultDialog(
+                                title: 'Utworzono nowe konto',
+                                middleText: response,
+                                textConfirm: 'Przejdź do aplikacji',
+                                onConfirm: () {
+                                  _loginViewModel.userLogin(
+                                    emailController.text.trim(),
+                                    passController.text,);
+                                }
+                            );
+                          } catch (exception) {
+                            Get.defaultDialog(
+                                title: 'Wystąpił błąd',
+                                middleText: '$exception',
+                                textConfirm: 'Wróć',
+                                onConfirm: () {
+                                  Get.back();
+                                }
+                            );
+                            log(exception.toString() + ' exception');
+
+                          }
                         }
                       },
                       child: const Text('Zarejestruj')
