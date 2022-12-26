@@ -9,15 +9,16 @@ import '../service/interceptor/dioClient.dart';
 
 class UserViewModel extends GetxController {
   final DioClient _dioClient = Get.put(DioClient());
-  late final LoginService _loginService;
-  late final AuthService _authService;
-
-  @override
-  void onInit() {
-    super.onInit();
-    _loginService = Get.put(LoginService());
-    _authService = Get.put(AuthService());
-  }
+  //TODO delete death code
+  // late final LoginService _loginService;
+  // late final AuthService _authService;
+  //
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   _loginService = Get.put(LoginService());
+  //   _authService = Get.put(AuthService());
+  // }
 
   Future<String?> getUsername() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
