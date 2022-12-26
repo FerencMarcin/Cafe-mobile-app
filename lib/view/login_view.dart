@@ -1,6 +1,7 @@
 import 'package:cafe_mobile_app/viewModel/auth_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:email_validator/email_validator.dart';
 
 const List<String> sexList = <String>["Mężczyzna", "Kobieta"];
 
@@ -32,9 +33,14 @@ class _LoginViewState extends State<LoginView> {
               TextFormField(
                 controller: emailController,
                 validator: (value) {
-                  return (value == null || value.isEmpty)
-                      ? 'Należy podać adres email'
-                      : null;
+                  if (value == null || value.isEmpty) {
+                    return 'Należy podać adres email';
+                  }
+                  if(EmailValidator.validate(value)) {
+                    return null;
+                  } else {
+                    return 'Podaj poprawny adres email';
+                  }
                 },
               ),
               TextFormField(

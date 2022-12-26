@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -41,9 +42,14 @@ class _RegistrationViewState extends State<RegistrationView> {
                   labelText: 'Adres email',
                 ),
                 validator: (value) {
-                  return (value == null || value.isEmpty)
-                      ? 'Należy podać adres email'
-                      : null;
+                  if (value == null || value.isEmpty) {
+                    return 'Należy podać adres email';
+                  }
+                  if(EmailValidator.validate(value)) {
+                    return null;
+                  } else {
+                    return 'Podaj poprawny adres email';
+                  }
                 },
               ),
               TextFormField(
@@ -74,9 +80,12 @@ class _RegistrationViewState extends State<RegistrationView> {
                   labelText: 'Numer telefonu',
                 ),
                 validator: (value) {
-                  return (value == null || value.isEmpty)
-                      ? 'Należy podać numer telefonu'
-                      : null;
+                  if (value == null || value.isEmpty) {
+                    return 'Należy podać numer telefonu';
+                  }
+                  if (value.length != 9) {
+                    return 'Podaj poprawny numer telefonu (np. 111222333)';
+                  }
                 },
               ),
               TextFormField(
@@ -85,9 +94,18 @@ class _RegistrationViewState extends State<RegistrationView> {
                   labelText: 'Hasło',
                 ),
                 validator: (value) {
-                  return (value == null || value.isEmpty)
-                      ? 'Należy podać hasło'
-                      : null;
+                  if (value == null || value.isEmpty) {
+                    return 'Należy podać hasło';
+                  }
+                  RegExp validPassword = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
+                  if (validPassword.hasMatch(value)) {
+                    if(value.length < 8) {
+                      return 'Hasło musi zawierać przynajmniej 8 znaków';
+                    }
+                    return null;
+                  } else {
+                    return 'Hasło musi zawierać małe i wielkie litery, cyfry i znaki';
+                  }
                 },
               ),
               DropdownButton<String>(
