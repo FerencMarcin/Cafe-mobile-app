@@ -3,17 +3,24 @@ import 'dart:developer';
 
 import 'package:cafe_mobile_app/service/auth_service.dart';
 import 'package:cafe_mobile_app/service/login_service.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
+import '../model/login_request_model.dart';
 import '../model/registration_request_model.dart';
 
 class AuthViewModel extends GetxController {
-  final LoginService _loginService = Get.put(LoginService());
   final AuthService _authService = Get.find();
 
+  final String loginUrl = 'http://10.0.2.2:3001/users/login';
+
   Future<void> userLogin(String email, String password) async {
-    final response = await _loginService.fetchUserLogin(email, password);
+    log('baseutl: ' + dotenv.env['BASE_URL']!);
+    LoginRequestModel user = LoginRequestModel(email: email, password: password);
+    var url = Uri.parse(loginUrl);
+
+    final http.Response response = await http.post(url, body: user.makeLoginRequest());
     final responseData = jsonDecode(response.body);
     if (response.statusCode != 200) {
       throw responseData['error'];
