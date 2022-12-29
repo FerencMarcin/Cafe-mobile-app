@@ -15,11 +15,13 @@ import 'package:cafe_mobile_app/view/userReservations_view.dart';
 import 'package:cafe_mobile_app/view/vouchers_view.dart';
 import 'package:cafe_mobile_app/view/userVouchers_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'view/initial_view.dart';
 
-void main() {
+Future main() async {
+  await dotenv.load(fileName: '.env');
   runApp(const MyApp());
 }
 
