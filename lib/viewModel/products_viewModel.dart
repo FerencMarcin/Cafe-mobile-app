@@ -2,14 +2,16 @@ import 'dart:convert';
 import 'package:cafe_mobile_app/model/category_model.dart';
 import 'package:cafe_mobile_app/model/product_model.dart';
 import 'package:cafe_mobile_app/model/specialOffer_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class ProductsViewModel extends GetxController {
+  final String categoriesUrl = '${dotenv.env['BASE_URL']!}/categories/notempty';
+  final String categoriesProductsUrl = '${dotenv.env['BASE_URL']!}/products/specialoffers';
 
   Future<List<CategoryModel>> getCategories() async {
-    const String getCategoriesUrl = 'http://10.0.2.2:3001/categories/notempty';
-    var urlCategories = Uri.parse(getCategoriesUrl);
+    var urlCategories = Uri.parse(categoriesUrl);
     http.Response response = await http.get(urlCategories);
     if (response.statusCode == 200) {
       var parsedCategoryList = json.decode(response.body);
@@ -24,8 +26,7 @@ class ProductsViewModel extends GetxController {
   }
 
   Future<List<ProductModel>> getProductsByCategory(selectedCategory) async {
-      String getProductsByCategoryUrl = 'http://10.0.2.2:3001/products/specialoffers';
-      var urlProducts = Uri.parse(getProductsByCategoryUrl);
+      var urlProducts = Uri.parse(categoriesProductsUrl);
       http.Response response = await http.get(urlProducts);
       if (response.statusCode == 200) {
         var parsedProductList = json.decode(response.body);

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cafe_mobile_app/service/auth_service.dart';
 import 'package:cafe_mobile_app/service/login_service.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,6 +10,8 @@ import '../service/interceptor/dioClient.dart';
 
 class UserViewModel extends GetxController {
   final DioClient _dioClient = Get.put(DioClient());
+
+  final String userInfoUrl = '${dotenv.env['BASE_URL']!}/users';
   //TODO delete death code
   // late final LoginService _loginService;
   // late final AuthService _authService;
@@ -31,23 +34,12 @@ class UserViewModel extends GetxController {
     if(userId == null) {
       return "Wystąpił błąd";
     }
-    final response = await _dioClient.dioClient.get('http://10.0.2.2:3001/users/$userId');
+    final response = await _dioClient.dioClient.get('$userInfoUrl/$userId');
     if(response.statusCode == 200) {
       prefs.setInt('userPoints', response.data['points']);
       return response.data['points'].toString();
     } else if (response.statusCode == 403) {
       throw 403;
-      log('error 403 wystapil');
-      Get.defaultDialog(
-              title: 'Sesja wygasła',
-              middleText: 'Musisz zalogować się ponownie',
-              textConfirm: 'Zaloguj',
-              onConfirm: () async {
-                Get.back();
-                //_authService.logout();
-                Get.toNamed('/start');
-              }
-          );
     }
     return "Wystąpił błąd";
   }

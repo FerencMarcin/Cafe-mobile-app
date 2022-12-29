@@ -1,5 +1,6 @@
 import 'package:cafe_mobile_app/model/orderDetail_model.dart';
 import 'package:cafe_mobile_app/model/orderHeader_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,11 +9,14 @@ import '../service/interceptor/dioClient.dart';
 class OrdersViewModel {
   final DioClient _dioClient = Get.put(DioClient());
 
+  final String userOrdersUrl = '${dotenv.env['BASE_URL']!}/orderheaders/client';
+  final String orderDetailsUrl = '${dotenv.env['BASE_URL']!}/orderdetails/orderheader';
+
   Future<List<OrderHeaderModel>> getUserOrders(String sortBy, String sortType) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int? userId = prefs.getInt('userId');
     if(userId != null) {
-      final orders = await _dioClient.dioClient.get('http://10.0.2.2:3001/orderheaders/client/$userId');
+      final orders = await _dioClient.dioClient.get('$userOrdersUrl/$userId');
       List<OrderHeaderModel> ordersList = <OrderHeaderModel>[];
       if(orders.statusCode == 200) {
         orders.data.forEach((order) {
@@ -43,7 +47,7 @@ class OrdersViewModel {
   }
 
   Future<List<OrderDetailModel>> getUserOrderDetails(orderId) async {
-    final orderDetails = await _dioClient.dioClient.get('http://10.0.2.2:3001/orderdetails/orderheader/$orderId');
+    final orderDetails = await _dioClient.dioClient.get('$orderDetailsUrl/$orderId');
     List<OrderDetailModel> ordersList = <OrderDetailModel>[];
     if(orderDetails.statusCode == 200) {
       orderDetails.data.forEach((orderDetail) {
