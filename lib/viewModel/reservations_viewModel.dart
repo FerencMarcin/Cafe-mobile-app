@@ -1,4 +1,5 @@
 import 'package:cafe_mobile_app/model/reservation_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,9 +9,14 @@ import '../service/interceptor/dioClient.dart';
 class ReservationsViewModel {
   final DioClient _dioClient = Get.put(DioClient());
 
+  final String tablesUrl = '${dotenv.env['BASE_URL']!}/tables';
+  final String reservationUrl = '${dotenv.env['BASE_URL']!}/reservations';
+  final String reservationsByStatusIdUrl = '${dotenv.env['BASE_URL']!}/reservations/reservationstatus';
+  final String userReservationsUrl = '${dotenv.env['BASE_URL']!}/reservations/client';
+
   Future<List<TableModel>> getReservations(String selectedDate) async {
-    final tables = await _dioClient.dioClient.get('http://10.0.2.2:3001/tables/');
-    final reservations = await _dioClient.dioClient.get('http://10.0.2.2:3001/reservations/reservationstatus/1');
+    final tables = await _dioClient.dioClient.get('$tablesUrl/');
+    final reservations = await _dioClient.dioClient.get('$reservationsByStatusIdUrl/1');
     List<TableModel> tablesList = <TableModel>[];
     if (reservations.statusCode == 200 && tables.statusCode == 200) {
       tables.data.forEach((table) => {
@@ -35,7 +41,7 @@ class ReservationsViewModel {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int? userId = prefs.getInt('userId');
     if(userId != null) {
-      final reservations = await _dioClient.dioClient.get('http://10.0.2.2:3001/reservations/client/$userId');
+      final reservations = await _dioClient.dioClient.get('$userReservationsUrl/$userId');
       List<ReservationModel> reservationsList = <ReservationModel>[];
       if(reservations.statusCode == 200) {
         reservations.data.forEach((reservation) {
@@ -73,10 +79,14 @@ class ReservationsViewModel {
         "ReservationStatusId": 1
       };
       final response = await _dioClient.dioClient.post(
-          'http://10.0.2.2:3001/reservations/', data: data,
+          '$reservationUrl/', data: data,
       );
       if(response.statusCode == 404) {
-        return response.data['message'];
+        if (response.data['message'].toString().contains('ma już aktywną Rezerwację')) {
+          return 'Posiadasz już jedną aktywna rezerwację, anuluj ja przed złożeniem nowej';
+        } else {
+          return response.data['message'];
+        }
       } else if (response.statusCode == 200){
         return "Dodano nową rezerwację";
       } else {
@@ -88,14 +98,14 @@ class ReservationsViewModel {
   }
 
   Future<String> cancelReservations(int reservationId) async {
-    final reservation = await _dioClient.dioClient.get('http://10.0.2.2:3001/reservations/$reservationId');
+    final reservation = await _dioClient.dioClient.get('$reservationUrl/$reservationId');
     if(reservation.statusCode == 200) {
       reservation.data['ReservationStatusId'] = 2;
-      final cancelation = await _dioClient.dioClient.put(
-          'http://10.0.2.2:3001/reservations/$reservationId',
+      final cancellation = await _dioClient.dioClient.put(
+          '$reservationUrl/$reservationId',
           data: reservation.data
       );
-      if(cancelation.statusCode == 200) {
+      if(cancellation.statusCode == 200) {
         return("Anulowano rezerwację");
       }
       return "Błąd podczas anulowania rezerwacji";
