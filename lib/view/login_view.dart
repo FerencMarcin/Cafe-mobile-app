@@ -1,7 +1,11 @@
 import 'package:cafe_mobile_app/viewModel/auth_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:email_validator/email_validator.dart';
+
+import '../theme/colors.dart';
+import 'clipper/imageBorderClip.dart';
+import 'components/authForm.dart';
+import 'components/sectionTitle.dart';
 
 const List<String> sexList = <String>["Mężczyzna", "Kobieta"];
 
@@ -22,46 +26,65 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Form(
-          autovalidateMode: AutovalidateMode.always,
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextFormField(
-                controller: emailController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Należy podać adres email';
-                  }
-                  if(EmailValidator.validate(value)) {
-                    return null;
-                  } else {
-                    return 'Podaj poprawny adres email';
-                  }
-                },
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                ClipPath(
+                  clipper:ImageBorderClip(), //set our custom wave clipper
+                  child:Container(
+                    color: AppColors.burlyWood,
+                    height: 260.0,
+                  ),
+                ),
+                ClipPath(
+                  clipper: ImageBorderClip(),
+                  child: Container(
+                    height: 240.0,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      image: DecorationImage(
+                          image: AssetImage("images/initPageImage.jpg"),
+                          colorFilter: ColorFilter.mode(AppColors.photoFilter, BlendMode.modulate),
+                          fit: BoxFit.cover
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 5.0, bottom: 10.0),
+              child: sectionTitle('Logowanie')),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Form(
+                autovalidateMode: AutovalidateMode.always,
+                key: _formKey,
+                child: Column(
+                  children: [
+                    AuthForm.emailInputFormField(emailController),
+                    AuthForm.passwordFormField(passController),
+                  ],
+                ),
               ),
-              TextFormField(
-                controller: passController,
-                validator: (value) {
-                  return (value == null || value.isEmpty)
-                      ? 'Należy podać hasło'
-                      : null;
-                },
-              ),
-              Row(
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 50.0),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(right: 20.0),
                     child: ElevatedButton(
+                        style: buttonStyle,
                         onPressed: () {Navigator.pop(context);},
-                        child: const Text('Anuluj')
+                        child: Text('Anuluj', style: buttonTextStyle)
                     ),
                   ),
                   ElevatedButton(
+                      style: buttonStyle,
                       onPressed: () async {
                         if (_formKey.currentState?.validate() ?? false) {
                           try {
@@ -76,36 +99,62 @@ class _LoginViewState extends State<LoginView> {
                           }
                         }
                       },
-                      child: const Text('Zaloguj')
+                      child: Text('Zaloguj', style: buttonTextStyle)
                   ),
                 ],
               ),
-
-              TextButton(
-                  onPressed: () async {
-                    Navigator.pushNamed(context, '/resetPassword');
-                  },
-                  child: const Text('Nie pamiętam hasła?')
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text("Nie masz jeszcze konta?"),
-                  TextButton(
-                      onPressed: () async {
-                        Navigator.pushNamed(context, '/registration');
-                      },
-                      child: const Text('Zarejestruj się')
-                  )
-                ],
-              )
-            ],
-          ),
+            ),
+            TextButton(
+                onPressed: () async {
+                  Navigator.pushNamed(context, '/resetPassword');
+                },
+                child: Text('Nie pamiętam hasła?', style: textButtonLabelStyle)
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text("Nie masz jeszcze konta?", style: textStyle),
+                TextButton(
+                    onPressed: () async {
+                      Navigator.pushNamed(context, '/registration');
+                    },
+                    child: Text('Zarejestruj się', style: textButtonLabelStyle)
+                )
+              ],
+            )
+          ],
         ),
       ),
     );
   }
+
+  final ButtonStyle buttonStyle = ElevatedButton.styleFrom(
+      minimumSize: const Size(100.0, 40.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      side: const BorderSide(width: 2.0, color: AppColors.aztecGold),
+      backgroundColor: AppColors.darkGoldenrodMap[50],
+      elevation: 5.0,
+      shadowColor: AppColors.darkGoldenrodMap[100]
+  );
+
+  final TextStyle buttonTextStyle = TextStyle(
+      color: AppColors.darkGoldenrodMap[900],
+      fontWeight: FontWeight.bold,
+      fontSize: 17.0
+  );
+
+  final TextStyle textStyle = TextStyle(
+      color: AppColors.darkGoldenrodMap[900],
+      fontSize: 16.0
+  );
+
+
+  final TextStyle textButtonLabelStyle = TextStyle(
+      color: AppColors.darkGoldenrodMap[700],
+      fontSize: 17.0,
+      fontWeight: FontWeight.bold
+  );
 
   void showErrorGetDialog(String content) {
     Get.defaultDialog(
