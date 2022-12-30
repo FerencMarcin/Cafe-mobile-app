@@ -1,7 +1,3 @@
-import 'dart:developer';
-
-import 'package:cafe_mobile_app/service/auth_service.dart';
-import 'package:cafe_mobile_app/service/login_service.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
