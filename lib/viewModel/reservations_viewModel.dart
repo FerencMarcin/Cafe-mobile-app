@@ -78,20 +78,25 @@ class ReservationsViewModel {
         "ClientId": userId,
         "ReservationStatusId": 1
       };
-      final response = await _dioClient.dioClient.post(
+      try {
+        final response = await _dioClient.dioClient.post(
           '$reservationUrl/', data: data,
-      );
-      if(response.statusCode == 404) {
-        if (response.data['message'].toString().contains('ma już aktywną Rezerwację')) {
-          return 'Posiadasz już jedną aktywna rezerwację, anuluj ja przed złożeniem nowej';
+        );
+        if(response.statusCode == 404) {
+          if (response.data['message'].toString().contains('ma już aktywną Rezerwację')) {
+            return 'Posiadasz już jedną aktywna rezerwację, anuluj ja przed złożeniem nowej';
+          } else {
+            return response.data['message'];
+          }
+        } else if (response.statusCode == 200){
+          return "Dodano nową rezerwację";
         } else {
-          return response.data['message'];
+          return "Wystąpił błąd";
         }
-      } else if (response.statusCode == 200){
-        return "Dodano nową rezerwację";
-      } else {
-        return "Wystąpił błąd";
+      } catch (exception) {
+        return 'Wystąpił błąd serwera';
       }
+
     } else {
        return "Błąd podczas dodawania rezerwacji";
     }
