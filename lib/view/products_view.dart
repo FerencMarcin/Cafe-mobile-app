@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'package:cafe_mobile_app/theme/colors.dart';
+import 'package:cafe_mobile_app/view/utils/errorAlert_view.dart';
+import 'package:cafe_mobile_app/view/utils/loading_view.dart';
 import 'package:cafe_mobile_app/viewModel/products_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,15 +33,12 @@ class _ProductsViewState extends State<ProductsView> {
               initialData: const [],
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  log(snapshot.error.toString());
-                  log('error mes');
-                  //TODO show erro view
+                  return const ErrorAlertView();
                 }
                 if (snapshot.connectionState == ConnectionState.done) {
                   return createCategoriesListView(context, snapshot);
                 } else {
-                  //TODO LOADING VIEW
-                  return const CircularProgressIndicator();
+                  return const LoadingView();
                 }
               },
             )
@@ -53,15 +52,12 @@ class _ProductsViewState extends State<ProductsView> {
               initialData: const [],
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  log(snapshot.error.toString());
-                  log('error mes');
-                  //TODO show erro view
+                  return const ErrorAlertView();
                 }
                 if (snapshot.connectionState == ConnectionState.done) {
                   return createProductsListView(context, snapshot);
                 } else {
-                  //TODO LOADING VIEW
-                  return const CircularProgressIndicator();
+                  return const LoadingView();
                 }
               },
             ) : Text('Wybierz kategorię',
@@ -75,11 +71,11 @@ class _ProductsViewState extends State<ProductsView> {
   }
 
   Widget createCategoriesListView(BuildContext context, AsyncSnapshot<List> snapshot) {
-    var values = snapshot.data!;
-    return ListView.builder(
+    var values = snapshot.data;
+    return values == null ? Text('Wystąpił bład') : ListView.builder(
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
-      itemCount: values == null ? 0 : values.length,
+      itemCount: values.length,
       itemBuilder: (BuildContext context, int index) {
         return Padding(
           padding: const EdgeInsets.fromLTRB(10.0, 2.0, 10.0, 12.0),
