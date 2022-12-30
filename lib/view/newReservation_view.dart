@@ -189,8 +189,10 @@ class _NewReservationViewState extends State<NewReservationView> {
             padding: const EdgeInsets.all(4.0),
             child: GestureDetector(
               onTap: values[index].TableStatusId == 1
-                ? () => Get.dialog(confirmReservation(values[index].number))
-                : null,
+                ? () => Get.dialog(
+                  barrierDismissible: false,
+                  confirmReservation(values[index].number)
+                ) : null,
               child: Container(
                 decoration: formContainerDecoration,
                   child: Column(
