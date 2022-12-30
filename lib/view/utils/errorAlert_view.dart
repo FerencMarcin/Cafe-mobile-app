@@ -6,12 +6,11 @@ class ErrorAlertView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
       child: AlertDialog(
-        title: Text('Błąd'),
-        content: Text('Napotkano błąd'),
+        title: const Text('Błąd'),
+        content: const Text('Napotkano błąd'),
         actions: <Widget>[
           ElevatedButton(
             child: const Text('Wróć'),
