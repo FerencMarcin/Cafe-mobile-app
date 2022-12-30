@@ -75,6 +75,22 @@ class AuthService extends GetxController with StorageService {
     // log('firstname $stringValue');
   }
 
+  Future<bool> checkIsTokensExpired() async {
+    var accessToken = await getAccessToken();
+    var refreshToken = await getRefreshToken();
+    if((accessToken != null) && (refreshToken != null)){
+      if (JwtDecoder.isExpired(accessToken) && JwtDecoder.isExpired(refreshToken)){
+        log('tokeny przeterminowane');
+        return true;
+      } else {
+        log('tokeny zdatne');
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
+
   // Future<void> fetchUserPoints(String token) async {
   //   SharedPreferences prefs = await SharedPreferences.getInstance();
   //
