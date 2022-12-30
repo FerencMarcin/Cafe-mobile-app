@@ -23,12 +23,12 @@ class InitialView extends StatelessWidget {
       future: init(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return LoadingView();
+          return const LoadingView();
         } else {
           if (snapshot.hasError) {
             return ErrorView(snapshot: snapshot);
           } else {
-            return StartView();
+            return const StartView();
           }
         }
       }

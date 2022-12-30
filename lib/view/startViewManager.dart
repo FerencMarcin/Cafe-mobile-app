@@ -16,10 +16,10 @@ class StartView extends StatelessWidget {
     final AuthViewModel _authViewModel = Get.put(AuthViewModel());
     return Obx(() {
       if (_authManager.isLogged.value) {
-        return HomePageView();
+        return const HomePageView();
       } else {
         //return AuthView();
-        return WelcomeView();
+        return const WelcomeView();
       }
       return _authManager.isLogged.value ? LoginView() : HomePageView();
     });
