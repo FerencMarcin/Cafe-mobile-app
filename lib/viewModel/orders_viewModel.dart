@@ -26,6 +26,10 @@ class OrdersViewModel {
           order['updatedAt'] = localeDateString;
           ordersList.add(OrderHeaderModel.fromJSON(order));
         });
+      } else if (orders.statusCode == 403) {
+        throw 403;
+      } else {
+        throw Exception('Napotkano błąd');
       }
       if (sortBy == "date") {
         if (sortType == 'desc') {

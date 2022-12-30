@@ -1,5 +1,8 @@
 import 'dart:developer';
 
+import 'package:cafe_mobile_app/view/utils/errorAlert_view.dart';
+import 'package:cafe_mobile_app/view/utils/loading_view.dart';
+import 'package:cafe_mobile_app/view/utils/logoutAlert_view.dart';
 import 'package:cafe_mobile_app/viewModel/orders_viewModel.dart';
 import 'package:cafe_mobile_app/model/orderDetailsViewArguments_model.dart';
 import 'package:flutter/material.dart';
@@ -66,15 +69,18 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                 initialData: const [],
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
-                    log(snapshot.error.toString());
-                    log('error mes');
-                    //TODO show erro view
+                    if(snapshot.error == 403){
+                      return const LogoutAlertView();
+                    } else {
+                      return const ErrorAlertView();
+                    }
                   }
                   if (snapshot.connectionState == ConnectionState.done) {
                     return createOrdersListView(context, snapshot);
                   } else {
                     //TODO LOADING VIEW
-                    return const CircularProgressIndicator();
+                    //return const CircularProgressIndicator();
+                    return const LoadingView();
                   }
                 },
               ),
