@@ -43,6 +43,26 @@ class _WelcomeViewState extends State<WelcomeView> {
                       ),
                     ),
                   ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 250.0,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          image: DecorationImage(
+                              image: AssetImage('images/logo.png'),
+                              //colorFilter: ColorFilter.mode(AppColors.photoFilter, BlendMode.modulate),
+                              fit: BoxFit.fitHeight
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 100.0,
+                      )
+                    ]
+                  ),
                 ],
               ),
             ),
