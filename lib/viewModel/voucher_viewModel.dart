@@ -26,6 +26,22 @@ class VoucherViewModel {
     return voucherList;
   }
 
+  Future<List<VoucherModel>> getUserVouchers(String sortType, bool onlyActive) async {
+    final vouchers = await _dioClient.dioClient.get(availableCouponsUrl);
+    List<VoucherModel> voucherList = <VoucherModel>[];
+    if(vouchers.statusCode == 200) {
+      vouchers.data.forEach((voucher) async {
+        voucherList.add(VoucherModel.fromJSON(voucher));
+      });
+    }
+    if (sortType == 'desc') {
+      voucherList.sort((a,b) => b.pointPrice!.compareTo(a.pointPrice!));
+    } else {
+      voucherList.sort((a,b) => a.pointPrice!.compareTo(b.pointPrice!));
+    }
+    return voucherList;
+  }
+
   Future<String> createUserCoupon(int couponId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int? userId = prefs.getInt('userId');
