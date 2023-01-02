@@ -31,7 +31,7 @@ class _ProductsViewState extends State<ProductsView> {
               initialData: const [],
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  return const ErrorAlertView();
+                  return ErrorAlertView(description: '');
                 }
                 if (snapshot.connectionState == ConnectionState.done) {
                   return createCategoriesListView(context, snapshot);
@@ -49,7 +49,7 @@ class _ProductsViewState extends State<ProductsView> {
               initialData: const [],
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  return const ErrorAlertView();
+                  return const ErrorAlertView(description: '');
                 }
                 if (snapshot.connectionState == ConnectionState.done) {
                   return createProductsListView(context, snapshot);

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cafe_mobile_app/view/utils/errorAlert_view.dart';
 import 'package:cafe_mobile_app/view/utils/loading_view.dart';
 import 'package:cafe_mobile_app/view/utils/logoutAlert_view.dart';
@@ -72,7 +70,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                     if(snapshot.error == 403){
                       return const LogoutAlertView();
                     } else {
-                      return const ErrorAlertView();
+                      return ErrorAlertView(description: snapshot.error.toString());
                     }
                   }
                   if (snapshot.connectionState == ConnectionState.done) {

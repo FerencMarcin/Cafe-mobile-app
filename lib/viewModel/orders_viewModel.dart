@@ -29,7 +29,10 @@ class OrdersViewModel {
       } else if (orders.statusCode == 403) {
         throw 403;
       } else {
-        throw Exception('Napotkano błąd');
+        if (orders.data['message'].toString().contains('Nie znaleziono')) {
+          throw 'Nie masz jeszcze żadnych zamówień';
+        }
+        throw 'Napotkano błąd';
       }
       if (sortBy == "date") {
         if (sortType == 'desc') {
@@ -46,7 +49,7 @@ class OrdersViewModel {
       }
       return ordersList;
     } else {
-      throw Exception('Błąd podczas pobierania zamówień');
+      throw 'Błąd podczas pobierania zamówień';
     }
   }
 
