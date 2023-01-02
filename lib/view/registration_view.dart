@@ -1,9 +1,11 @@
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../theme/colors.dart';
 import '../viewModel/auth_viewModel.dart';
+import 'clipper/imageBorderClip.dart';
+import 'components/authForm.dart';
+import 'components/sectionTitle.dart';
 
 const List<String> sexList = <String>["Mężczyzna", "Kobieta"];
 
@@ -28,115 +30,161 @@ class _RegistrationViewState extends State<RegistrationView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Form(
-          autovalidateMode: AutovalidateMode.always,
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Adres email',
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                ClipPath(
+                  clipper:ImageBorderClip(), //set our custom wave clipper
+                  child:Container(
+                    color: AppColors.burlyWood,
+                    height: 160.0,
+                  ),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Należy podać adres email';
-                  }
-                  if(EmailValidator.validate(value)) {
-                    return null;
-                  } else {
-                    return 'Podaj poprawny adres email';
-                  }
-                },
-              ),
-              TextFormField(
-                controller: firstNameController,
-                decoration: const InputDecoration(
-                  labelText: 'Imie',
+                ClipPath(
+                  clipper: ImageBorderClip(),
+                  child: Container(
+                    height: 140.0,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      image: DecorationImage(
+                          image: AssetImage("images/initPageImage.jpg"),
+                          colorFilter: ColorFilter.mode(AppColors.photoFilter, BlendMode.modulate),
+                          fit: BoxFit.cover
+                      ),
+                    ),
+                  ),
                 ),
-                validator: (value) {
-                  return (value == null || value.isEmpty)
-                      ? 'Należy podać imie'
-                      : null;
-                },
-              ),
-              TextFormField(
-                controller: lastNameController,
-                decoration: const InputDecoration(
-                  labelText: 'Nazwisko',
+              ],
+            ),
+            Padding(
+                padding: const EdgeInsets.only(top: 5.0, bottom: 10.0),
+                child: sectionTitle('Rejestracja')),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Form(
+                autovalidateMode: AutovalidateMode.always,
+                key: _formKey,
+                child: Column(
+                  children: [
+                    AuthForm.emailFormField(emailController),
+                    AuthForm.firstNameFormField(firstNameController),
+                    AuthForm.lastNameFormField(lastNameController),
+                    AuthForm.phoneNumberFormField(numberController),
+                    AuthForm.passwordFormFieldValidated(passController),
+                    DropdownButton<String>(
+                      value: selectedSex,
+                      icon: const Icon(Icons.arrow_downward),
+                      elevation: 16,
+                      style: const TextStyle(color: AppColors.darkGoldenrod),
+                      underline: Container(
+                        height: 2,
+                        color: AppColors.darkGoldenrodMap.shade900,
+                      ),
+                      onChanged: (String? newValue) {
+                        setState(() => selectedSex = newValue!);
+                      },
+                      isExpanded: true,
+                      items: sexList.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 45.0),
+                            child: Text(value),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
                 ),
-                validator: (value) {
-                  return (value == null || value.isEmpty)
-                      ? 'Należy podać nazwisko'
-                      : null;
-                },
               ),
-              TextFormField(
-                controller: numberController,
-                decoration: const InputDecoration(
-                  labelText: 'Numer telefonu',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Należy podać numer telefonu';
-                  }
-                  if (value.length != 9) {
-                    return 'Podaj poprawny numer telefonu (np. 111222333)';
-                  }
-                },
-              ),
-              TextFormField(
-                controller: passController,
-                decoration: const InputDecoration(
-                  labelText: 'Hasło',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Należy podać hasło';
-                  }
-                  RegExp validPassword = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
-                  if (validPassword.hasMatch(value)) {
-                    if(value.length < 8) {
-                      return 'Hasło musi zawierać przynajmniej 8 znaków';
-                    }
-                    return null;
-                  } else {
-                    return 'Hasło musi zawierać małe i wielkie litery, cyfry i znaki';
-                  }
-                },
-              ),
-              DropdownButton<String>(
-                value: selectedSex,
-                icon: const Icon(Icons.arrow_downward),
-                elevation: 16,
-                style: const TextStyle(color: AppColors.darkGoldenrod),
-                underline: Container(
-                  height: 2,
-                  color: AppColors.darkGoldenrodMap.shade900,
-                ),
-                onChanged: (String? newValue) {
-                  setState(() => selectedSex = newValue!);
-                },
-                isExpanded: true,
-                items: sexList.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ),
-              Row(
+            ),
+            // TextFormField(
+            //   controller: emailController,
+            //   decoration: const InputDecoration(
+            //     labelText: 'Adres email',
+            //   ),
+            //   validator: (value) {
+            //     if (value == null || value.isEmpty) {
+            //       return 'Należy podać adres email';
+            //     }
+            //     if(EmailValidator.validate(value)) {
+            //       return null;
+            //     } else {
+            //       return 'Podaj poprawny adres email';
+            //     }
+            //   },
+            // ),
+            // TextFormField(
+            //   controller: firstNameController,
+            //   decoration: const InputDecoration(
+            //     labelText: 'Imie',
+            //   ),
+            //   validator: (value) {
+            //     return (value == null || value.isEmpty)
+            //         ? 'Należy podać imie'
+            //         : null;
+            //   },
+            // ),
+            // TextFormField(
+            //   controller: lastNameController,
+            //   decoration: const InputDecoration(
+            //     labelText: 'Nazwisko',
+            //   ),
+            //   validator: (value) {
+            //     return (value == null || value.isEmpty)
+            //         ? 'Należy podać nazwisko'
+            //         : null;
+            //   },
+            // ),
+            // TextFormField(
+            //   controller: numberController,
+            //   decoration: const InputDecoration(
+            //     labelText: 'Numer telefonu',
+            //   ),
+            //   validator: (value) {
+            //     if (value == null || value.isEmpty) {
+            //       return 'Należy podać numer telefonu';
+            //     }
+            //     if (value.length != 9) {
+            //       return 'Podaj poprawny numer telefonu (np. 111222333)';
+            //     }
+            //   },
+            // ),
+            // TextFormField(
+            //   controller: passController,
+            //   decoration: const InputDecoration(
+            //     labelText: 'Hasło',
+            //   ),
+            //   validator: (value) {
+            //     if (value == null || value.isEmpty) {
+            //       return 'Należy podać hasło';
+            //     }
+            //     RegExp validPassword = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
+            //     if (validPassword.hasMatch(value)) {
+            //       if(value.length < 8) {
+            //         return 'Hasło musi zawierać przynajmniej 8 znaków';
+            //       }
+            //       return null;
+            //     } else {
+            //       return 'Hasło musi zawierać małe i wielkie litery, cyfry i znaki';
+            //     }
+            //   },
+            // ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
+                      style: buttonStyle,
                       onPressed: () { Navigator.pop(context); },
-                      child: const Text('Anuluj')
+                      child: Text('Anuluj', style: buttonTextStyle)
                   ),
                   const SizedBox(width: 20.0),
                   ElevatedButton(
+                      style: buttonStyle,
                       onPressed: () async {
                         if (_formKey.currentState?.validate() ?? false) {
                           try {
@@ -154,23 +202,29 @@ class _RegistrationViewState extends State<RegistrationView> {
                           }
                         }
                       },
-                      child: const Text('Zarejestruj')
+                      child: Text('Zarejestruj', style: buttonTextStyle)
                   )
                 ],
               ),
-
-              TextButton(
-                  onPressed: () async {
-                    if(Get.previousRoute == '/login') {
-                      Navigator.pop(context);
-                    } else {
-                      Navigator.pushNamed(context, '/login');
-                    }
-                  },
-                  child: const Text('Zaloguj się')
-              )
-            ],
-          ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text("Masz już konto?", style: textStyle),
+                TextButton(
+                    onPressed: () async {
+                      if(Get.previousRoute == '/login') {
+                        Navigator.pop(context);
+                      } else {
+                        Navigator.pushNamed(context, '/login');
+                      }
+                    },
+                    child: Text('Zaloguj się', style: textButtonLabelStyle)
+                )
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -206,4 +260,30 @@ class _RegistrationViewState extends State<RegistrationView> {
         }
     );
   }
+
+  final ButtonStyle buttonStyle = ElevatedButton.styleFrom(
+      minimumSize: const Size(100.0, 40.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      side: const BorderSide(width: 2.0, color: AppColors.aztecGold),
+      backgroundColor: AppColors.darkGoldenrodMap[50],
+      elevation: 5.0,
+      shadowColor: AppColors.darkGoldenrodMap[100]
+  );
+
+  final TextStyle buttonTextStyle = TextStyle(
+      color: AppColors.darkGoldenrodMap[900],
+      fontWeight: FontWeight.bold,
+      fontSize: 17.0
+  );
+
+  final TextStyle textStyle = TextStyle(
+      color: AppColors.darkGoldenrodMap[900],
+      fontSize: 16.0
+  );
+
+  final TextStyle textButtonLabelStyle = TextStyle(
+      color: AppColors.darkGoldenrodMap[700],
+      fontSize: 17.0,
+      fontWeight: FontWeight.bold
+  );
 }
