@@ -53,7 +53,6 @@ class _WelcomeViewState extends State<WelcomeView> {
                           shape: BoxShape.rectangle,
                           image: DecorationImage(
                               image: AssetImage('images/logo.png'),
-                              //colorFilter: ColorFilter.mode(AppColors.photoFilter, BlendMode.modulate),
                               fit: BoxFit.fitHeight
                           ),
                         ),
