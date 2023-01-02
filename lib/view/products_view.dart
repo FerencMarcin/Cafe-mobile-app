@@ -1,7 +1,5 @@
-import 'dart:developer';
 import 'package:cafe_mobile_app/theme/colors.dart';
 import 'package:cafe_mobile_app/view/utils/errorAlert_view.dart';
-import 'package:cafe_mobile_app/view/utils/loading_view.dart';
 import 'package:cafe_mobile_app/viewModel/products_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -38,7 +36,7 @@ class _ProductsViewState extends State<ProductsView> {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return createCategoriesListView(context, snapshot);
                 } else {
-                  return const LoadingView();
+                  return const CircularProgressIndicator();
                 }
               },
             )
@@ -48,7 +46,6 @@ class _ProductsViewState extends State<ProductsView> {
           Expanded(
             child: _selectedCategory != 0 ? FutureBuilder(
               future: _productsViewModel.getProductsByCategory(_selectedCategory),
-              // future: getProducts(),
               initialData: const [],
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
@@ -57,7 +54,7 @@ class _ProductsViewState extends State<ProductsView> {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return createProductsListView(context, snapshot);
                 } else {
-                  return const LoadingView();
+                  return const CircularProgressIndicator();
                 }
               },
             ) : Text('Wybierz kategorię',
@@ -72,7 +69,7 @@ class _ProductsViewState extends State<ProductsView> {
 
   Widget createCategoriesListView(BuildContext context, AsyncSnapshot<List> snapshot) {
     var values = snapshot.data;
-    return values == null ? Text('Wystąpił bład') : ListView.builder(
+    return values == null ? const Text('Wystąpił bład') : ListView.builder(
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
       itemCount: values.length,
