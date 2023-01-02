@@ -64,7 +64,7 @@ class _LoginViewState extends State<LoginView> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    AuthForm.emailInputFormField(emailController),
+                    AuthForm.emailFormField(emailController),
                     AuthForm.passwordFormField(passController),
                   ],
                 ),
