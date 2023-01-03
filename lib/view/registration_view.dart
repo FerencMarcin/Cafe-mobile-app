@@ -72,7 +72,7 @@ class _RegistrationViewState extends State<RegistrationView> {
                     AuthForm.firstNameFormField(firstNameController),
                     AuthForm.lastNameFormField(lastNameController),
                     AuthForm.phoneNumberFormField(numberController),
-                    AuthForm.passwordFormFieldValidated(passController),
+                    AuthForm.passwordFormFieldValidated(passController, 'Hasło'),
                     DropdownButton<String>(
                       value: selectedSex,
                       icon: const Icon(Icons.arrow_downward),

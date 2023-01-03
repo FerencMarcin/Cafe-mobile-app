@@ -146,7 +146,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                         ),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 15.0),
-                          child: AuthForm.passwordFormFieldValidated(newPassController),
+                          child: AuthForm.passwordFormFieldValidated(newPassController, 'Nowe hasło'),
                         ),
                         closeButton ? ElevatedButton(
                           style: buttonStyle,
