@@ -27,12 +27,12 @@ class AuthForm {
     );
   }
 
-  static TextFormField passwordFormField(TextEditingController controller) {
+  static TextFormField passwordFormField(TextEditingController controller, String label) {
     return TextFormField(
       obscureText: true,
       controller: controller,
       decoration: InputDecoration(
-        labelText: 'Hasło',
+        labelText: label,
         labelStyle: TextStyle(
             color: AppColors.darkGoldenrodMap[800]
         ),
@@ -51,6 +51,7 @@ class AuthForm {
       obscureText: true,
       controller: controller,
       decoration: InputDecoration(
+        errorMaxLines: 2,
         labelText: label,
         labelStyle: TextStyle(
             color: AppColors.darkGoldenrodMap[800]
@@ -78,6 +79,7 @@ class AuthForm {
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
+        errorMaxLines: 2,
         labelText: 'Numer telefonu',
         labelStyle: TextStyle(
             color: AppColors.darkGoldenrodMap[800]
