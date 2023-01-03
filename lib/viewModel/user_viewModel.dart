@@ -12,16 +12,7 @@ class UserViewModel {
 
   final String userInfoUrl = '${dotenv.env['BASE_URL']!}/users';
   final String userEditUrl = '${dotenv.env['BASE_URL']!}/users/edit';
-  //TODO delete death code
-  // late final LoginService _loginService;
-  // late final AuthService _authService;
-  //
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  //   _loginService = Get.put(LoginService());
-  //   _authService = Get.put(AuthService());
-  // }
+  final String userChangePasswordUrl = '${dotenv.env['BASE_URL']!}/users/changepassword';
 
   Future<String?> getUsername() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -75,6 +66,27 @@ class UserViewModel {
       'phone': phone,
       'sex': sex,
       'RoleId': 1
+    });
+    log(response.data.toString());
+    if(response.statusCode == 200) {
+      return response.data['message'];
+    } else if (response.statusCode == 403) {
+      throw 403;
+    } else if (response.statusCode == 400) {
+      throw response.data['error'];
+    }
+    throw "Wystąpił błąd";
+  }
+
+  Future<String> changePassword(String currentPassword, String newPassword) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? userId = prefs.getInt('userId');
+    if(userId == null) {
+      throw "Wystąpił błąd";
+    }
+    final response = await _dioClient.dioClient.put('$userChangePasswordUrl/$userId', data: {
+      'password': currentPassword,
+      'newPassword': newPassword
     });
     log(response.data.toString());
     if(response.statusCode == 200) {

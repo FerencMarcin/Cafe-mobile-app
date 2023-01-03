@@ -59,10 +59,8 @@ class _UserProfileViewState extends State<UserProfileView> {
                         }
                       }
                       if (snapshot.connectionState == ConnectionState.done) {
-                        return createOrdersListView(context, snapshot);
+                        return createUserDataView(context, snapshot);
                       } else {
-                        //TODO LOADING VIEW
-                        //return const CircularProgressIndicator();
                         return const LoadingView();
                       }
                     },
@@ -75,7 +73,7 @@ class _UserProfileViewState extends State<UserProfileView> {
     );
   }
 
-  Widget createOrdersListView(BuildContext context, AsyncSnapshot snapshot) {
+  Widget createUserDataView(BuildContext context, AsyncSnapshot snapshot) {
     var user = snapshot.data;
     firstNameController.text = user.firstName;
     lastNameController.text = user.lastName;
@@ -84,7 +82,7 @@ class _UserProfileViewState extends State<UserProfileView> {
     return user == null ? const Text("Profil aktualnie nie jest dostępny")
     : Column(
         children: [
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           userDataLabel('Imie', firstNameController, AuthForm.firstNameFormField(firstNameController), user.sex),
           userData(user.firstName),
           userDataLabel('Nazwisko', lastNameController, AuthForm.lastNameFormField(lastNameController), user.sex),
@@ -94,26 +92,39 @@ class _UserProfileViewState extends State<UserProfileView> {
           userDataLabel('Numer telefonu', numberController, AuthForm.phoneNumberFormField(numberController), user.sex),
           userData(user.phone),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+            padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
             child: Row(
               children: [
                 Text('Płeć: ${user.sex}', style: profileDataLabel),
-                Spacer(),
+                const Spacer(),
 
               ],
             ),
           ),
-          Divider(),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 35.0),
+            child: Divider(color: AppColors.darkGoldenrod, thickness: 2.0),
+          ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+            padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
             child: Row(
               children: [
                 Text('Twoje punkty: ${user.points.toString()}', style: profileDataLabel),
-                Spacer(),
-
+                const Spacer(),
               ],
             ),
           ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 35.0),
+            child: Divider(color: AppColors.darkGoldenrod, thickness: 2.0),
+          ),
+          ElevatedButton(
+              style: buttonStyle,
+              onPressed: () {
+                Get.dialog(changePasswordDialog());
+              },
+              child: Text('Zmień hasło', style: buttonTextStyle)
+          )
         ],
       );
   }
@@ -177,7 +188,6 @@ class _UserProfileViewState extends State<UserProfileView> {
                                     }
                                 );
                               }
-                              //showSuccessGetDialog('Utworzono nowe konto', response, 'Przejdź do aplikacji');
                             } catch (exception) {
                               setState(() {
                                 content = '$exception';
@@ -197,13 +207,77 @@ class _UserProfileViewState extends State<UserProfileView> {
     );
   }
 
+  StatefulBuilder changePasswordDialog() {
+    String content = 'Wprowadź swoje obecne oraz nowe hasło';
+    bool closeButton = false;
+    return StatefulBuilder(
+        builder: (context, setState) {
+          return AlertDialog(
+              title: Center(child: sectionTitle("Edycja profilu")),
+              content: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                child: Text(content, textAlign: TextAlign.justify, style: textStyle),
+              ),
+              actions: <Widget>[
+                Form(
+                    autovalidateMode: AutovalidateMode.always,
+                    key: _editFormKey,
+                    child: Column(
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 15.0),
+                            child: AuthForm.passwordFormField(passController, 'Obecne hasło')
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 15.0),
+                            child: AuthForm.passwordFormFieldValidated(newPassController, 'Nowe hasło')
+                        ),
+                        closeButton ? ElevatedButton(
+                          style: buttonStyle,
+                          child: Text('Zamknij', style: buttonTextStyle,),
+                          onPressed: () {
+                            Navigator.pop((context));
+                            Navigator.pushNamed(context, '/start');
+                          },
+                        ) : ElevatedButton(
+                          style: buttonStyle,
+                          child: Text('Zmień hasło', style: buttonTextStyle,),
+                          onPressed: () async {
+                            if (_editFormKey.currentState?.validate() ?? false) {
+                              try {
+                                final response = await _userViewModel.changePassword(
+                                  passController.text,
+                                  newPassController.text
+                                );
+                                log(response.toString());
+                                setState(() {
+                                  content = response;
+                                  closeButton = true;
+                                });
+                              } catch (exception) {
+                                setState(() {
+                                  content = '$exception';
+                                });
+                              }
+                            }
+                          },
+                        ),
+                      ],
+                    )
+                )
+              ]
+          );
+        }
+    );
+  }
+
   Padding userDataLabel(String label, TextEditingController controller, TextFormField inputField, String sex) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40.0),
       child: Row(
         children: [
           Text('$label:', style: profileDataLabel),
-          Spacer(),
+          const Spacer(),
           OutlinedButton(
               style: detailsButtonStyle,
               onPressed: () {
