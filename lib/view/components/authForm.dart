@@ -46,12 +46,12 @@ class AuthForm {
     );
   }
 
-  static TextFormField passwordFormFieldValidated(TextEditingController controller) {
+  static TextFormField passwordFormFieldValidated(TextEditingController controller, String label) {
     return TextFormField(
       obscureText: true,
       controller: controller,
       decoration: InputDecoration(
-        labelText: 'Hasło',
+        labelText: label,
         labelStyle: TextStyle(
             color: AppColors.darkGoldenrodMap[800]
         ),
