@@ -26,7 +26,7 @@ class _UnauthenticatedUserViewState extends State<UnauthenticatedUserView> {
                 child: Stack(
                   children: [
                     ClipPath(
-                      clipper:ImageBorderClip(), //set our custom wave clipper
+                      clipper:ImageBorderClip(),
                       child:Container(
                         color: AppColors.burlyWood,
                         height:220.0,
@@ -36,10 +36,10 @@ class _UnauthenticatedUserViewState extends State<UnauthenticatedUserView> {
                       clipper: ImageBorderClip(),
                       child: Container(
                         height: 200.0,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.rectangle,
                           image: DecorationImage(
-                              image: const AssetImage("images/unauthHeader.jpg"),
+                              image: AssetImage("images/unauthHeader.jpg"),
                               colorFilter: ColorFilter.mode(AppColors.photoFilter, BlendMode.modulate),
                               fit: BoxFit.cover
                           ),
@@ -65,7 +65,7 @@ class _UnauthenticatedUserViewState extends State<UnauthenticatedUserView> {
                               autoPlay: true,
                               autoPlayCurve: Curves.fastOutSlowIn,
                               enableInfiniteScroll: true,
-                              autoPlayAnimationDuration: Duration(milliseconds: 800),
+                              autoPlayAnimationDuration: const Duration(milliseconds: 800),
                               viewportFraction: 0.8,
                       )
                     ),
@@ -77,18 +77,16 @@ class _UnauthenticatedUserViewState extends State<UnauthenticatedUserView> {
                         child: Text("Dlaczego warto dołączyć?", style: TextStyle(color: AppColors.darkGoldenrodMap[800], fontSize: 24.0, fontWeight: FontWeight.w600),),
                       ),
                     ),
-                    Container(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 15.0, bottom: 25.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(" - Możliwość rezerwacji stolika", style: benefitTextStyle),
-                            Text(" - Zbieranie punktów lojalnościowych", style: benefitTextStyle),
-                            Text(" - Atrakcyjne kupony promocyjne", style: benefitTextStyle),
-                            Text(" - Podgląd historii zamówień", style: benefitTextStyle)
-                          ],
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0, bottom: 25.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(" - Możliwość rezerwacji stolika", style: benefitTextStyle),
+                          Text(" - Zbieranie punktów lojalnościowych", style: benefitTextStyle),
+                          Text(" - Atrakcyjne kupony promocyjne", style: benefitTextStyle),
+                          Text(" - Podgląd historii zamówień", style: benefitTextStyle)
+                        ],
                       ),
                     ),
                     homePageMenuButton(outlineButtonStyle, '/login', 'Zaloguj się'),
@@ -165,7 +163,7 @@ class _UnauthenticatedUserViewState extends State<UnauthenticatedUserView> {
     return OutlinedButton(
       style: style,
       onPressed: () {Navigator.pushNamed(context, path);},
-      child: Padding(padding: EdgeInsets.all(10.0),
+      child: Padding(padding: const EdgeInsets.all(10.0),
         child: Text(label,
             style: TextStyle(
                 fontSize: 22.0,
