@@ -1,10 +1,11 @@
+import 'package:cafe_mobile_app/model/user_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../service/interceptor/dioClient.dart';
 
-class UserViewModel extends GetxController {
+class UserViewModel {
   final DioClient _dioClient = Get.put(DioClient());
 
   final String userInfoUrl = '${dotenv.env['BASE_URL']!}/users';
@@ -38,6 +39,23 @@ class UserViewModel extends GetxController {
       throw 403;
     }
     return "Wystąpił błąd";
+  }
+
+  Future<UserModel> getUserData() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? userId = prefs.getInt('userId');
+    if(userId == null) {
+      throw "Wystąpił błąd";
+    }
+    final response = await _dioClient.dioClient.get('$userInfoUrl/$userId');
+    if(response.statusCode == 200) {
+      UserModel userData = UserModel();
+      userData = UserModel.fromJSON(response.data);
+      return userData;
+    } else if (response.statusCode == 403) {
+      throw 403;
+    }
+    throw "Wystąpił błąd";
   }
 
 }
