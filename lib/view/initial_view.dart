@@ -10,12 +10,7 @@ class InitialView extends StatelessWidget {
   InitialView({Key? key}) : super(key: key);
   final AuthService _authManager = Get.put(AuthService());
 
-  Future<void> init() async {
-    _authManager.checkAuthStatus();
-
-    //TODO some other initializations
-    await Future.delayed(const Duration(seconds: 3));
-}
+  Future<void> init() async { _authManager.checkAuthStatus(); }
 
   @override
   Widget build(BuildContext context) {
@@ -32,15 +27,6 @@ class InitialView extends StatelessWidget {
           }
         }
       }
-    );
-  }
-
-  //TODO zobaczyć czy działa i usunąć
-  Scaffold error_view(AsyncSnapshot<Object?> snapshot) {
-    return Scaffold(
-      body: Center(
-        child: Text('Błąd: ${snapshot.error}'),
-      ),
     );
   }
 }
