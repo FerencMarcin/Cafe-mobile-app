@@ -5,9 +5,11 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/table_model.dart';
 import '../service/interceptor/dioClient.dart';
+import '../service/time_service.dart';
 
 class ReservationsViewModel {
   final DioClient _dioClient = Get.put(DioClient());
+  final TimeService _timeService = Get.put(TimeService());
 
   final String tablesUrl = '${dotenv.env['BASE_URL']!}/tables';
   final String reservationUrl = '${dotenv.env['BASE_URL']!}/reservations';
@@ -15,6 +17,7 @@ class ReservationsViewModel {
   final String userReservationsUrl = '${dotenv.env['BASE_URL']!}/reservations/client';
 
   Future<List<TableModel>> getReservations(String selectedDate) async {
+
     final tables = await _dioClient.dioClient.get('$tablesUrl/');
     final reservations = await _dioClient.dioClient.get('$reservationsByStatusIdUrl/1');
     List<TableModel> tablesList = <TableModel>[];
@@ -46,9 +49,9 @@ class ReservationsViewModel {
       if(reservations.statusCode == 200) {
         reservations.data.forEach((reservation) {
           var reservationDateTime = DateTime.parse(reservation['date']);
-          final format = DateFormat('yyyy-MM-dd hh:mm');
-          final localeDateString = format.format(reservationDateTime.toLocal());
-          reservation['date'] = localeDateString;
+          final format = DateFormat('yyyy-MM-dd HH:mm');
+          final formattedDateTime = _timeService.convertUtcToLocalTime(format, reservationDateTime);
+          reservation['date'] = formattedDateTime;
           if(onlyActive && (reservation['ReservationStatusId'] == 1)) {
             reservationsList.add(ReservationModel.fromJSON(reservation));
           } else if (!onlyActive) {

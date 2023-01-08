@@ -6,8 +6,11 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../service/interceptor/dioClient.dart';
 
+import '../service/time_service.dart';
+
 class OrdersViewModel {
   final DioClient _dioClient = Get.put(DioClient());
+  final TimeService _timeService = Get.put(TimeService());
 
   final String userOrdersUrl = '${dotenv.env['BASE_URL']!}/orderheaders/client';
   final String orderDetailsUrl = '${dotenv.env['BASE_URL']!}/orderdetails/orderheader';
@@ -21,9 +24,9 @@ class OrdersViewModel {
       if(orders.statusCode == 200) {
         orders.data.forEach((order) {
           var orderDateTime = DateTime.parse(order['updatedAt']);
-          final format = DateFormat('yyyy-MM-dd hh:mm');
-          final localeDateString = format.format(orderDateTime.toLocal());
-          order['updatedAt'] = localeDateString;
+          final format = DateFormat('yyyy-MM-dd HH:mm');
+          final formattedDateTime = _timeService.convertUtcToLocalTime(format, orderDateTime);
+          order['updatedAt'] = formattedDateTime;
           ordersList.add(OrderHeaderModel.fromJSON(order));
         });
       } else if (orders.statusCode == 403) {
@@ -35,22 +38,14 @@ class OrdersViewModel {
         throw 'Napotkano błąd';
       }
       if (sortBy == "date") {
-        if (sortType == 'desc') {
-          ordersList.sort((a,b) => b.date!.compareTo(a.date!));
-        } else {
-          ordersList.sort((a,b) => a.date!.compareTo(b.date!));
-        }
+        if (sortType == 'desc') { ordersList.sort((a,b) => b.date!.compareTo(a.date!)); }
+        else { ordersList.sort((a,b) => a.date!.compareTo(b.date!)); }
       } else {
-        if (sortType == 'desc') {
-          ordersList.sort((a,b) => b.value!.compareTo(a.value!));
-        } else {
-          ordersList.sort((a,b) => a.value!.compareTo(b.value!));
-        }
+        if (sortType == 'desc') { ordersList.sort((a,b) => b.value!.compareTo(a.value!)); }
+        else { ordersList.sort((a,b) => a.value!.compareTo(b.value!)); }
       }
       return ordersList;
-    } else {
-      throw 'Błąd podczas pobierania zamówień';
-    }
+    } else { throw 'Błąd podczas pobierania zamówień'; }
   }
 
   Future<List<OrderDetailModel>> getUserOrderDetails(orderId) async {
