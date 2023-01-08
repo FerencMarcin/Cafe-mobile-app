@@ -32,6 +32,8 @@ class _NewReservationViewState extends State<NewReservationView> {
     }
     final hours = nowTime.hour.toString().padLeft(2, '0');
     final minutes = nowTime.minute.toString().padLeft(2, '0');
+    final days = nowDate.day.toString().padLeft(2, '0');
+    final months = nowDate.month.toString().padLeft(2, '0');
 
     return Scaffold(
         appBar: AppBarView(appBarTitle: 'Nowa rezerwacja'),
@@ -57,7 +59,7 @@ class _NewReservationViewState extends State<NewReservationView> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(left: 20.0),
-                                  child: Text('${nowDate.year}-${nowDate.month}-${nowDate.day}',
+                                  child: Text('${nowDate.year}-$months-$days',
                                       style: subsectionText),
                                 ),
                                 const Spacer(),
@@ -123,7 +125,7 @@ class _NewReservationViewState extends State<NewReservationView> {
                                 style: pickerButtonStyle,
                                 onPressed: () {
                                   setState(() {
-                                    _selectedDate = '${nowDate.year}-${nowDate.month}-${nowDate.day}';
+                                    _selectedDate = '${nowDate.year}-$months-$days';
                                     _selectedTime = '$hours:$minutes:${00}';
                                   });
                                 },
