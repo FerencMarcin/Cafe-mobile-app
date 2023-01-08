@@ -105,19 +105,19 @@ class _ProductsViewState extends State<ProductsView> {
                       const Spacer(),
                       values[index].specialOffer == null ?
                         Text('${values[index].price} zł', style: priceText)
-                        : Text(' ${values[index].price} zł', style: crossedPriceText)
+                        : Text('${values[index].price} zł', style: crossedPriceText)
                     ],
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Row(
                       children: [
-                        Text('Pojemność: ${values[index].size}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300 ,color: AppColors.darkGoldenrodMap[800]),),
+                        Text('Rozmiar: ${values[index].size}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300 ,color: AppColors.darkGoldenrodMap[800]),),
                         const Spacer(),
                         values[index].specialOffer == null ?
                           const Text("")
                             : Text(
-                                '${values[index].price - (values[index].price * 0.01 * values[index].specialOffer.value)} zł',
+                                '${(values[index].price - (values[index].price * 0.01 * values[index].specialOffer.value)).toStringAsFixed(2)} zł',
                                 style: specialOfferText,
                               ),
                       ],
