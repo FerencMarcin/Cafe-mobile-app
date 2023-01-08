@@ -82,7 +82,7 @@ class UserViewModel {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int? userId = prefs.getInt('userId');
     if(userId == null) {
-      throw "Wystąpił błąd";
+      return "Wystąpił błąd";
     }
     final response = await _dioClient.dioClient.put('$userChangePasswordUrl/$userId', data: {
       'password': currentPassword,
