@@ -1,14 +1,15 @@
 import 'package:cafe_mobile_app/service/storage_service.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 
 class JwtInterceptor extends Interceptor with StorageService{
+  final String refreshTokenUrl = '${dotenv.env['BASE_URL']!}/auth/refresh';
   Dio api = Dio();
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     var accessToken = await getAccessToken();
-
     if(accessToken != null) {
       options.headers['Authorization'] = 'Bearer $accessToken';
       options.followRedirects = false;
@@ -35,7 +36,7 @@ class JwtInterceptor extends Interceptor with StorageService{
     api.options.headers["cookie"] = '$refreshToken';
     api.options.followRedirects = false;
     api.options.validateStatus = (status) {return status! < 500;};
-    final response = await api.get('http://10.0.2.2:3001/auth/refresh');
+    final response = await api.get(refreshTokenUrl);
     if (response.statusCode == 200) {
       String? accessToken = response.data['accessToken'];
       if (accessToken != null) { await setAccessToken(accessToken); }
