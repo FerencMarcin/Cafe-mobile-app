@@ -22,13 +22,11 @@ class _UserOrdersViewState extends State<UserOrdersView> {
   String _sortBy = 'date';
   String _sortType = 'desc';
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarView(appBarTitle: ''),
         body: Column(
-          //crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             sectionTitle('Moje zamówienia'),
             Padding(
@@ -67,7 +65,7 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                 initialData: const [],
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
-                    if(snapshot.error == 403){
+                    if(snapshot.error == 403) {
                       return const LogoutAlertView();
                     } else {
                       return ErrorAlertView(description: snapshot.error.toString());
@@ -76,8 +74,6 @@ class _UserOrdersViewState extends State<UserOrdersView> {
                   if (snapshot.connectionState == ConnectionState.done) {
                     return createOrdersListView(context, snapshot);
                   } else {
-                    //TODO LOADING VIEW
-                    //return const CircularProgressIndicator();
                     return const LoadingView();
                   }
                 },
