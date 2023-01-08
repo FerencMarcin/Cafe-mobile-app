@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 mixin StorageService {
-  final secureStorage = FlutterSecureStorage();
+  final secureStorage = const FlutterSecureStorage();
 
   Future<void> setAccessToken(String token) async {
     await secureStorage.write(key: 'AccessToken', value: token);
@@ -14,25 +12,16 @@ mixin StorageService {
   }
 
   Future<String?> getAccessToken() async {
-    final value = await secureStorage.read(key: 'AccessToken');
-    log('token form storage: $value');
-    return value;
+    return await secureStorage.read(key: 'AccessToken');
   }
 
   Future<String?> getRefreshToken() async {
-    final value = await secureStorage.read(key: 'RefreshToken');
-    log('token form storage: $value');
-    return value;
+    return await secureStorage.read(key: 'RefreshToken');
   }
 
   Future<bool> isAccessToken() async {
-    var value = await secureStorage.read(key: 'AccessToken');
-    return !(value == null); // MF: refactor
-    if(value != null) {
-      return true;
-    } else {
-      return false;
-    }
+    String? value = await getAccessToken();
+    return !(value == null);
   }
 
   Future<void> removeTokens() async {
