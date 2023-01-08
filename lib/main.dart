@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('pl', ''), // English, no country code
+        Locale('pl', ''),
       ],
       home: InitialView(),
       routes: {
