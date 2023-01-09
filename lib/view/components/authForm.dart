@@ -93,6 +93,7 @@ class AuthForm {
         if (value.length != 9) {
           return 'Podaj poprawny numer telefonu (np. 111222333)';
         }
+        return null;
       },
     );
   }
