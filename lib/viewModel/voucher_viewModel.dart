@@ -95,22 +95,26 @@ class VoucherViewModel {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int? userId = prefs.getInt('userId');
     if (userId != null) {
+      DateTime date = DateTime.now().add(const Duration(days: 14));
       var data = {
         "UserId": userId,
-        "ReservationStatusId": 1
+        "CouponId": couponId,
+        "UserCouponStatusId": 1,
+        "expiration_date": date
       };
       final response = await _dioClient.dioClient.post(
-        'http://10.0.2.2:3001/', data: data,
+        '$updateUsersCouponsUrl/', data: data,
       );
       if(response.statusCode == 404) {
         return response.data['message'];
       } else if (response.statusCode == 200){
-        return "Dodano nową rezerwację";
+        log('coupon created');
+        return "Dodano nowy kupon";
       } else {
         return "Wystąpił błąd";
       }
     } else {
-      return "Błąd podczas dodawania rezerwacji";
+      return "Błąd podczas dodawania kuponu";
     }
   }
 }

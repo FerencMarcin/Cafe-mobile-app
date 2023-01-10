@@ -103,6 +103,12 @@ class _VouchersViewState extends State<VouchersView> {
                   if (snapshot.hasError) {
                     log(snapshot.error.toString());
                     log('error mes');
+                    return StatefulBuilder(builder: (context, setState) {
+                      return const AlertDialog(
+                        title: Text("Wystąpił błąd"),
+                        content: Text('Spróbuj ponownie później'),
+                      );
+                    });
                     //TODO show erro view
                   }
                   if (snapshot.connectionState == ConnectionState.done && points != null) {
@@ -200,7 +206,9 @@ class _VouchersViewState extends State<VouchersView> {
                                     ),
                                     OutlinedButton(
                                       style: detailsButtonStyle,
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        _voucherViewModel.createUserCoupon(values[index].id);
+                                      },
                                       child: Text("Wybierz", style: TextStyle(color: AppColors.darkGoldenrodMap[800])),
                                     )
                                   ],
@@ -215,6 +223,44 @@ class _VouchersViewState extends State<VouchersView> {
             );
           }
         );
+  }
+
+  StatefulBuilder confirmReservation(int couponId) {
+    String content = "Czy chcesz dokonać rezerwacji stolika nr: , na dzień: , godzina: ";
+    bool confirmButton = true;
+    return StatefulBuilder(
+        builder: (context, setState) {
+          return AlertDialog(
+            title: const Text("Nowa Rezerwacja"),
+            content: Text(content),
+            actions: confirmButton ? <Widget>[
+              ElevatedButton(
+                child: const Text('Anuluj'),
+                onPressed: () { Navigator.pop((context));},
+              ),
+              ElevatedButton(
+                child: const Text('Potwierdź'),
+                onPressed: () async {
+                  final VoucherViewModel _voucherViewModel = Get.find();
+                  String response = await _voucherViewModel.createUserCoupon(couponId);
+                  setState(() {
+                    content = response;
+                    confirmButton = false;
+                  });
+                },
+              )
+            ] : <Widget> [
+              ElevatedButton(
+                child: Text('Zamknij'),
+                onPressed: () {
+                  Navigator.pop((context));
+                  Navigator.pushReplacementNamed(context, '/home');
+                },
+              ),
+            ],
+          );
+        }
+    );
   }
 
   final TextStyle voucherNameTextStyle = TextStyle(
