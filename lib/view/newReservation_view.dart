@@ -143,7 +143,6 @@ class _NewReservationViewState extends State<NewReservationView> {
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: Container(
                       decoration: _selectedDate != "" ? formContainerDecoration : null,
-                      //clipBehavior: Clip.hardEdge,
                       height: 330.0,
                       child: _selectedDate != "" ? FutureBuilder(
                         future: _reservationsViewModel.getReservations(_selectedDate),
