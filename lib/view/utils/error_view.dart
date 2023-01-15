@@ -7,7 +7,6 @@ class ErrorView extends StatelessWidget {
   @override
   Widget build(BuildContext context, ) => Scaffold(
     body: Center(
-      //TODO create better error view
       child: Text('Błąd: ${snapshot.error}'),
     ),
   );

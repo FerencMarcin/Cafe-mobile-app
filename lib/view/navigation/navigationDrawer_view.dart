@@ -67,7 +67,6 @@ class NavigationDrawer extends StatelessWidget {
       )
   );
 
-  //TODO change listeTile into separated widget
   ListTile sideMenuItem(String route, String label, Icon labelIcon, BuildContext context) {
     return ListTile(
       leading: labelIcon,

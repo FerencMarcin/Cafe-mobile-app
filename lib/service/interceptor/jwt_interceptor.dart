@@ -2,7 +2,6 @@ import 'package:cafe_mobile_app/service/storage_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-
 class JwtInterceptor extends Interceptor with StorageService{
   final String refreshTokenUrl = '${dotenv.env['BASE_URL']!}/auth/refresh';
   Dio api = Dio();

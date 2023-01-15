@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cafe_mobile_app/service/storage_service.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
@@ -18,12 +16,11 @@ class AuthService extends GetxController with StorageService {
     try {
       var accessToken = await getAccessToken();
       if(accessToken != null) {
-        if(!JwtDecoder.isExpired(accessToken)) { isLogged = true.obs; log('is exp $isLogged');}
+        if(!JwtDecoder.isExpired(accessToken)) { isLogged = true.obs;}
       } else {
         isLogged = false.obs;
       }
-      log('end $isLogged');
-    } catch(e) { isLogged = false.obs; log('catch $isLogged');}
+    } catch(e) { isLogged = false.obs;}
   }
 
   void login(String? token) async {

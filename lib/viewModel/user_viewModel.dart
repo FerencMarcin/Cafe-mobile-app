@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cafe_mobile_app/model/user_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
@@ -53,7 +51,6 @@ class UserViewModel {
   }
 
   Future<String> updateUserData(String firstName, String lastName, String email, String phone, String sex) async{
-    log('firstname: $firstName, lastname: $lastName, email: $email, phone: $phone');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int? userId = prefs.getInt('userId');
     if(userId == null) {
@@ -67,7 +64,6 @@ class UserViewModel {
       'sex': sex,
       'RoleId': 1
     });
-    log(response.data.toString());
     if(response.statusCode == 200) {
       return response.data['message'];
     } else if (response.statusCode == 403) {
@@ -88,7 +84,6 @@ class UserViewModel {
       'password': currentPassword,
       'newPassword': newPassword
     });
-    log(response.data.toString());
     if(response.statusCode == 200) {
       return response.data['message'];
     } else if (response.statusCode == 403) {
