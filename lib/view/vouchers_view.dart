@@ -1,5 +1,4 @@
 import 'package:cafe_mobile_app/view/utils/errorAlert_view.dart';
-import 'package:cafe_mobile_app/view/utils/loading_view.dart';
 import 'package:cafe_mobile_app/view/utils/logoutAlert_view.dart';
 import 'package:cafe_mobile_app/viewModel/user_viewModel.dart';
 import 'package:cafe_mobile_app/viewModel/voucher_viewModel.dart';
@@ -29,85 +28,87 @@ class _VouchersViewState extends State<VouchersView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarView(appBarTitle: 'Katalog talonów'),
-        body: isError ? const LogoutAlertView() : Column(
-          children: [
-            Row(
-              children: [
-                const Spacer(),
-                sectionTitle('Twoje punkty: '),
-                FutureBuilder(
-                  future: _userViewModel.getUserPoints(),
-                  initialData: 0,
+        body: isError ? const LogoutAlertView() : SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  const Spacer(),
+                  sectionTitle('Twoje punkty: '),
+                  FutureBuilder(
+                    future: _userViewModel.getUserPoints(),
+                    initialData: 0,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        if(snapshot.error == 403) {
+                          Navigator.pushNamed(context, '/start');
+                        }
+                        return ErrorAlertView(description: snapshot.error.toString());
+                      }
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        var value = snapshot.data;
+                        if (value != null) {
+                          points = int.tryParse(value.toString());
+                          points ??= 0;
+                          return Text(points.toString(), style: pointsTextStyle);
+                        }
+                        return const Text('Wystąpił bład');
+                      } else {
+                        return const CircularProgressIndicator();
+                      }
+                    },
+                  ),
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5.0),
+                    child: IconButton(
+                        onPressed: (){
+                          setState(() {
+                            refresh = !refresh;
+                          });
+                        },
+                        icon: const Icon(Icons.refresh_outlined)),
+                  )
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Row(
+                  children: [
+                    Text("Sortowanie: ", style: TextStyle(color: AppColors.darkGoldenrodMap[800])),
+                    DropdownButton(
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                      elevation: 1,
+                      value: sortType,
+                      items: const [
+                        DropdownMenuItem(value: 'asc', child: Text('Cena rosnąco')),
+                        DropdownMenuItem(value: 'desc', child: Text('Cena malejąco')),
+                      ],
+                      onChanged: (value) {setState(() {sortType = value!;});},
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(),
+              SizedBox(
+                height: 600.0,
+                child: FutureBuilder(
+                  future: _voucherViewModel.getVouchers(sortType),
+                  initialData: const [],
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
-                      if(snapshot.error == 403) {
-                        Navigator.pushNamed(context, '/start');
-                      }
                       return ErrorAlertView(description: snapshot.error.toString());
                     }
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      var value = snapshot.data;
-                      if (value != null) {
-                        points = int.tryParse(value.toString());
-                        points ??= 0;
-                        return Text(points.toString(), style: pointsTextStyle);
-                      }
-                      return const Text('Wystąpił bład');
+                    if (snapshot.connectionState == ConnectionState.done && points != null) {
+                      return createVouchersListView(context, snapshot);
                     } else {
-                      return const LoadingView();
+                      return const CircularProgressIndicator();
                     }
                   },
                 ),
-                const Spacer(),
-                Padding(
-                  padding: const EdgeInsets.only(right: 5.0),
-                  child: IconButton(
-                      onPressed: (){
-                        setState(() {
-                          refresh = !refresh;
-                        });
-                      },
-                      icon: const Icon(Icons.refresh_outlined)),
-                )
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                children: [
-                  Text("Sortowanie: ", style: TextStyle(color: AppColors.darkGoldenrodMap[800])),
-                  DropdownButton(
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    elevation: 1,
-                    value: sortType,
-                    items: const [
-                      DropdownMenuItem(value: 'asc', child: Text('Cena rosnąco')),
-                      DropdownMenuItem(value: 'desc', child: Text('Cena malejąco')),
-                    ],
-                    onChanged: (value) {setState(() {sortType = value!;});},
-                  ),
-                ],
-              ),
-            ),
-            const Divider(),
-            SizedBox(
-              height: 600.0,
-              child: FutureBuilder(
-                future: _voucherViewModel.getVouchers(sortType),
-                initialData: const [],
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return ErrorAlertView(description: snapshot.error.toString());
-                  }
-                  if (snapshot.connectionState == ConnectionState.done && points != null) {
-                    return createVouchersListView(context, snapshot);
-                  } else {
-                    return const LoadingView();
-                  }
-                },
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         )
     );
   }
@@ -191,7 +192,12 @@ class _VouchersViewState extends State<VouchersView> {
                                     OutlinedButton(
                                       style: detailsButtonStyle,
                                       onPressed: () {
-                                        _voucherViewModel.createUserCoupon(values[index].id);
+                                        //_voucherViewModel.createUserCoupon(values[index].id);
+                                        Get.dialog(
+                                            barrierDismissible: false,
+                                            confirmCoupon(values[index].id)
+                                        );
+
                                       },
                                       child: Text("Wybierz", style: TextStyle(color: AppColors.darkGoldenrodMap[800])),
                                     )
@@ -209,13 +215,13 @@ class _VouchersViewState extends State<VouchersView> {
         );
   }
 
-  StatefulBuilder confirmReservation(int couponId) {
-    String content = "Czy chcesz dokonać rezerwacji stolika nr: , na dzień: , godzina: ";
+  StatefulBuilder confirmCoupon(int couponId) {
+    String content = "Czy chcesz Odebrać ten kupon? Będzie ważny do wykorzystania przez najbliższe 14 dni.";
     bool confirmButton = true;
     return StatefulBuilder(
         builder: (context, setState) {
           return AlertDialog(
-            title: const Text("Nowa Rezerwacja"),
+            title: const Text("Odbierz kupon"),
             content: Text(content),
             actions: confirmButton ? <Widget>[
               ElevatedButton(
