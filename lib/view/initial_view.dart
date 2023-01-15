@@ -1,5 +1,5 @@
 import 'package:cafe_mobile_app/service/auth_service.dart';
-import 'package:cafe_mobile_app/view/utils/error_view.dart';
+import 'package:cafe_mobile_app/view/utils/errorAlert_view.dart';
 import 'package:cafe_mobile_app/view/utils/loading_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,7 +21,7 @@ class InitialView extends StatelessWidget {
           return const LoadingView();
         } else {
           if (snapshot.hasError) {
-            return ErrorView(snapshot: snapshot);
+            return ErrorAlertView(description: snapshot.error.toString());
           } else {
             return const StartView();
           }
