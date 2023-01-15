@@ -4,13 +4,8 @@ The promotion and management system for a café - mobile app
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Installation instruction:
+ 1. Use included 'env.example' file. Then use this template to create your own '.env' file and type in your environment variable, 
+ 2. Use 'Flutter pub get' command to get all necessary dependencies,
+ 3. Create Android emulator (You can use Pixel 6 device with Android API 25)
+ 4. Use 'Flutter run' command to run this project 
