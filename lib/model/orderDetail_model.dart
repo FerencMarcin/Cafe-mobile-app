@@ -18,7 +18,7 @@ class OrderDetailModel {
         quantity: json['quantity'],
         isCoupon: json['isCoupon'],
         ProductId: json['ProductId'],
-        UserCouponId: json['UserCouponId'],
+        UserCouponId: json['UserCouponId'].toString(),
         productName: json['Product']['name']
     );
   }
