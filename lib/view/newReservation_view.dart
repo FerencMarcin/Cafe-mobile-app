@@ -25,10 +25,10 @@ class _NewReservationViewState extends State<NewReservationView> {
   Widget build(BuildContext context) {
     final ReservationsViewModel _reservationsViewModel = Get.put(ReservationsViewModel());
     if(nowTime.hour >= 19) {
-      nowTime = TimeOfDay(hour: 8, minute: 0);
+      nowTime = const TimeOfDay(hour: 8, minute: 0);
       nowDate = DateTime(nowDate.year, nowDate.month, nowDate.day+1);
     } else if (nowTime.hour < 8) {
-      nowTime = TimeOfDay(hour: 8, minute: 0);
+      nowTime = const TimeOfDay(hour: 8, minute: 0);
     }
     final hours = nowTime.hour.toString().padLeft(2, '0');
     final minutes = nowTime.minute.toString().padLeft(2, '0');
@@ -118,7 +118,7 @@ class _NewReservationViewState extends State<NewReservationView> {
                                     child: Text('Wybierz godzinę', style: subsectionText))
                               ],
                             ),
-                            Divider(),
+                            const Divider(),
                             Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: OutlinedButton(
@@ -248,7 +248,7 @@ class _NewReservationViewState extends State<NewReservationView> {
             )
           ] : <Widget> [
             ElevatedButton(
-              child: Text('Zamknij'),
+              child: const Text('Zamknij'),
               onPressed: () {
                 Navigator.pop((context));
                 Navigator.pushReplacementNamed(context, '/home');
@@ -262,11 +262,11 @@ class _NewReservationViewState extends State<NewReservationView> {
 
   AlertDialog wrongDateTimeAlert(String message) {
     return AlertDialog(
-      title: Text('Błędna data'),
+      title: const Text('Błędna data'),
       content: Text(message),
       actions: <Widget>[
         ElevatedButton(
-          child: Text("Wróć"),
+          child: const Text("Wróć"),
           onPressed: () {
             Get.back();
             return;

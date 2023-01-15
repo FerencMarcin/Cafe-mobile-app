@@ -15,8 +15,8 @@ class LogoutAlertView extends StatelessWidget {
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
       child: AlertDialog(
-        title: Text('Sesja wygasła'),
-        content: Text('Twoja sesja wygasła. Musisz zalogować się ponownie'),
+        title: const Text('Sesja wygasła'),
+        content: const Text('Twoja sesja wygasła. Musisz zalogować się ponownie'),
         actions: <Widget>[
           ElevatedButton(
             child: const Text('Zaloguj'),

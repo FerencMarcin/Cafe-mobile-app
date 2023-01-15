@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cafe_mobile_app/view/utils/errorAlert_view.dart';
 import 'package:cafe_mobile_app/view/utils/loading_view.dart';
 import 'package:cafe_mobile_app/view/utils/logoutAlert_view.dart';
@@ -170,13 +168,11 @@ class _UserProfileViewState extends State<UserProfileView> {
                                   numberController.text,
                                   sex
                               );
-                              log(response.toString());
                               setState(() {
                                 content = response;
                                 closeButton = true;
                               });
                               if(editing == 'E-mail') {
-                                log('Konieczne będzie ponowne logowanie');
                                 Get.defaultDialog(
                                     title: 'Zaloguj się ponownie',
                                     middleText: 'Po zmianie adres e-mail konieczne będzie ponowne zalogowanie do aplikacji',
@@ -249,7 +245,6 @@ class _UserProfileViewState extends State<UserProfileView> {
                                   passController.text,
                                   newPassController.text
                                 );
-                                log(response.toString());
                                 setState(() {
                                   content = response;
                                   closeButton = true;

@@ -56,10 +56,10 @@ class _HomePageViewState extends State<HomePageView> {
                       padding: const EdgeInsets.symmetric(vertical: 40.0),
                       child: Row(
                         children: [
-                          Spacer(),
+                          const Spacer(),
                           Text('Witaj! Czego dzisiaj się napijesz?',
                               style: titleTextStyle),
-                          Spacer()
+                          const Spacer()
                         ],
                       )),
                 ],
@@ -230,7 +230,7 @@ class _HomePageViewState extends State<HomePageView> {
       elevation: 10.0,
       shadowColor: AppColors.darkGoldenrodMap[100]);
 
-  final TextStyle titleTextStyle = TextStyle(
+  final TextStyle titleTextStyle = const TextStyle(
       fontSize: 25.0,
       fontWeight: FontWeight.w800,
       color: AppColors.floralWhite);
