@@ -1,6 +1,6 @@
-import 'dart:developer';
-
 import 'package:cafe_mobile_app/model/orderDetailsViewArguments_model.dart';
+import 'package:cafe_mobile_app/view/utils/errorAlert_view.dart';
+import 'package:cafe_mobile_app/view/utils/loading_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../theme/colors.dart';
@@ -42,15 +42,12 @@ class OrderDetailsView extends StatelessWidget {
                 initialData: const [],
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
-                    log(snapshot.error.toString());
-                    log('error mes');
-                    //TODO show erro view
+                    return ErrorAlertView(description: snapshot.error.toString());
                   }
                   if (snapshot.connectionState == ConnectionState.done) {
                     return createOrderDetailsListView(context, snapshot);
                   } else {
-                    //TODO LOADING VIEW
-                    return const CircularProgressIndicator();
+                    return const LoadingView();
                   }
                 },
               ),
@@ -100,7 +97,7 @@ class OrderDetailsView extends StatelessWidget {
                         children: [
                           Text('Wartość: ', style: detailTitleTextStyle),
                           values[index].isCoupon
-                              ? Text('Kupon', style: TextStyle(color: AppColors.projectGreen))
+                              ? const Text('Kupon', style: TextStyle(color: AppColors.projectGreen))
                               : Text('${values[index].quantity * values[index].unitPrice}',
                                   style: detailTextTextStyle,)
                         ],

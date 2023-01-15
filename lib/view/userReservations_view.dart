@@ -1,6 +1,6 @@
-import 'dart:developer';
-
 import 'package:cafe_mobile_app/theme/colors.dart';
+import 'package:cafe_mobile_app/view/utils/errorAlert_view.dart';
+import 'package:cafe_mobile_app/view/utils/loading_view.dart';
 import 'package:cafe_mobile_app/viewModel/reservations_viewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -61,15 +61,12 @@ class _UserReservationsViewState extends State<UserReservationsView> {
                 initialData: const [],
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
-                    log(snapshot.error.toString());
-                    log('error mes');
-                    //TODO show erro view
+                    return ErrorAlertView(description: snapshot.error.toString());
                   }
                   if (snapshot.connectionState == ConnectionState.done) {
                     return createReservationsListView(context, snapshot);
                   } else {
-                    //TODO LOADING VIEW
-                    return const CircularProgressIndicator();
+                    return const LoadingView();
                   }
                 },
               ),

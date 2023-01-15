@@ -1,5 +1,5 @@
-import 'dart:developer';
-
+import 'package:cafe_mobile_app/view/utils/errorAlert_view.dart';
+import 'package:cafe_mobile_app/view/utils/loading_view.dart';
 import 'package:cafe_mobile_app/view/utils/logoutAlert_view.dart';
 import 'package:cafe_mobile_app/viewModel/user_viewModel.dart';
 import 'package:cafe_mobile_app/viewModel/voucher_viewModel.dart';
@@ -29,7 +29,7 @@ class _VouchersViewState extends State<VouchersView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarView(appBarTitle: 'Katalog talonów'),
-        body: isError ? LogoutAlertView() : Column(
+        body: isError ? const LogoutAlertView() : Column(
           children: [
             Row(
               children: [
@@ -43,10 +43,7 @@ class _VouchersViewState extends State<VouchersView> {
                       if(snapshot.error == 403) {
                         Navigator.pushNamed(context, '/start');
                       }
-                      log(snapshot.error.toString() + 'blad wskazany w view');
-                      log('error mes');
-                      return const Text('Wystąpił bład -view');
-                      //TODO show erro view
+                      return ErrorAlertView(description: snapshot.error.toString());
                     }
                     if (snapshot.connectionState == ConnectionState.done) {
                       var value = snapshot.data;
@@ -57,8 +54,7 @@ class _VouchersViewState extends State<VouchersView> {
                       }
                       return const Text('Wystąpił bład');
                     } else {
-                      //TODO LOADING VIEW
-                      return const CircularProgressIndicator();
+                      return const LoadingView();
                     }
                   },
                 ),
@@ -101,24 +97,12 @@ class _VouchersViewState extends State<VouchersView> {
                 initialData: const [],
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
-                    log(snapshot.error.toString());
-                    log('error mes');
-                    return StatefulBuilder(builder: (context, setState) {
-                      return const AlertDialog(
-                        title: Text("Wystąpił błąd"),
-                        content: Text('Spróbuj ponownie później'),
-                      );
-                    });
-                    //TODO show erro view
+                    return ErrorAlertView(description: snapshot.error.toString());
                   }
                   if (snapshot.connectionState == ConnectionState.done && points != null) {
                     return createVouchersListView(context, snapshot);
                   } else {
-                    //TODO LOADING VIEW
-                    return const SizedBox(
-                        height: 100.0,
-                        child: CircularProgressIndicator()
-                    );
+                    return const LoadingView();
                   }
                 },
               ),
@@ -251,7 +235,7 @@ class _VouchersViewState extends State<VouchersView> {
               )
             ] : <Widget> [
               ElevatedButton(
-                child: Text('Zamknij'),
+                child: const Text('Zamknij'),
                 onPressed: () {
                   Navigator.pop((context));
                   Navigator.pushReplacementNamed(context, '/home');
