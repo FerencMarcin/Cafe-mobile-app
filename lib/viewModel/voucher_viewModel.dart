@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -100,7 +98,7 @@ class VoucherViewModel {
         "UserId": userId,
         "CouponId": couponId,
         "UserCouponStatusId": 1,
-        "expiration_date": date
+        "expiration_date": date.toString()
       };
       final response = await _dioClient.dioClient.post(
         '$updateUsersCouponsUrl/', data: data,
@@ -108,7 +106,6 @@ class VoucherViewModel {
       if(response.statusCode == 404) {
         return response.data['message'];
       } else if (response.statusCode == 200){
-        log('coupon created');
         return "Dodano nowy kupon";
       } else {
         return "Wystąpił błąd";
