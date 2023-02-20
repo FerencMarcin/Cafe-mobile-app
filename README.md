@@ -1,6 +1,10 @@
 # cafe_mobile_app
 
 The promotion and management system for a café - mobile app
+Project created as part of the Engineering Thesis, realized in the following tema:
+- Marcin Ferenc - design and implementation of the mobile application - https://github.com/FerencMarcin
+- Paweł Ciszewski - design and implementation ot the web application - https://github.com/kardahim
+- Damian Bogusz - implementation of the server application - https://github.com/damianboguszpl
 
 ## Getting Started
 
